@@ -21,4 +21,4 @@ Version 1.0.0
 
 <h2>Thanks to<br />&emsp;&emsp;KST,&nbsp;HANDOO<br /><br /></h2>
 
-<h2>Template creator : <a href="ncii.kr">ncii.kr</a><br /></h2>
+<h2>Template creator : <a href="http://ncii.kr/">ncii.kr</a><br /></h2>
