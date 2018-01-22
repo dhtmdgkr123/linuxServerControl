@@ -1,0 +1,21 @@
+/*
+  @Author : dhtmdgkr123(Matas)
+  @Created : 2018 - 01 - 09
+  @Version : 1.0.0
+*/
+.default-desktop{
+    height:50px;
+    line-height: 50px;
+    background-color: #000000b0;
+}
+.content-header{
+    background-image:url('https://images.pexels.com/photos/701337/pexels-photo-701337.jpeg?w=1260&h=750&auto=compress&cs=tinysrgb');
+}
+.content-header-title{
+    font-weight: bold;
+    color:#fff;
+    font-size:25px;
+}
+.content-header-masking{
+    background-color: #0000008c;
+}

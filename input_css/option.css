@@ -1,0 +1,23 @@
+/*
+  @Author : dhtmdgkr123(Matas)
+  @Created : 2018 - 01 - 09
+  @Version : 1.0.0
+*/
+.no-border{
+    border:0!important;
+}
+.max-width{
+    width:1100px;
+    margin:0 auto;
+}
+.container:after,.container:before{
+    content:"";
+    clear: both;
+    display: block;
+}
+.none-select{
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
