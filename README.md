@@ -19,6 +19,6 @@ Version 1.0.0
 1. Easy to realtime view CPU, Memory, Disk usage <br />
 1. Easy to view individual of disk usage and information <br />
 
-<h2>Thanks to<br />&emsp;&emsp;KST,&nbsp;HANDOO<br /><br /></h2>
+<h2>Thanks to<br />&emsp;&emsp;KST,&nbsp;HANDOO,&nbsp;BBANG_PD<br /><br /></h2>
 
 <h2>Template creator : <a href="http://ncii.kr/">ncii.kr</a><br /></h2>
