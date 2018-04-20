@@ -1,21 +1,31 @@
 <?php
+include_once('./base/base.php');
 session_start();
-if($_SESSION["login"] === 0)
-{
-	header("Location:/view/input.php");
-	exit;
+if ($_SESSION["status"] === 1) {
+    header("Location:".$base_url."/view/input.php");
+    exit;
 }
 ?>
 <!DOCTYPE html>
+<!--
+/**
+ * @name: index.php
+ * @since: 2018 - 04 - 21
+ * @version: 1.0.1
+ * @Contact: osh12201@gmail.com
+ */
+-->
 <html lang="ko">
     <head>
         <title>Auth</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="/index_css/reset.css" rel="stylesheet">
-		<link href="/index_css/style.css" rel="stylesheet">
-		<script src="http://code.jquery.com/jquery.min.js"></script>
-	</head>
+
+        <link rel="stylesheet" href="<?=$base_url?>/base/base_reset.css?<?=md5(microtime())?>">
+		<link rel="stylesheet" href="<?=$base_url?>/index_css/style.css?<?=md5(microtime())?>" >
+        <link rel="stylesheet" href="<?=$base_url?>/base/base_confirm.css?<?=md5(microtime())?>">
+
+    </head>
     <body>
         <div class="login-wrap">
             <div class="login-form">
@@ -26,24 +36,28 @@ if($_SESSION["login"] === 0)
                     <a>SERVER</a>
                 <div class="border-type-spear">
                 </div>
-                <!--서버 주소  -->
+                <!--Server address  -->
                 <input placeholder="Server Addresses" type="text" name="server_add" autoncomplete="off">
-                <!--포트  -->
+                <!--Port  -->
                 <input placeholder="Port" type="text" name="server_port" autoncomplete="off">
                 <div class="border-title">
                     <a>CONNECT</a>
                 <div class="border-type-spear">
                 </div>
                 </div>
-                <!--아이디  -->
+                <!--I D -->
                 <input placeholder="I D" type="text" name="member_id" id="member_id" autoncomplete="off">
-                <!--비밀번호  -->
-                <input placeholder="Password" type="password" name="member_pw" id="password" autoncomplete="off"> 
+                <!--Pw  -->
+                <input placeholder="Password" type="password" name="member_pw" id="password" autoncomplete="off">
             </div>
         </div>
-    <!--초기화  -->
+    <!--Button  -->
 	<button id ="login" class="submit-done" type="submit">LOGIN</button>
 	<button id ="reset" class="submit-done" type="reset" >RESET</button>
-	<script src="/index_css/login.js?<?=md5(microtime())?>"></script>
+
+    <script src="<?=$base_url?>/base/jquery.js?<?=md5(microtime())?>"></script>
+	<script src="<?=$base_url?>/index_css/login.js?<?=md5(microtime())?>"></script>
+    <script src="<?=$base_url?>/base/base_confirm.js?<?=md5(microtime())?>"></script>
+
     </body>
 </html>

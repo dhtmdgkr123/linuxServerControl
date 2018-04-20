@@ -13,23 +13,17 @@ $user_pw = $_SESSION['member_pw'];
 $conn = ssh2_connect($server_add,$server_port);
 $rlt = 1;
 $response = array();
-if (!$conn)
-{
+if (!$conn) {
     $rlt = -1;
     $rlt = is_numeric($rlt) ? ((int)$rlt) : $rlt;
-}
-else if (!@ssh2_auth_password($conn, $user_id, $user_pw))
-{
+} else if (!@ssh2_auth_password($conn, $user_id, $user_pw)) {
     $rlt = -2;
     $rlt = is_numeric($rlt) ? ((int)$rlt) : $rlt;
-}
-if ($rlt === 1)
-{
+} else if ($rlt === 1) {
     $rlt = 1;
     $rlt = is_numeric($rlt) ? ((int)$rlt) : $rlt;
     $response['member_id'] = $user_id;
 }
-
 $response['rlt_code'] = $rlt;
 echo json_encode($response);
 ?>

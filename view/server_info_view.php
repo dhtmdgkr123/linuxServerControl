@@ -1,16 +1,19 @@
 <?php
+include_once('../base/base.php');
 session_start();
-if($_SESSION["login"] !== 0)
-{
-	header("Location:/index.php");
-	exit;
+if ($_SESSION["status"] !== 1) {
+    header("Location:".$base_url);
+    exit;
 }
 ?>
 <!DOCTYPE html>
 <!--
-  @Author : dhtmdgkr123(Matas)
-  @Created : 2018 - 01 - 09
-  @Version : 1.0.0
+/**
+ * @name: server_info_view.php
+ * @since: 2018 - 04 - 21
+ * @version: 1.0.1
+ * @Contact: osh12201@gmail.com
+ */
 -->
 <html lang="ko">
 <head>
@@ -18,15 +21,14 @@ if($_SESSION["login"] !== 0)
 	<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>ServerStatus</title>
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto|Source+Sans+Pro" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto|Source+Sans+Pro?<?=md5(microtime())?>" rel="stylesheet">
     <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css?<?=md5(microtime())?>">
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js?<?=md5(microtime())?>"></script>
-    <script src="../server_view_js/loader.js?<?=md5(microtime())?>"></script>
-    <script src="../server_view_js/app.js?<?=md5(microtime())?>"></script>
     <link rel="alternate" type="application/rss+xml" title="[##_title_##]" href="[##_rss_url_##]" />
-    <link rel="stylesheet" href="../server_view_css/css3_reset.css?<?=md5(microtime())?>">
-    <link rel="stylesheet" href="../server_view_css/option.min.css?<?=md5(microtime())?>">
-    <link rel="stylesheet" href="../server_view_css/style.css?<?=md5(microtime())?>">
+    <link rel="stylesheet" href="<?=$base_url?>/base/base_reset.css?<?=md5(microtime())?>">
+    <link rel="stylesheet" href="<?=$base_url?>/server_view_css/style.css?<?=md5(microtime())?>">
+    <link rel="stylesheet" href="<?=$base_url?>/base/base_confirm.css?<?=md5(microtime())?>">
+
 </head>
 <body class="bgColor bgImg">
     <div class="bgMask"></div>
@@ -101,5 +103,9 @@ if($_SESSION["login"] !== 0)
     </div>
 </s_t3>
 
+<script src="<?=$base_url?>/base/jquery.js?<?=md5(microtime())?>" charset="utf-8"></script>
+<script src="<?=$base_url?>/server_view_js/loader.js?<?=md5(microtime())?>" charset="utf-8"></script>
+<script src="<?=$base_url?>/server_view_js/app.js?<?=md5(microtime())?>" charset="utf-8"></script>
+<script src="<?=$base_url?>/base/base_confirm.js?<?=md5(microtime())?>" charset="utf-8"></script>
 </body>
 </html>

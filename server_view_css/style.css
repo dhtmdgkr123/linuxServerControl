@@ -1,18 +1,24 @@
-/*
-  @Author : dhtmdgkr123(Matas)
-  @Created : 2018 - 01 - 09
-  @Version : 1.0.0
-*/
-*{font-family: 'Roboto','Open Sans', 'Source Sans Pro', sans-serif;}
+/**
+ * @name: style.css
+ * @since: 2018 - 04 - 21
+ * @version: 1.0.1
+ * @Contact: osh12201@gmail.com
+ */
+*{
+    font-family: 'Roboto','Open Sans', 'Source Sans Pro', sans-serif;
+}
 /* demo set */
 .demo_hide{
     display:none;
 }
 
-html,body{overflow: hidden;height:100%;}
-html{overflow: hidden;}
-
-
+html,body{
+    overflow: hidden;
+    height:100%;
+}
+html{
+    overflow: hidden;
+}
 #one{
     text-align:  center;
     margin: 0 auto;
@@ -79,7 +85,7 @@ html{overflow: hidden;}
 .side_wrap{
     max-width:300px;
     height:100%;
-    width:100%; 
+    width:100%;
     background-color:transparent;
     padding:10px;
     box-sizing: border-box;
@@ -158,6 +164,7 @@ html{overflow: hidden;}
     padding:8px 15px 8px 22px;
     color:#fff;
     background-color:#4b5768;
+    cursor: pointer;
 }
 .category_list .side_item_title{
     font-size:17px;
@@ -234,6 +241,9 @@ html{overflow: hidden;}
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
 }
+.toggle_disk_option{
+    cursor: pointer;
+}
 .card .card_item .disk .disk_info{
     height:100%;
 }
@@ -303,6 +313,8 @@ html{overflow: hidden;}
     height:100px;
 }
 /* end disk */
+
+
 /*gauge chart*/
 .gauge_chart{
     position: relative;
@@ -310,4 +322,89 @@ html{overflow: hidden;}
     width:120px;
     height:120px;
     padding:0 15px;
+}
+
+.clearfix:after, .clearfix:before{
+    display: table;
+    content: " ";
+}
+
+/* flex set */
+.flex{
+    display: -webkit-box!important;
+    display: -webkit-flex!important;
+    display: -ms-flexbox!important;
+    display: flex!important;
+    -webkit-box-align: center!important;
+    -webkit-align-items: center!important;
+    -ms-flex-align: center!important;
+    align-items: center!important;
+}
+
+.flex_00{
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 auto;
+    -ms-flex: 0 0 auto;
+    flex: 0 0 auto;
+}
+.flex_01{
+    -webkit-box-flex: 1;
+    -webkit-flex: 1 1 auto;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+}
+.flex_02{
+    -webkit-box-flex: 2;
+    -webkit-flex: 2 2 auto;
+    -ms-flex: 2 2 auto;
+    flex: 2 2 auto;
+}
+.flex_03{
+    -webkit-box-flex: 3;
+    -webkit-flex: 3 3 auto;
+    -ms-flex: 3 3 auto;
+    flex: 3 3 auto;
+}
+.flex_04{
+    -webkit-box-flex: 4;
+    -webkit-flex: 4 4 auto;
+    -ms-flex: 4 4 auto;
+    flex: 4 4 auto;
+}
+.flex_align:before{
+    content:''!important;
+    height:100%!important;
+    display: inline-block!important;
+    vertical-align: middle!important;
+}
+
+
+/* jQuery modal redesign */
+.jconfirm .jconfirm-holder{
+    /* max-width:550px!important; */
+}
+.jconfirm .jconfirm-box div.jconfirm-content-pane .jconfirm-content {
+    overflow: hidden!important;
+}
+.jconfirm .jconfirm-box{
+    max-width:400px;
+    width:100%;
+    height:auto;
+    margin:0 auto;
+}
+.jconfirm .jconfirm-cell{
+    vertical-align: top!important;
+}
+.jconfirm-content {
+    margin: 0 auto;
+    text-align: center;
+}
+
+#root{
+    background-image:url(../server_view_css/root_user.png);
+    cursor: pointer;
+}
+#unroot{
+    background-image:url(../server_view_css/default_user.png);
+    cursor: pointer;
 }

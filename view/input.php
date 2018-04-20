@@ -1,30 +1,33 @@
 <?php
+include_once('../base/base.php');
 session_start();
-if($_SESSION["login"] !== 0)
-{
-	header("Location:/index.php");
-	exit;
+if ($_SESSION["status"] !== 1) {
+    header("Location:".$base_url);
+    exit;
 }
 ?>
 <!DOCTYPE html>
 <!--
-  @Author : dhtmdgkr123(Matas)
-  @Created : 2018 - 01 - 09
-  @Version : 1.0.0
+/**
+ * @name: input.php
+ * @since: 2018 - 04 - 21
+ * @version: 1.0.1
+ * @Contact: osh12201@gmail.com
+ */
 -->
 <html lang="ko">
     <head>
         <title>Server Control</title>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="https://fonts.googleapis.com/css?family=Titillium+Web" rel="stylesheet">
-        <link href="/input_css/reset.css?<?=md5(microtime())?>" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+        <link href="<?=$base_url?>/base/base_font.css?<?=md5(microtime())?>" rel="stylesheet">
+        <link href="<?=$base_url?>/base/base_reset.css?<?=md5(microtime())?>" rel="stylesheet">
         <link href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css?<?=md5(microtime())?>" rel="stylesheet">
-        <link href="/input_css/option.css?<?=md5(microtime())?>" rel="stylesheet">
-        <link href="/input_css/layout-basic.css?<?=md5(microtime())?>" rel="stylesheet">
-        <link href="/input_css/style.css?<?=md5(microtime())?>" rel="stylesheet">
+        <link href="<?=$base_url?>/input_css/style.css?<?=md5(microtime())?>" rel="stylesheet">
+        <link href="<?=$base_url?>/base/base_confirm.css?<?=md5(microtime())?>" rel="stylesheet">
     </head>
 	<body>
+        <input type="hidden" id="base_url" value="<?=$base_url?>">
 		<div class="page-container">
             <!-- mobile header layout -->
             <header class="default-mobile no-mobile no-border">
@@ -40,7 +43,7 @@ if($_SESSION["login"] !== 0)
                     </div>
 					<!--log out-->
 					 <div id="log_out" class="sign-btn">
-                        <i class="ion-locked"></i> 
+                        <i class="ion-locked"></i>
                     </div>
                 </div>
             </header>
@@ -72,8 +75,8 @@ if($_SESSION["login"] !== 0)
                                 <span>Console Log</span>
                                 <textarea class="console" id="console" contenteditable="true" cols="30" rows="10" readonly></textarea>
                             </section>
-                            <!-- tab 3 : wait please~ -->
-                        <!--    <section id="tab3" class="article-wrap">No Command</section>
+                            <!--
+                           <section id="tab3" class="article-wrap">No Command</section>
                             <section id="tab3" class="article-wrap"  class="tab_content">
                                     <input id="db_proc" class="console-input" placeholder="Enter..">
                                     <button id="db_proc_btn" class="console-btn btn-active">Run</button>
@@ -149,8 +152,9 @@ if($_SESSION["login"] !== 0)
                 </div>
             </div>
         </div>
-        <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js?<?=md5(microtime())?>'></script>
-        <script src="/input_css/input.js?<?=md5(microtime())?>"></script>
-		<script src="/input_css/ajax.js?<?=md5(microtime())?>"></script>
+        <script src="<?=$base_url?>/base/jquery.js?<?=md5(microtime())?>" charset="utf-8"></script>
+        <script src="<?=$base_url?>/base/base_confirm.js?<?=md5(microtime())?>" charset="utf-8"></script>
+		<script src="<?=$base_url?>/input_css/ajax.js?<?=md5(microtime())?>" charset="utf-8"></script>
+
     </body>
 </html>
