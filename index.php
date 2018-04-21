@@ -1,8 +1,7 @@
 <?php
-include_once('./base/base.php');
 session_start();
 if ($_SESSION["status"] === 1) {
-    header("Location:".$base_url."/view/input.php");
+    header("Location:view/input.php");
     exit;
 }
 ?>
@@ -21,15 +20,15 @@ if ($_SESSION["status"] === 1) {
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <link rel="stylesheet" href="<?=$base_url?>/base/base_reset.css?<?=md5(microtime())?>">
-		<link rel="stylesheet" href="<?=$base_url?>/index_css/style.css?<?=md5(microtime())?>" >
-        <link rel="stylesheet" href="<?=$base_url?>/base/base_confirm.css?<?=md5(microtime())?>">
+        <link rel="stylesheet" href="base/base_reset.css">
+		<link rel="stylesheet" href="index_css/style.css" >
+        <link rel="stylesheet" href="base/base_confirm.css">
 
     </head>
     <body>
         <div class="login-wrap">
             <div class="login-form">
-                <img src="/index_css/user.png">
+                <img src="index_css/user.png">
             </div>
             <div class="login-input">
                 <div class="border-title">
@@ -37,9 +36,9 @@ if ($_SESSION["status"] === 1) {
                 <div class="border-type-spear">
                 </div>
                 <!--Server address  -->
-                <input placeholder="Server Addresses" type="text" name="server_add" autoncomplete="off">
+                <input placeholder="Server Addresses" type="text" id="server_add" name="server_add" autoncomplete="off">
                 <!--Port  -->
-                <input placeholder="Port" type="text" name="server_port" autoncomplete="off">
+                <input placeholder="Port" type="text" id="server_port" name="server_port" autoncomplete="off">
                 <div class="border-title">
                     <a>CONNECT</a>
                 <div class="border-type-spear">
@@ -55,9 +54,9 @@ if ($_SESSION["status"] === 1) {
 	<button id ="login" class="submit-done" type="submit">LOGIN</button>
 	<button id ="reset" class="submit-done" type="reset" >RESET</button>
 
-    <script src="<?=$base_url?>/base/jquery.js?<?=md5(microtime())?>"></script>
-	<script src="<?=$base_url?>/index_css/login.js?<?=md5(microtime())?>"></script>
-    <script src="<?=$base_url?>/base/base_confirm.js?<?=md5(microtime())?>"></script>
+    <script src="base/jquery.js"></script>
+	<script src="index_css/login.js"></script>
+    <script src="base/base_confirm.js"></script>
 
     </body>
 </html>

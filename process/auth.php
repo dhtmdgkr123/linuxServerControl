@@ -13,7 +13,7 @@ $user_id = $_POST['member_id'];
 $user_pw = $_POST['member_pw'];
 $response = array();
 $conn = ssh2_connect($server_add,$server_port);
-$rlt = TRUE;
+$rlt = 0;
 if (!$conn) {
     $rlt = -1;
     $response['rlt_code'] = is_numeric($rlt) ? ((int)$rlt) : $rlt;

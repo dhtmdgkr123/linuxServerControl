@@ -31,7 +31,8 @@ if (!$conn) {
     $stream_std_1 = stream_get_contents($stream_stdout_1);
     if (!$conn) {
         session_destroy();
-        Header("Location:/");
+        Header("Location:../");
+        exit;
     } else if ($stream_err_1) {
         $rlt = -2;
         $response['rlt_code'] = is_numeric($rlt) ? ((int)$rlt) : $rlt;

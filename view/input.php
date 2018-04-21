@@ -1,8 +1,7 @@
 <?php
-include_once('../base/base.php');
 session_start();
 if ($_SESSION["status"] !== 1) {
-    header("Location:".$base_url);
+    header("Location:../");
     exit;
 }
 ?>
@@ -20,14 +19,13 @@ if ($_SESSION["status"] !== 1) {
         <title>Server Control</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
-        <link href="<?=$base_url?>/base/base_font.css?<?=md5(microtime())?>" rel="stylesheet">
-        <link href="<?=$base_url?>/base/base_reset.css?<?=md5(microtime())?>" rel="stylesheet">
-        <link href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css?<?=md5(microtime())?>" rel="stylesheet">
-        <link href="<?=$base_url?>/input_css/style.css?<?=md5(microtime())?>" rel="stylesheet">
-        <link href="<?=$base_url?>/base/base_confirm.css?<?=md5(microtime())?>" rel="stylesheet">
+        <link href="../base/base_font.css" rel="stylesheet">
+        <link href="../base/base_reset.css" rel="stylesheet">
+        <link href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet">
+        <link href="../input_css/style.css" rel="stylesheet">
+        <link href="../base/base_confirm.css" rel="stylesheet">
     </head>
 	<body>
-        <input type="hidden" id="base_url" value="<?=$base_url?>">
 		<div class="page-container">
             <!-- mobile header layout -->
             <header class="default-mobile no-mobile no-border">
@@ -152,9 +150,10 @@ if ($_SESSION["status"] !== 1) {
                 </div>
             </div>
         </div>
-        <script src="<?=$base_url?>/base/jquery.js?<?=md5(microtime())?>" charset="utf-8"></script>
-        <script src="<?=$base_url?>/base/base_confirm.js?<?=md5(microtime())?>" charset="utf-8"></script>
-		<script src="<?=$base_url?>/input_css/ajax.js?<?=md5(microtime())?>" charset="utf-8"></script>
+
+        <script src="../base/jquery.js" charset="utf-8"></script>
+        <script src="../base/base_confirm.js" charset="utf-8"></script>
+		<script src="../input_css/ajax.js" charset="utf-8"></script>
 
     </body>
 </html>

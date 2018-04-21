@@ -5,8 +5,6 @@
  * @Contact: osh12201@gmail.com
  */
 /* Header setting location */
-
-
 .no-border{
     border:0!important;
 }
@@ -30,9 +28,6 @@
     height:50px;
     line-height: 50px;
     background-color: #000000b0;
-}
-.content-header{
-    background-image:url('https://images.pexels.com/photos/701337/pexels-photo-701337.jpeg?w=1260&h=750&auto=compress&cs=tinysrgb');
 }
 .content-header-title{
     font-weight: bold;
@@ -88,7 +83,7 @@ html::-webkit-scrollbar {
 .content-header{
     padding: 200px 0px 230px 0px;
     background-color:#2d2d2d;
-    background-image:url('https://images.pexels.com/photos/701337/pexels-photo-701337.jpeg?w=1260&h=750&auto=compress&cs=tinysrgb');
+    background-image:url('back_input.jpeg');
     background-size: cover;
     background-position: 50%;
     background-repeat: no-repeat;

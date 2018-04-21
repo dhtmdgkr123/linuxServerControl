@@ -1,8 +1,7 @@
 <?php
-include_once('../base/base.php');
 session_start();
 if ($_SESSION["status"] !== 1) {
-    header("Location:".$base_url);
+    header("Location:../");
     exit;
 }
 ?>
@@ -22,12 +21,12 @@ if ($_SESSION["status"] !== 1) {
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>ServerStatus</title>
 
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto|Source+Sans+Pro?<?=md5(microtime())?>" rel="stylesheet">
-    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css?<?=md5(microtime())?>">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto|Source+Sans+Pro" rel="stylesheet">
+    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <link rel="alternate" type="application/rss+xml" title="[##_title_##]" href="[##_rss_url_##]" />
-    <link rel="stylesheet" href="<?=$base_url?>/base/base_reset.css?<?=md5(microtime())?>">
-    <link rel="stylesheet" href="<?=$base_url?>/server_view_css/style.css?<?=md5(microtime())?>">
-    <link rel="stylesheet" href="<?=$base_url?>/base/base_confirm.css?<?=md5(microtime())?>">
+    <link rel="stylesheet" href="../base/base_reset.css">
+    <link rel="stylesheet" href="../server_view_css/style.css">
+    <link rel="stylesheet" href="../base/base_confirm.css">
 
 </head>
 <body class="bgColor bgImg">
@@ -103,9 +102,9 @@ if ($_SESSION["status"] !== 1) {
     </div>
 </s_t3>
 
-<script src="<?=$base_url?>/base/jquery.js?<?=md5(microtime())?>" charset="utf-8"></script>
-<script src="<?=$base_url?>/server_view_js/loader.js?<?=md5(microtime())?>" charset="utf-8"></script>
-<script src="<?=$base_url?>/server_view_js/app.js?<?=md5(microtime())?>" charset="utf-8"></script>
-<script src="<?=$base_url?>/base/base_confirm.js?<?=md5(microtime())?>" charset="utf-8"></script>
+<script src="../base/jquery.js" charset="utf-8"></script>
+<script src="../server_view_js/loader.js" charset="utf-8"></script>
+<script src="../server_view_js/app.js" charset="utf-8"></script>
+<script src="../base/base_confirm.js" charset="utf-8"></script>
 </body>
 </html>

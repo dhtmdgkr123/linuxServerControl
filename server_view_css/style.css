@@ -27,7 +27,7 @@ html{
 }
 /* theme color setting */
 .bgImg{
-    background-image:url(https://i.pinimg.com/originals/09/c7/ff/09c7ff62cd4d05d9daea4a7e053e34ec.jpg)!important;
+    background-image:url(back_bg.jpg)!important;
     background-size: cover!important;
     background-position: 50%!important;
     position: relative;
@@ -255,7 +255,7 @@ html{
 }
 .disk_bg .disk_img{
     width: 100%;
-    background-image:url(/server_view_css/disk.png);
+    background-image:url(disk.png);
     background-size: cover;
     background-position: 50%;
     height: 100%
@@ -401,10 +401,10 @@ html{
 }
 
 #root{
-    background-image:url(../server_view_css/root_user.png);
+    background-image:url(root_user.png);
     cursor: pointer;
 }
 #unroot{
-    background-image:url(../server_view_css/default_user.png);
+    background-image:url(default_user.png);
     cursor: pointer;
 }

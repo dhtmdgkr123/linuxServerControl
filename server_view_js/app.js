@@ -6,7 +6,7 @@
 //---------------------------------
 //          global
 //---------------------------------
-var base_url = location.origin;
+// var base_url = location.origin;
 var ccpu = 0; //cpu_per
 var ddisk = 0; //disk_per
 var mmem = 0; //memory_per
@@ -15,13 +15,13 @@ var mmem = 0; //memory_per
 function go_command() {
     $.ajax({
         type: "POST",
-        url: base_url + "/server_view_js/log_chk.php",
+        url: "../server_view_js/log_chk.php",
         datatype: "json",
         cache: false,
         async: true,
         success: function(response) {
             if (response.rlt_code === 1) {
-                location.href = base_url + "/view/input.php";
+                location.href = "../view/input.php";
             } else if (response.rlt_code === -1) {
                 $.alert('Fail to connect Server');
                 setTimeout(function() {
@@ -45,7 +45,7 @@ function go_command() {
 function server_off() {
     $.ajax({
         type: "POST",
-        url: base_url + "/server/server_off.php",
+        url: "../server/server_off.php",
         datatype: "json",
         cache: false,
         async: true,
@@ -82,7 +82,7 @@ function server_off() {
 function server_restart() {
     $.ajax({
         type: "POST",
-        url: base_url + "/server/server_restart.php",
+        url: "../server/server_restart.php",
         datatype: "json",
         cache: false,
         async: true,
@@ -121,7 +121,7 @@ function server_restart() {
 function mysq_off() {
     $.ajax({
         type: "POST",
-        url: base_url + "/my_sq/mysq_off.php",
+        url: "../my_sq/mysq_off.php",
         datatype: "json",
         cache: false,
         async: true,
@@ -155,7 +155,7 @@ function mysq_off() {
 function mysq_start() {
     $.ajax({
         type: "POST",
-        url: base_url + "/my_sq/mysq_start.php",
+        url: "../my_sq/mysq_start.php",
         datatype: "json",
         cache: false,
         async: true,
@@ -189,7 +189,7 @@ function mysq_start() {
 function mysq_stat() {
     $.ajax({
         type: "POST",
-        url: base_url + "/my_sq/mysq_stat.php",
+        url: "../my_sq/mysq_stat.php",
         datatype: "json",
         async: true,
         cache: false,
@@ -221,7 +221,7 @@ function mysq_stat() {
 function mysq_restart() {
     $.ajax({
         type: "POST",
-        url: base_url + "/my_sq/mysq_restart.php",
+        url: "../my_sq/mysq_restart.php",
         cache: false,
         async: true,
         datatype: "json",
@@ -257,7 +257,7 @@ function mysq_restart() {
 function apa_stat() {
     $.ajax({
         type: "POST",
-        url: base_url + "/apa/apa_stat.php",
+        url: "../apa/apa_stat.php",
         cache: false,
         async: true,
         datatype: "json",
@@ -291,7 +291,7 @@ function apa_off() {
         type: "POST",
         cache: false,
         async: true,
-        url: base_url + "/apa/apa_off.php",
+        url: "../apa/apa_off.php",
         datatype: "json",
         success: function(response) {
             if (response.rlt_code === 1) {
@@ -323,7 +323,7 @@ function apa_off() {
 function apa_restart() {
     $.ajax({
         type: "POST",
-        url: base_url + "/apa/apa_restart.php",
+        url: "../apa/apa_restart.php",
         cache: false,
         async: true,
         datatype: "json",
@@ -357,7 +357,7 @@ function apa_restart() {
 function apa_start() {
     $.ajax({
         type: "POST",
-        url: base_url + "/apa/apa_start.php",
+        url: "../apa/apa_start.php",
         cache: false,
         async: true,
         datatype: "json",
@@ -393,12 +393,12 @@ function apa_start() {
 function log_out() {
     $.ajax({
         type: "POST",
-        url: base_url + "/process/logout.php",
+        url: "../process/logout.php",
         cache: false,
         async: true,
         success: function(response) {
             if (response.rel) {
-                location.href = base_url;
+                location.href = "../";
             }
         },
         error: function() {
@@ -410,7 +410,7 @@ function log_out() {
 function get_img() {
     $.ajax({
         type: "POST",
-        url: base_url + "/server_view_js/get_img.php",
+        url: "../server_view_js/get_img.php",
         cache: false,
         async: true,
         success: function(response) {
@@ -513,7 +513,7 @@ $(document).ready(function() {
     });
     $.ajax({
         type: "POST",
-        url: base_url + "/server/server_info_process.php",
+        url: "../server/server_info_process.php",
         datatype: "json",
         async: true,
         cache: false,
@@ -693,7 +693,7 @@ $(document).ready(function() {
                     aja_com = true;
                     $.ajax({
                         type: "POST",
-                        url: base_url + "/server/server_info_process.php",
+                        url: "../server/server_info_process.php",
                         datatype: "json",
                         async: true,
                         cache: false,
@@ -708,13 +708,13 @@ $(document).ready(function() {
 
                             } else {
                                 $.alert("error code : " + response.rlt_code);
-                                location.href = base_url;
+                                location.href = "../";
                             }
                         },
                         error: function(error) {
                             $.alert('Sorry try again');
                             setTimeout(function() {
-                                location.href = base_url;
+                                location.href = "../";
                             }, 1000);
                         },
                         complete: function() {
@@ -725,14 +725,14 @@ $(document).ready(function() {
             } else {
                 $.alert("erro code : " + response.rlt_code);
                 setTimeout(function() {
-                    location.href = base_url;
+                    location.href = "../";
                 });
             }
         },
         error: function(error) {
             $.alert("sorry try again");
             setTimeout(function() {
-                location.href = base_url;
+                location.href = "../";
             });
         }
     });

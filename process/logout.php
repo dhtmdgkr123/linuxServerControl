@@ -6,10 +6,9 @@
  * @Contact: osh12201@gmail.com
  */
 session_start();
-header("Content-type: application/json");
-$result = session_destroy();
-session_unset();
+header("Content-type: application/json; charset=UTF-8");
 $response = array();
-$response["rel"] = $result;
+$response["rel"] = session_destroy();
+session_unset();
 echo json_encode($response);
 ?>

@@ -1,10 +1,9 @@
 /**
  * @name: login.js
  * @since: 2018 - 04 - 21
- * @version: 1.0.1
+ * @version: 1.0.1.1
  * @Contact: osh12201@gmail.com
  */
-var base_url = location.origin;
 
 function login(server_add, server_port, member_id, member_pw) {
     if (server_add === "") {
@@ -18,7 +17,7 @@ function login(server_add, server_port, member_id, member_pw) {
     } else {
         $.ajax({
             type: "POST",
-            url: base_url + "/process/auth.php",
+            url: "../process/auth.php",
             dataType: "json",
             cache: false,
             async: true,
@@ -30,7 +29,7 @@ function login(server_add, server_port, member_id, member_pw) {
             },
             success: function(response) {
                 if (response.rlt_code === 1) {
-                    location.href = base_url + '/view/input.php';
+                    location.href = '../view/input.php';
                 } else if (response.rlt_code === -1) {
                     $.alert('Fail to connect Server');
                 } else if (response.rlt_code === -2) {
@@ -50,20 +49,25 @@ $(document).ready(function() {
     console.log("%chttps://github.com/dhtmdgkr123", 'color:#2bb34a;font-size:50px');
     $('#login').on('click', function() {
         login(
-            $("input[name='server_add']").val(),
-            $("input[name='server_port']").val(),
-            $("input[name='member_id']").val(),
-            $("input[name='member_pw']").val()
+            $('#server_add').val(),
+            $('#server_port').val(),
+            $('#member_id').val(),
+            $('#password').val()
         );
     });
     $("input").on('keypress', function(e) {
         if (e.keyCode === 13) {
-            login(
-                $("input[name='server_add']").val(),
-                $("input[name='server_port']").val(),
-                $("input[name='member_id']").val(),
-                $("input[name='member_pw']").val()
+            login($('#server_add').val(),
+                $('#server_port').val(),
+                $('#member_id').val(),
+                $('#password').val()
             );
+            // login(
+            //     $('#server_add').val(),
+            //     $('#server_port').val(),
+            //     $('#member_id').val(),
+            //     $('#member_pw').val()
+            // );
         }
     });
 });
