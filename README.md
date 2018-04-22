@@ -27,6 +27,7 @@ Version 1.0.1
 Version 1.0.1.1
 -
 1. Resolve Path issue<br />
+1. Not allow duplicate submit at all of function<br />
 
 
 <h2>Thanks to<br />&emsp;&emsp;KST,&nbsp;HANDOO,&nbsp;BBANG_PD<br /><br /></h2>
