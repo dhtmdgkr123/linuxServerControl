@@ -4,43 +4,58 @@
  * @version: 1.0.1.1
  * @Contact: osh12201@gmail.com
  */
+var chk = false;
 
 function login(server_add, server_port, member_id, member_pw) {
-    if (server_add === "") {
-        $.alert('Check Server address');
-    } else if (server_port === "") {
-        $.alert('Check Server port');
-    } else if (member_id === "") {
-        $.alert('Check Id');
-    } else if (member_pw === "") {
-        $.alert('Check passwrod');
+    if (chk) {
+        $.alert('Wait Please');
+        return;
     } else {
-        $.ajax({
-            type: "POST",
-            url: "../process/auth.php",
-            dataType: "json",
-            cache: false,
-            async: true,
-            data: {
-                'server_add': server_add,
-                'server_port': server_port,
-                'member_id': member_id,
-                'member_pw': member_pw
-            },
-            success: function(response) {
-                if (response.rlt_code === 1) {
-                    location.href = '../view/input.php';
-                } else if (response.rlt_code === -1) {
-                    $.alert('Fail to connect Server');
-                } else if (response.rlt_code === -2) {
-                    $.alert('Fail to log in please check id or password');
+        chk = true;
+        if (server_add === "") {
+            $.alert('Check Server address');
+            chk = false
+        } else if (server_port === "") {
+            $.alert('Check Server port');
+            chk = false
+        } else if (member_id === "") {
+            $.alert('Check Id');
+            chk = false
+        } else if (member_pw === "") {
+            $.alert('Check passwrod');
+            chk = false
+        } else {
+            $.ajax({
+                type: "POST",
+                url: "../process/auth.php",
+                dataType: "json",
+                cache: false,
+                async: true,
+                data: {
+                    'server_add': server_add,
+                    'server_port': server_port,
+                    'member_id': member_id,
+                    'member_pw': member_pw
+                },
+                success: function(response) {
+                    chk = false
+                    if (response.rlt_code === 1) {
+                        location.href = 'view/input.php';
+                    } else if (response.rlt_code === -1) {
+                        $.alert('Fail to connect Server');
+                    } else if (response.rlt_code === -2) {
+                        $.alert('Fail to log in please check id or password');
+                    }
+                },
+                error: function(error) {
+                    chk = false
+                    $.alert('Please install php-ssh2 library or install openssl library');
+
                 }
-            },
-            error: function(error) {
-                $.alert('Sorry try again');
-            }
-        });
+            });
+        }
     }
+
 }
 $(document).ready(function() {
     console.log("%cHello admin~ below that link is my blog~", 'color: blue;font-size:50px');
@@ -62,12 +77,6 @@ $(document).ready(function() {
                 $('#member_id').val(),
                 $('#password').val()
             );
-            // login(
-            //     $('#server_add').val(),
-            //     $('#server_port').val(),
-            //     $('#member_id').val(),
-            //     $('#member_pw').val()
-            // );
         }
     });
 });

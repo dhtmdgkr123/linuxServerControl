@@ -1,8 +1,9 @@
-/*
-  @Author : dhtmdgkr123(Matas)
-  @Created : 2018 - 01 - 09
-  @Version : 1.0.0
-*/
+/**
+ * @name: login.js
+ * @since: 2018 - 04 - 21
+ * @version: 1.0.1.1
+ * @Contact: osh12201@gmail.com
+ */
 //---------------------------------
 //          global
 //---------------------------------
@@ -11,431 +12,545 @@ var ccpu = 0; //cpu_per
 var ddisk = 0; //disk_per
 var mmem = 0; //memory_per
 
+var is_click = false;
+var is_server_restart = false;
+var is_server_off = false;
+
+var is_mysq_restart = false;
+var is_mysq_stat = false;
+var is_mysq_start = false;
+var is_mysq_off = false;
+
+var is_apa_stat = false;
+var is_apa_start = false;
+var is_apa_restart = false;
+var is_apa_off = false;
+
+var is_get_img = false;
+var is_log_out = false;
+
 
 function go_command() {
-    $.ajax({
-        type: "POST",
-        url: "../server_view_js/log_chk.php",
-        datatype: "json",
-        cache: false,
-        async: true,
-        success: function(response) {
-            if (response.rlt_code === 1) {
-                location.href = "../view/input.php";
-            } else if (response.rlt_code === -1) {
-                $.alert('Fail to connect Server');
-                setTimeout(function() {
-                    log_out();
-                }, 2000);
-            } else if (response.rlt_code === -2) {
-                $.alert('Fail to auth Server');
-                setTimeout(function() {
-                    log_out();
-                }, 2000);
+    if (is_click) {
+        return;
+    } else {
+        is_click = true;
+        $.ajax({
+            type: "POST",
+            url: "../server_view_js/log_chk.php",
+            datatype: "json",
+            cache: false,
+            async: true,
+            success: function(response) {
+                is_click = false;
+                if (response.rlt_code === 1) {
+                    location.href = "../view/input.php";
+                } else if (response.rlt_code === -1) {
+                    $.alert('Fail to connect Server');
+                    setTimeout(function() {
+                        log_out();
+                    }, 2000);
+                } else if (response.rlt_code === -2) {
+                    $.alert('Fail to auth Server');
+                    setTimeout(function() {
+                        log_out();
+                    }, 2000);
+                }
+            },
+            error: function() {
+                is_click = false;
+                $.alert('Sorry try again');
             }
-        },
-        error: function() {
-            $.alert('Sorry try again');
-        }
-    });
+        });
+    }
 }
 //---------------------------------
 //          SERVER
 //---------------------------------
 function server_off() {
-    $.ajax({
-        type: "POST",
-        url: "../server/server_off.php",
-        datatype: "json",
-        cache: false,
-        async: true,
-        success: function(response) {
-            if (response.rlt_code === 1) {
-                $.alert('Success to shutdown Server');
-                setTimeout(function() {
-                    log_out();
-                }, 2000);
-            } else if (response.rlt_code === -1) {
-                $.alert('Fail to connect Server');
-                setTimeout(function() {
-                    log_out();
-                }, 2000);
-            } else if (response.rlt_code === -2) {
-                $.alert('Fail to auth Server');
-                setTimeout(function() {
-                    log_out();
-                }, 2000);
-            } else if (response.rlt_code === -3) {
-                $.alert(response.msg);
-            } else if (response.rlt_code === -4) {
-                $.alert('Only root can do this');
-            } else if (response.rlt_code === -5) {
-                $.alert('Unknown Error');
+    if (is_server_off) {
+        return;
+    } else {
+        is_server_off = true;
+        $.ajax({
+            type: "POST",
+            url: "../server/server_off.php",
+            datatype: "json",
+            cache: false,
+            async: true,
+            success: function(response) {
+                is_server_off = false;
+                if (response.rlt_code === 1) {
+                    $.alert('Success to shutdown Server');
+                    setTimeout(function() {
+                        log_out();
+                    }, 2000);
+                } else if (response.rlt_code === -1) {
+                    $.alert('Fail to connect Server');
+                    setTimeout(function() {
+                        log_out();
+                    }, 2000);
+                } else if (response.rlt_code === -2) {
+                    $.alert('Fail to auth Server');
+                    setTimeout(function() {
+                        log_out();
+                    }, 2000);
+                } else if (response.rlt_code === -3) {
+                    $.alert(response.msg);
+                } else if (response.rlt_code === -4) {
+                    $.alert('Only root can do this');
+                } else if (response.rlt_code === -5) {
+                    $.alert('Unknown Error');
+                }
+            },
+            error: function() {
+                is_server_off = false;
+                $.alert('Sorry try again');
             }
-        },
-        error: function() {
-            $.alert('Sorry try again');
-        }
-    });
+        });
+    }
+
 }
 
 function server_restart() {
-    $.ajax({
-        type: "POST",
-        url: "../server/server_restart.php",
-        datatype: "json",
-        cache: false,
-        async: true,
-        success: function(response) {
-            if (response.rlt_code === 1) {
-                $.alert('Success to restart Server');
-                setTimeout(function() {
-                    log_out();
-                }, 2000);
-            } else if (response.rlt_code === -1) {
-                $.alert('Fail to connect Server');
-                setTimeout(function() {
-                    log_out();
-                }, 2000);
-            } else if (response.rlt_code === -2) {
-                $.alert('Fail to auth Server');
-                setTimeout(function() {
-                    log_out();
-                }, 2000);
-            } else if (response.rlt_code === -3) {
-                $.alert(response.msg);
-            } else if (response.rlt_code === -4) {
-                $.alert('Only root can do this');
-            } else if (response.rlt_code === -5) {
-                $.alert('Unknown Error');
+    if (is_server_restart) {
+        return;
+    } else {
+        is_server_restart = true;
+        $.ajax({
+            type: "POST",
+            url: "../server/server_restart.php",
+            datatype: "json",
+            cache: false,
+            async: true,
+            success: function(response) {
+                is_server_restart = false;
+                if (response.rlt_code === 1) {
+                    $.alert('Success to restart Server');
+                    setTimeout(function() {
+                        log_out();
+                    }, 2000);
+                } else if (response.rlt_code === -1) {
+                    $.alert('Fail to connect Server');
+                    setTimeout(function() {
+                        log_out();
+                    }, 2000);
+                } else if (response.rlt_code === -2) {
+                    $.alert('Fail to auth Server');
+                    setTimeout(function() {
+                        log_out();
+                    }, 2000);
+                } else if (response.rlt_code === -3) {
+                    $.alert(response.msg);
+                } else if (response.rlt_code === -4) {
+                    $.alert('Only root can do this');
+                } else if (response.rlt_code === -5) {
+                    $.alert('Unknown Error');
+                }
+            },
+            error: function() {
+                is_server_restart = false;
+                $.alert('Sorry try again');
             }
-        },
-        error: function() {
-            $.alert('Sorry try again');
-        }
-    });
+        });
+    }
+
 }
 //-----------------------------
 //			MySQL
 //-----------------------------
 function mysq_off() {
-    $.ajax({
-        type: "POST",
-        url: "../my_sq/mysq_off.php",
-        datatype: "json",
-        cache: false,
-        async: true,
-        success: function(response) {
-            if (response.rlt_code === 1) {
-                $.alert(response.msg);
-            } else if (response.rlt_code == -4) {
-                $.alert('Only root can do this');
-            } else if (response.rlt_code === -1) {
-                $.alert('Fail to connect Server');
-                setTimeout(function() {
-                    log_out();
-                }, 2000);
-            } else if (response.rlt_code === -2) {
-                $.alert('Fail to auth server');
-                setTimeout(function() {
-                    log_out();
-                }, 2000);
-            } else if (response.rlt_code === -3) {
-                $.alert(response.msg);
-            } else if (response.rlt_code === -5) {
-                $.alert(response.msg);
+    if (is_mysq_off) {
+        return;
+    } else {
+        is_mysq_off = true;
+        $.ajax({
+            type: "POST",
+            url: "../my_sq/mysq_off.php",
+            datatype: "json",
+            cache: false,
+            async: true,
+            success: function(response) {
+                is_mysq_off = false;
+                if (response.rlt_code === 1) {
+                    $.alert(response.msg);
+                } else if (response.rlt_code == -4) {
+                    $.alert('Only root can do this');
+                } else if (response.rlt_code === -1) {
+                    $.alert('Fail to connect Server');
+                    setTimeout(function() {
+                        log_out();
+                    }, 2000);
+                } else if (response.rlt_code === -2) {
+                    $.alert('Fail to auth server');
+                    setTimeout(function() {
+                        log_out();
+                    }, 2000);
+                } else if (response.rlt_code === -3) {
+                    $.alert(response.msg);
+                } else if (response.rlt_code === -5) {
+                    $.alert(response.msg);
+                }
+            },
+            error: function() {
+                is_mysq_off = false;
+                $.alert('Sorry try again');
             }
-        },
-        error: function() {
-            $.alert('Sorry try again');
-        }
-    });
+        });
+    }
+
 }
 
 function mysq_start() {
-    $.ajax({
-        type: "POST",
-        url: "../my_sq/mysq_start.php",
-        datatype: "json",
-        cache: false,
-        async: true,
-        success: function(response) {
-            if (response.rlt_code === 1) {
-                $.alert(response.msg);
-            } else if (response.rlt_code === -5) {
-                $.alert('Only root can do this');
-            } else if (response.rlt_code === -1) {
-                $.alert('Fail to Connect Server');
-                setTimeout(function() {
-                    log_out();
-                }, 2000);
-            } else if (response.rlt_code === -2) {
-                $.alert('Fail to auth Server');
-                setTimeout(function() {
-                    log_out();
-                }, 2000)
-            } else if (response.rlt_code === -3) {
-                $.alert(response.msg);
-            } else if (response.rlt_code === -4) {
-                $.alert('Unknown Error');
+    if (is_mysq_start) {
+        return;
+    } else {
+        is_mysq_start = true;
+        $.ajax({
+            type: "POST",
+            url: "../my_sq/mysq_start.php",
+            datatype: "json",
+            cache: false,
+            async: true,
+            success: function(response) {
+                is_mysq_start = false;
+                if (response.rlt_code === 1) {
+                    $.alert(response.msg);
+                } else if (response.rlt_code === -5) {
+                    $.alert('Only root can do this');
+                } else if (response.rlt_code === -1) {
+                    $.alert('Fail to Connect Server');
+                    setTimeout(function() {
+                        log_out();
+                    }, 2000);
+                } else if (response.rlt_code === -2) {
+                    $.alert('Fail to auth Server');
+                    setTimeout(function() {
+                        log_out();
+                    }, 2000)
+                } else if (response.rlt_code === -3) {
+                    $.alert(response.msg);
+                } else if (response.rlt_code === -4) {
+                    $.alert('Unknown Error');
+                }
+            },
+            error: function() {
+                is_mysq_start = false;
+                $.alert('Sorry try again');
             }
-        },
-        error: function() {
-            $.alert('Sorry try again');
-        }
-    });
+        });
+    }
+
 }
 
 function mysq_stat() {
-    $.ajax({
-        type: "POST",
-        url: "../my_sq/mysq_stat.php",
-        datatype: "json",
-        async: true,
-        cache: false,
-        success: function(response) {
-            if (response.rlt_code === 1) {
-                $.alert(response.msg);
-            } else if (response.rlt_code === -1) {
-                $.alert('Fail to connect Server');
-                setTimeout(function() {
-                    log_out();
-                }, 2000);
-            } else if (response.rlt_code === -2) {
-                $.alert('Fail to auth Server');
-                setTimeout(function() {
-                    log_out();
-                }, 2000)
-            } else if (response.rlt_code === -3) {
-                $.alert(response.msg);
-            } else if (response.rlt_code === -4) {
-                $.alert('Unknown Error');
+    if (is_mysq_stat) {
+        return;
+    } else {
+        is_mysq_stat = true;
+        $.ajax({
+            type: "POST",
+            url: "../my_sq/mysq_stat.php",
+            datatype: "json",
+            async: true,
+            cache: false,
+            success: function(response) {
+                is_mysq_stat = false;
+                if (response.rlt_code === 1) {
+                    $.alert(response.msg);
+                } else if (response.rlt_code === -1) {
+                    $.alert('Fail to connect Server');
+                    setTimeout(function() {
+                        log_out();
+                    }, 2000);
+                } else if (response.rlt_code === -2) {
+                    $.alert('Fail to auth Server');
+                    setTimeout(function() {
+                        log_out();
+                    }, 2000)
+                } else if (response.rlt_code === -3) {
+                    $.alert(response.msg);
+                } else if (response.rlt_code === -4) {
+                    $.alert('Unknown Error');
+                }
+            },
+            error: function() {
+                is_mysq_stat = false;
+                $.alert('Sorry try again');
             }
-        },
-        error: function() {
-            $.alert('Sorry try again');
-        }
-    });
+        });
+    }
+
 }
 
 function mysq_restart() {
-    $.ajax({
-        type: "POST",
-        url: "../my_sq/mysq_restart.php",
-        cache: false,
-        async: true,
-        datatype: "json",
-        success: function(response) {
-            if (response.rlt_code === 1) {
-                $.alert(response.msg);
-            } else if (response.rlt_code === -1) {
-                $.alert('Fail to connect Server');
-                setTimeout(function() {
-                    log_out();
-                }, 2000);
-            } else if (response.rlt_code === -2) {
-                $.alert('Fail to auth Server');
-                setTimeout(function() {
-                    log_out();
-                }, 2000);
-            } else if (response.rlt_code === -3) {
-                $.alert(response.msg);
-            } else if (response.rlt_code === -4) {
-                $.alert('Only root can do this');
-            } else if (response.rlt_code === -5) {
-                $.alert('Unknown Error');
+    if (is_mysq_restart) {
+        return;
+    } else {
+        is_mysq_restart = true;
+        $.ajax({
+            type: "POST",
+            url: "../my_sq/mysq_restart.php",
+            cache: false,
+            async: true,
+            datatype: "json",
+            success: function(response) {
+                is_mysq_restart = false;
+                if (response.rlt_code === 1) {
+                    $.alert(response.msg);
+                } else if (response.rlt_code === -1) {
+                    $.alert('Fail to connect Server');
+                    setTimeout(function() {
+                        log_out();
+                    }, 2000);
+                } else if (response.rlt_code === -2) {
+                    $.alert('Fail to auth Server');
+                    setTimeout(function() {
+                        log_out();
+                    }, 2000);
+                } else if (response.rlt_code === -3) {
+                    $.alert(response.msg);
+                } else if (response.rlt_code === -4) {
+                    $.alert('Only root can do this');
+                } else if (response.rlt_code === -5) {
+                    $.alert('Unknown Error');
+                }
+            },
+            error: function() {
+                is_mysq_restart = false;
+                $.alert("Sorry try again!");
             }
-        },
-        error: function() {
-            $.alert("Sorry try again!");
-        }
-    });
+        });
+    }
+
 }
 //-----------------------------
 //			Apache
 //-----------------------------
 function apa_stat() {
-    $.ajax({
-        type: "POST",
-        url: "../apa/apa_stat.php",
-        cache: false,
-        async: true,
-        datatype: "json",
-        success: function(response) {
-            if (response.rlt_code === 1) {
-                $.alert(response.msg);
-            } else if (response.rlt_code === -1) {
-                $.alert('Fail to connect Server');
-                setTimeout(function() {
-                    log_out();
-                }, 2000);
-            } else if (response.rlt_code === -2) {
-                $.alert('Fail to auth Server');
-                setTimeout(function() {
-                    log_out();
-                }, 2000);
-            } else if (response.rlt_code === -3) {
-                $.alert(response.msg);
-            } else if (response.rlt_code === -4) {
-                $.alert('Unknown Error');
+    if (is_apa_stat) {
+        return;
+    } else {
+        is_apa_stat = true;
+        $.ajax({
+            type: "POST",
+            url: "../apa/apa_stat.php",
+            cache: false,
+            async: true,
+            datatype: "json",
+            success: function(response) {
+                is_apa_stat = false;
+                if (response.rlt_code === 1) {
+                    $.alert(response.msg);
+                } else if (response.rlt_code === -1) {
+                    $.alert('Fail to connect Server');
+                    setTimeout(function() {
+                        log_out();
+                    }, 2000);
+                } else if (response.rlt_code === -2) {
+                    $.alert('Fail to auth Server');
+                    setTimeout(function() {
+                        log_out();
+                    }, 2000);
+                } else if (response.rlt_code === -3) {
+                    $.alert(response.msg);
+                } else if (response.rlt_code === -4) {
+                    $.alert('Unknown Error');
+                }
+            },
+            error: function() {
+                is_apa_stat = false;
+                $.alert('Sorry try again');
             }
-        },
-        error: function() {
-            $.alert('Sorry try again');
-        }
-    });
+        });
+    }
 }
 
 function apa_off() {
-    $.ajax({
-        type: "POST",
-        cache: false,
-        async: true,
-        url: "../apa/apa_off.php",
-        datatype: "json",
-        success: function(response) {
-            if (response.rlt_code === 1) {
-                $.alert('Success to off Apache2');
-            } else if (response.rlt_code === -1) {
-                $.alert('Fail to connect Server');
-                setTimeout(function() {
-                    log_out();
-                }, 2000);
-            } else if (response.rlt_code === -4) {
-                $.alert('Only root can do this');
-            } else if (response.rlt_code === -2) {
-                $.alert('Fail to auth Server');
-                setTimeout(function() {
-                    log_out();
-                }, 2000);
-            } else if (response.rlt_code === -3) {
-                $.alert(response.msg);
-            } else if (response.rlt_code === -5) {
-                $.alert('Unknown Error');
+    if (is_apa_off) {
+        return;
+    } else {
+        is_apa_off = true;
+        $.ajax({
+            type: "POST",
+            cache: false,
+            async: true,
+            url: "../apa/apa_off.php",
+            datatype: "json",
+            success: function(response) {
+                is_apa_off = false;
+                if (response.rlt_code === 1) {
+                    $.alert('Success to off Apache2');
+                } else if (response.rlt_code === -1) {
+                    $.alert('Fail to connect Server');
+                    setTimeout(function() {
+                        log_out();
+                    }, 2000);
+                } else if (response.rlt_code === -4) {
+                    $.alert('Only root can do this');
+                } else if (response.rlt_code === -2) {
+                    $.alert('Fail to auth Server');
+                    setTimeout(function() {
+                        log_out();
+                    }, 2000);
+                } else if (response.rlt_code === -3) {
+                    $.alert(response.msg);
+                } else if (response.rlt_code === -5) {
+                    $.alert('Unknown Error');
+                }
+            },
+            error: function() {
+                is_apa_off = false;
+                $.alert('Sorry try again');
             }
-        },
-        error: function() {
-            $.alert('Sorry try again');
-        }
-    });
+        });
+    }
 }
 
 function apa_restart() {
-    $.ajax({
-        type: "POST",
-        url: "../apa/apa_restart.php",
-        cache: false,
-        async: true,
-        datatype: "json",
-        success: function(response) {
-            if (response.rlt_code === 1) {
-                $.alert('Success to start Apache2');
-            } else if (response.rlt_code === -4) {
-                $.alert('Only root can do this');
-            } else if (response.rlt_code === -1) {
-                $.alert('Fail to connect Server');
-                setTimeout(function() {
-                    log_out();
-                }, 2000);
-            } else if (response.rlt_code === -2) {
-                $.alert('Fail to auth Server');
-                setTimeout(function() {
-                    log_out();
-                }, 2000);
-            } else if (response.rlt_code === -3) {
-                $.alert(response.msg);
-            } else if (response.rlt_code === -5) {
-                $.alert('Unknown Error');
+    if (is_apa_restart) {
+        return;
+    } else {
+        is_apa_restart = true;
+        $.ajax({
+            type: "POST",
+            url: "../apa/apa_restart.php",
+            cache: false,
+            async: true,
+            datatype: "json",
+            success: function(response) {
+                is_apa_restart = false;
+                if (response.rlt_code === 1) {
+                    $.alert('Success to start Apache2');
+                } else if (response.rlt_code === -4) {
+                    $.alert('Only root can do this');
+                } else if (response.rlt_code === -1) {
+                    $.alert('Fail to connect Server');
+                    setTimeout(function() {
+                        log_out();
+                    }, 2000);
+                } else if (response.rlt_code === -2) {
+                    $.alert('Fail to auth Server');
+                    setTimeout(function() {
+                        log_out();
+                    }, 2000);
+                } else if (response.rlt_code === -3) {
+                    $.alert(response.msg);
+                } else if (response.rlt_code === -5) {
+                    $.alert('Unknown Error');
+                }
+            },
+            error: function() {
+                is_apa_restart = false;
+                $.alert('Sorry try again!');
             }
-        },
-        error: function() {
-            $.alert('Sorry try again!');
-        }
-    });
+        });
+    }
 }
 
 function apa_start() {
-    $.ajax({
-        type: "POST",
-        url: "../apa/apa_start.php",
-        cache: false,
-        async: true,
-        datatype: "json",
-        success: function(response) {
-            if (response.rlt_code === 1) {
-                $.alert('Success to start Apache2');
-            } else if (response.rlt_code === -1) {
-                $.alert('Fail to connect Server');
-                setTimeout(function() {
-                    log_out();
-                }, 2000);
-            } else if (response.rlt_code === -2) {
-                $.alert('Fail to auth Server')
-                setTimeout(function() {
-                    log_out();
-                }, 2000);
-            } else if (response.rlt_code === -3) {
-                $.alert(response.msg);
-            } else if (response.rlt_code === -4) {
-                $.alert('Only root can do this');
-            } else if (response.rlt_code === -5) {
-                $.alert('Unknown error');
+    if (is_apa_start) {
+        return;
+    } else {
+        is_apa_start = true;
+        $.ajax({
+            type: "POST",
+            url: "../apa/apa_start.php",
+            cache: false,
+            async: true,
+            datatype: "json",
+            success: function(response) {
+                is_apa_start = false;
+                if (response.rlt_code === 1) {
+                    $.alert('Success to start Apache2');
+                } else if (response.rlt_code === -1) {
+                    $.alert('Fail to connect Server');
+                    setTimeout(function() {
+                        log_out();
+                    }, 2000);
+                } else if (response.rlt_code === -2) {
+                    $.alert('Fail to auth Server')
+                    setTimeout(function() {
+                        log_out();
+                    }, 2000);
+                } else if (response.rlt_code === -3) {
+                    $.alert(response.msg);
+                } else if (response.rlt_code === -4) {
+                    $.alert('Only root can do this');
+                } else if (response.rlt_code === -5) {
+                    $.alert('Unknown error');
+                }
+            },
+            error: function() {
+                is_apa_start = false;
+                $.alert('Sorry try again!');
             }
-        },
-        error: function() {
-            $.alert('Sorry try again!');
-        }
-    });
+        });
+    }
 }
 //---------------------------------
 //             Other
 //---------------------------------
 function log_out() {
-    $.ajax({
-        type: "POST",
-        url: "../process/logout.php",
-        cache: false,
-        async: true,
-        success: function(response) {
-            if (response.rel) {
-                location.href = "../";
+    if (is_log_out) {
+        return;
+    } else {
+        is_log_out = true;
+        $.ajax({
+            type: "POST",
+            url: "../process/logout.php",
+            cache: false,
+            async: true,
+            success: function(response) {
+                is_log_out = false;
+                if (response.rel) {
+                    location.href = "../";
+                }
+            },
+            error: function() {
+                is_log_out = false;
+                $.alert('Sorry try again');
             }
-        },
-        error: function() {
-            $.alert('Sorry try again');
-        }
-    });
+        });
+    }
+
 }
 
 function get_img() {
-    $.ajax({
-        type: "POST",
-        url: "../server_view_js/get_img.php",
-        cache: false,
-        async: true,
-        success: function(response) {
-            if (response.rlt_code === 1) {
-                if (response.member_id === "root" || response.member_id === "ROOT") {
-                    $("#select_img").prepend("<div id='root' class='flex_align logo_height_set logo_img'></div>");
-                } else {
-                    $("#select_img").prepend("<div id='unroot' class='flex_align logo_height_set logo_img'></div>");
+    if (is_get_img) {
+        return;
+    } else {
+        is_get_img = true;
+        $.ajax({
+            type: "POST",
+            url: "../server_view_js/get_img.php",
+            cache: false,
+            async: true,
+            success: function(response) {
+                if (response.rlt_code === 1) {
+                    if (response.member_id === "root" || response.member_id === "ROOT") {
+                        $("#select_img").prepend("<div id='root' class='flex_align logo_height_set logo_img'></div>");
+                    } else {
+                        $("#select_img").prepend("<div id='unroot' class='flex_align logo_height_set logo_img'></div>");
+                    }
+                } else if (response.rlt_code === -2) {
+                    $.alert('Fail to auth Server');
+                    setTimeout(function() {
+                        log_out();
+                    });
+                } else if (response.rlt_code === -1) {
+                    $.alert('Fail to connect Server');
+                    setTimeout(function() {
+                        log_out();
+                    });
                 }
-            } else if (response.rlt_code === -2) {
-                $.alert('Fail to auth Server');
-                setTimeout(function() {
-                    log_out();
-                });
-            } else if (response.rlt_code === -1) {
-                $.alert('Fail to connect Server');
-                setTimeout(function() {
-                    log_out();
-                });
+            },
+            error: function() {
+                $.alert('Sorry try again');
             }
-        },
-        error: function() {
-            $.alert('Sorry try again');
-        }
-    });
+        });
+    }
+
 }
 //---------------------------------
 //          main
@@ -685,42 +800,43 @@ $(document).ready(function() {
                 //--------------------------------------
                 //          GOOGLE CHAR DRAW
                 //--------------------------------------
-                let aja_com = false;
+                let is_ajax = false;
                 setInterval(function() {
-                    if (aja_com) {
+                    if (is_ajax) {
                         return;
-                    }
-                    aja_com = true;
-                    $.ajax({
-                        type: "POST",
-                        url: "../server/server_info_process.php",
-                        datatype: "json",
-                        async: true,
-                        cache: false,
-                        success: function(response) {
-                            if (response.rlt_code === 1) {
-                                ccpu = Number(response.cpu);
-                                ddisk = Number(response.disk);
-                                mmem = Number(response.mem);
-                                google.charts.setOnLoadCallback(drawChart);
-                                google.charts.setOnLoadCallback(drawChart_2);
-                                google.charts.setOnLoadCallback(drawChart_3);
+                    } else {
+                        is_ajax = true;
+                        $.ajax({
+                            type: "POST",
+                            url: "../server/server_info_process.php",
+                            datatype: "json",
+                            async: true,
+                            cache: false,
+                            success: function(response) {
+                                if (response.rlt_code === 1) {
+                                    ccpu = Number(response.cpu);
+                                    ddisk = Number(response.disk);
+                                    mmem = Number(response.mem);
+                                    google.charts.setOnLoadCallback(drawChart);
+                                    google.charts.setOnLoadCallback(drawChart_2);
+                                    google.charts.setOnLoadCallback(drawChart_3);
 
-                            } else {
-                                $.alert("error code : " + response.rlt_code);
-                                location.href = "../";
+                                } else {
+                                    $.alert("error code : " + response.rlt_code);
+                                    location.href = "../";
+                                }
+                            },
+                            error: function(error) {
+                                $.alert('Sorry try again');
+                                setTimeout(function() {
+                                    location.href = "../";
+                                }, 1000);
+                            },
+                            complete: function() {
+                                is_ajax = false;
                             }
-                        },
-                        error: function(error) {
-                            $.alert('Sorry try again');
-                            setTimeout(function() {
-                                location.href = "../";
-                            }, 1000);
-                        },
-                        complete: function() {
-                            aja_com = false;
-                        }
-                    });
+                        });
+                    }
                 }, 1000);
             } else {
                 $.alert("erro code : " + response.rlt_code);
@@ -744,7 +860,7 @@ $(document).ready(function() {
     let info_switch = 0;
     $(document).on('click', ".toggle_disk_option", function() {
         let elements = $(this).parents(".card_container").find(".toggle_info");
-        if (info_switch == 0) {
+        if (info_switch === 0) {
             elements.slideDown(230);
             info_switch = 1;
         } else {

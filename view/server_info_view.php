@@ -10,7 +10,7 @@ if ($_SESSION["status"] !== 1) {
 /**
  * @name: server_info_view.php
  * @since: 2018 - 04 - 21
- * @version: 1.0.1
+ * @version: 1.0.1.1
  * @Contact: osh12201@gmail.com
  */
 -->
@@ -19,7 +19,7 @@ if ($_SESSION["status"] !== 1) {
     <meta charset="UTF-8">
 	<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>ServerStatus</title>
+    <title>Server Status</title>
 
     <link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto|Source+Sans+Pro" rel="stylesheet">
     <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
