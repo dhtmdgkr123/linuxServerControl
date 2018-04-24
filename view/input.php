@@ -151,9 +151,9 @@ if ($_SESSION["status"] !== 1) {
             </div>
         </div>
 
-        <script src="../base/jquery.js" charset="utf-8"></script>
-        <script src="../base/base_confirm.js" charset="utf-8"></script>
-		<script src="../input_css/ajax.js" charset="utf-8"></script>
+        <script src="../base/jquery.js"></script>
+        <script src="../base/base_confirm.js"></script>
+		<script src="../input_css/ajax.js"></script>
 
     </body>
 </html>

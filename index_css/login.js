@@ -27,7 +27,7 @@ function login(server_add, server_port, member_id, member_pw) {
         } else {
             $.ajax({
                 type: "POST",
-                url: "../process/auth.php",
+                url: "process/auth.php",
                 dataType: "json",
                 cache: false,
                 async: true,
@@ -50,7 +50,6 @@ function login(server_add, server_port, member_id, member_pw) {
                 error: function(error) {
                     chk = false
                     $.alert('Please install php-ssh2 library or install openssl library');
-
                 }
             });
         }

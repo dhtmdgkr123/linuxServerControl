@@ -17,7 +17,7 @@ $rlt = 0;
 if (!$conn) {
     $rlt = -1;
     $response['rlt_code'] = is_numeric($rlt) ? ((int)$rlt) : $rlt;
-} else if (!@ssh2_auth_password($conn, $user_id, $user_pw)) {
+} else if (!ssh2_auth_password($conn, $user_id, $user_pw)) {
     $rlt = -2;
     $response['rlt_code'] = is_numeric($rlt) ? ((int)$rlt) : $rlt;
 } else {

@@ -102,9 +102,9 @@ if ($_SESSION["status"] !== 1) {
     </div>
 </s_t3>
 
-<script src="../base/jquery.js" charset="utf-8"></script>
-<script src="../server_view_js/loader.js" charset="utf-8"></script>
-<script src="../server_view_js/app.js" charset="utf-8"></script>
-<script src="../base/base_confirm.js" charset="utf-8"></script>
+<script src="../base/jquery.js"></script>
+<script src="../server_view_js/loader.js"></script>
+<script src="../server_view_js/app.js"></script>
+<script src="../base/base_confirm.js"></script>
 </body>
 </html>
