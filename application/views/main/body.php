@@ -8,12 +8,12 @@
                 <a>SERVER</a>
                 <div class="border-type-spear">
                 </div>
-                <form id="myForm" action="" method="post">
+                <form id="myForm" action="<?=$data['actionUrl']?>" method="post">
 
                     <input placeholder="Server Addresses" type="text" id="serverAddress" name="server_add"
                         autoncomplete="off">
                     <!--Port  -->
-                    <input placeholder="Port" type="text" id="serverPort" name="server_port" autoncomplete="off">
+                    <input placeholder="Port" type="text" id="serverPort" name="serverPort" autoncomplete="off">
                     <div class="border-title">
                         <a>CONNECT</a>
                         <div class="border-type-spear">
@@ -26,12 +26,12 @@
                     <!-- P W -->
                     <input placeholder="Password" type="password" name="userPw" id="userPassword" autoncomplete="off">
 
+                    <button id="login" class="submit-done" type="submit">LOGIN</button>
+                    <button id="reset" class="submit-done" type="reset">RESET</button>
                 </form>
                 <!--Server address  -->
             </div>
 
         </div>
         <!-- Button  -->
-        <button id="login" class="submit-done" type="submit">LOGIN</button>
-        <button id="reset" class="submit-done" type="reset">RESET</button>
     </div>

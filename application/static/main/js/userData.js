@@ -1,7 +1,7 @@
 class checkUserData {
     constructor(tag) {
         this.userLang = navigator.language || navigator.userLanguage;
-        this.tag = tag;
+        this.formTag = tag;
         this.sendData = {
             'serverAddress': '',
             'serverPort': '',
@@ -14,11 +14,6 @@ class checkUserData {
             'code' : 'code',
             'tag' : -4
         };
-    }
-
-    inputIsEmpty(formData) {
-        
-        return true;
     }
 
     extractJson(str) {
@@ -44,77 +39,80 @@ class checkUserData {
     generateData(userData) {
         return new FormData(userData);
     }
+    
+    isEmptyData(formData) {
+        let statObject = {
+            'stat' : false,
+            'data' : ''
+        };
 
 
-    // generateData(userData) {
-    //     for (let i = 0, len = userData.length; i < len; i++) {
-    //         this.sendData[userData[i].getAttribute('id')] = userData[i].value;
-    //     }
-    //     return this.sendData;
-    // }
+        for (const formPare of formData.entries()) {
+            if ( ! formPare[1] ) {
+                statObject.data = formPare[0];
+                return statObject;
+            }
+        }
+        statObject.stat = true;
+        statObject.data = formData;
+        return statObject;
 
-    // asdfasdf(obj) {
-    //     return obj => Object.keys(obj).reduce( (frmData, key) => {
-    //         frmData.append(key, obj[key]);
-    //         return frmData;
-    //     }, new FormData());
-    // }
-
+        
+    }
     
     processData() {
+        const statusObject = this.isEmptyData(this.generateData(this.formTag));
+        
+        if ( statusObject.stat ) {
+            this.sendUserData({
+                'action' : this.formTag.getAttribute('action'),
+                'data' : statusObject.data
+            });
+
+        } else {
+            if (this.userLang === 'ko-KR') {
+                res[this.userLang][this.ErrorTag.idxError][this.ErrorTag.code][this.ErrorTag.tag][0] = statusObject.data;
+
+            } else {
+                res[this.userLang][this.ErrorTag.idxError][this.ErrorTag.code][this.ErrorTag.tag][1] = statusObject.data;
+
+            }
+            alert(res[this.userLang][this.ErrorTag.idxError][this.ErrorTag.code][this.ErrorTag.tag].join(''));
+            return false;
+
+        }
+        
         // this.generateData(this.tag)();
         // for (let i of a.values()) {
         // }
         // let isEmpty = this.inputIsEmpty(this.generateData(this.tag));
         // let a = this.asdfasdf(this.generateData(this.tag))();
-        return false;
-        if (isEmpty === true) {
-            this.sendUserData(this.sendData);
-        } else {
-            if (this.userLang === 'ko-KR') {
-                res[this.userLang][this.ErrorTag.idxError][this.ErrorTag.code][this.ErrorTag.tag][0] = isEmpty;
-
-            } else {
-                res[this.userLang][this.ErrorTag.idxError][this.ErrorTag.code][this.ErrorTag.tag][1] = isEmpty;
-                
-            }
-            alert(res[this.userLang][this.ErrorTag.idxError][this.ErrorTag.code][this.ErrorTag.tag].join(''));
-            return false;
-        }
+        
+        // 1. 값을 가져온다 (JSON으로)
+        // if ( 값이 비어있는지 확인한다 ) {
+        //     값을 보낸다()
+        // } else {
+        //     값에 해당하는 알럿을 띄운다.
+        // }
         
     }
 
     sendUserData(dataSet) {
-        let self = this;
-        // let frmData = new FormData().append()
-        // console.log(JSON.stringify(dataSet));
-        fetch([location.origin, '/Main/authUserData'].join(''), {
+        fetch(dataSet.action, {
             method: 'POST',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(dataSet)
-        }).then((resp) => {
-            return resp.json();
-        }).then((resp) => {
-            // resp = self.extractJson(resp.responseText);
+            body: dataSet.data
+        }).then((resp) => resp.json()).then((resp) => {
             console.log(resp);
-            // resp.status ? location.href = resp.link : alert(res[self.userLang][resp.page]['code'][resp.code]);
         });
-
-        // $.ajax({
-        //     type: 'post',
-        //     async: true,
-        //     cache: false,
-        //     datatype: 'json',
-        //     data: dataSet,
-        //     url: self.reqUrl,
-        //     complete: function (resp) {
-        //         resp = self.extractJson(resp.responseText);
-                
-        //     }
-
+        // fetch([location.origin, '/Main/authUserData'].join(''), {
+        //     method: 'POST',
+        //     body: JSON.stringify(dataSet)
+        // }).then((resp) => {
+        //     return resp.json();
+        // }).then((resp) => {
+        //     // resp = self.extractJson(resp.responseText);
+        //     console.log(resp);
+        //     // resp.status ? location.href = resp.link : alert(res[self.userLang][resp.page]['code'][resp.code]);
         // });
     }
 }

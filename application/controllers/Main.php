@@ -53,6 +53,7 @@ if ( ! class_exists('Main') ) {
                 ],
                 'body' => [
                     'data'=> [
+                        'actionUrl' => $this->config->site_url('Main/authUserData'),
                         'img' => [
                             'user' => $mainStaticPath.'img/user.png?ver=1.0.0&lastModify=2018-12-30'
                         ]
