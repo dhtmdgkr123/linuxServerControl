@@ -10,7 +10,7 @@
                 </div>
                 <form id="myForm" action="<?=$data['actionUrl']?>" method="post">
 
-                    <input placeholder="Server Addresses" type="text" id="serverAddress" name="server_add"
+                    <input placeholder="Server Addresses" type="text" id="serverAddress" name="serverAddress"
                         autoncomplete="off">
                     <!--Port  -->
                     <input placeholder="Port" type="text" id="serverPort" name="serverPort" autoncomplete="off">
@@ -24,7 +24,7 @@
                     <input placeholder="I D" type="text" name="userId" id="userId" autoncomplete="off">
 
                     <!-- P W -->
-                    <input placeholder="Password" type="password" name="userPw" id="userPassword" autoncomplete="off">
+                    <input placeholder="Password" type="password" name="userPassword" id="userPassword" autoncomplete="off">
 
                     <button id="login" class="submit-done" type="submit">LOGIN</button>
                     <button id="reset" class="submit-done" type="reset">RESET</button>

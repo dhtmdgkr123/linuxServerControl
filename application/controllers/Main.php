@@ -96,9 +96,7 @@ if ( ! class_exists('Main') ) {
                 setJsonHeader();
                 
 
-                jsonEcho($this->input->post());
 
-                return;
                 $dataArr = [
                     'serverAddress' => '',
                     'serverPort' => '',
@@ -119,9 +117,9 @@ if ( ! class_exists('Main') ) {
 
                 if ( $this->allArrayKeyExists( array_keys($dataArr) ) ) {
                     $retArr = $this->ServerAuth->mainMethod($dataArr);
+                    
                     if ( $retArr['status'] ) {
-                        $this->setSessionArray($dataArr);
-                        
+                        $this->setSessionArray($dataArr);  
                     }
                 }
                 jsonEcho( $retArr );
