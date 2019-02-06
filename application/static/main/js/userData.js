@@ -104,15 +104,5 @@ class checkUserData {
         }).then((resp) => resp.json()).then((resp) => {
             console.log(resp);
         });
-        // fetch([location.origin, '/Main/authUserData'].join(''), {
-        //     method: 'POST',
-        //     body: JSON.stringify(dataSet)
-        // }).then((resp) => {
-        //     return resp.json();
-        // }).then((resp) => {
-        //     // resp = self.extractJson(resp.responseText);
-        //     console.log(resp);
-        //     // resp.status ? location.href = resp.link : alert(res[self.userLang][resp.page]['code'][resp.code]);
-        // });
     }
 }

@@ -25,6 +25,7 @@ if ( ! class_exists('ServerAuth') ) {
         }
 
         private function authUserData($reqArr) {
+            
             try {
                 $retArr = [
                     'status' => FALSE,
@@ -43,21 +44,22 @@ if ( ! class_exists('ServerAuth') ) {
 
                 }
 
+            } catch(failConnServerException $connExcept) {
+                $retArr['test'] = 'connexcept';
+                $retArr['code'] = $connExcept->getCode();
+                $retArr['page'] =  $connExcept->getMessage();
+                
             } catch (failAuthServerException $authExcept) {
                 $retArr['code'] = $authExcept->getCode();
                 $retArr['page'] =  $authExcept->getMessage();
 
-            } catch (failConnServerException $connExcept) {
-                $retArr['code'] = $connExcept->getCode();
-                $retArr['page'] =  $connExcept->getMessage();
-                
             } finally {
                 return $retArr;
             }
 
         }
     
-        public function mainMethod($dataArr, $type) {
+        public function mainMethod($dataArr) {
             return $this->authUserData($dataArr);
         }
     }
