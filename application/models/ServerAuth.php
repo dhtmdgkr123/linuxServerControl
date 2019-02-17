@@ -1,6 +1,6 @@
 <?php
 if ( ! class_exists('failConnServerException') ) {
-    class failConnServerException extends Exception {
+    final class failConnServerException extends Exception {
         function __construct($message, $code = -1, Exception $previous = null) {
             parent::__construct($message, $code, $previous);
         }
@@ -8,7 +8,7 @@ if ( ! class_exists('failConnServerException') ) {
 }
 
 if ( ! class_exists('failAuthServerException') ) {
-    class failAuthServerException extends Exception {
+    final class failAuthServerException extends Exception {
         function __construct($message, $code = -1, Exception $previous = null) {
             parent::__construct($message, $code, $previous);
         }
@@ -18,8 +18,9 @@ if ( ! class_exists('failAuthServerException') ) {
 
 if ( ! class_exists('ServerAuth') ) {
     class ServerAuth extends CI_Model {
-        private $processType = NULL;
+        // private $processType = NULL;
         private $idxErr = 'indexError';
+
         function __construct() {
             parent::__construct();
         }
@@ -27,23 +28,35 @@ if ( ! class_exists('ServerAuth') ) {
         private function authUserData($reqArr) {
             
             try {
+                
                 $retArr = [
                     'status' => FALSE,
-                    'code' => 1
+                    'code' => 1,
+                    'page' => NULL
                 ];
-                $conn = ssh2_connect($reqArr['serverAddress'], $reqArr['serverPort']);
-                if ( $conn === FALSE || $conn === NULL ) {
-                    throw new failConnServerException('indexError', -1);
-    
-                } else if ( ! ssh2_auth_password($conn, $reqArr['userId'], $reqArr['userPassword']) ) {
-                    throw new failAuthServerException('indexError', -2);
 
+                $sshConnInfo = @ssh2_connect(
+                    $reqArr['serverAddress'], 
+                    intval($reqArr['serverPort'])  
+                );
+
+
+                if ( ! $sshConnInfo ) {
+                    
+                    throw new failConnServerException(
+                        'indexError', -1
+                    );
+                } else if ( ! @ssh2_auth_password($sshConnInfo, $reqArr['userId'],$reqArr['userPassword']) ) {
+                    
+                    throw new failAuthServerException(
+                        'indexError', -2
+                    );
                 } else {
                     $retArr['status'] = TRUE;
-                    $retArr['link'] = $this->config->site_url('Command/index');
-
+                    $retArr['page'] = $this->config->site_url('Command/index');
                 }
 
+<<<<<<< HEAD
             } catch(failConnServerException $connExcept) {
                 $retArr['test'] = 'connexcept';
                 $retArr['code'] = $connExcept->getCode();
@@ -52,11 +65,20 @@ if ( ! class_exists('ServerAuth') ) {
             } catch (failAuthServerException $authExcept) {
                 $retArr['code'] = $authExcept->getCode();
                 $retArr['page'] =  $authExcept->getMessage();
+=======
+            } catch (failConnServerException $catchConnectError) {
+                $retArr['code'] = $catchConnectError->getCode();
+                $retArr['page'] =  $catchConnectError->getMessage();
+
+            } catch (failAuthServerException $cathAuthError) {
+                $retArr['code'] = $cathAuthError->getCode();
+                $retArr['page'] = $cathAuthError->getMessage();
+>>>>>>> refector
 
             } finally {
                 return $retArr;
-            }
 
+            }
         }
     
         public function mainMethod($dataArr) {

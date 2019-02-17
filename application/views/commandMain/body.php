@@ -66,65 +66,91 @@
                         -->
                         <!-- tab 2 : Admin -->
                         <section id="content1" class="article-wrap">
+
+
                             <div class="container">
                                 <!-- line # 1 -->
                                 <p class="menu-title">Server</p>
-                                <div id="server_stat" class="flat-btn">
-                                    <!-- If you want to change Icon change i class -->
-                                    <!-- http://ionicons.com/ -->
+                                <div id="serverStatus" class="flat-btn">
                                     <i class="ion-heart"></i>
                                     <h3 class="flat-btn-title">Status</h3>
                                 </div>
-                                <div id="server_off" class="flat-btn">
+                                <div id="serverOff" class="flat-btn">
                                     <i class="ion-android-alert"></i>
                                     <h3 class="flat-btn-title">Server Off</h3>
                                 </div>
-                                <div id="server_restart" class="flat-btn">
+                                <div id="serverRestart" class="flat-btn">
                                     <i class="ion-android-refresh"></i>
                                     <h3 class="flat-btn-title">Server Restart</h3>
                                 </div>
                             </div>
+
+
                             <div class="container">
                                 <!-- line # 2 -->
                                 <p class="menu-title">MySQL</p>
-                                <div id="mysq_start" class="flat-btn">
+                                <div id="MySqlStart" class="flat-btn">
                                     <i class="ion-android-arrow-dropright-circle"></i>
                                     <h3 class="flat-btn-title">MySQL Run</h3>
                                 </div>
-                                <div id="mysq_off" class="flat-btn">
+                                <div id="MySqlOff" class="flat-btn">
                                     <i class="ion-android-alert"></i>
                                     <h3 class="flat-btn-title">MySQL Off</h3>
                                 </div>
-                                <div id="mysq_restart" class="flat-btn">
+                                <div id="MySqlReStart" class="flat-btn">
                                     <i class="ion-android-refresh"></i>
                                     <h3 class="flat-btn-title">MySQL Restart</h3>
                                 </div>
                                 <!-- button -->
-                                <div id="mysq_stat" class="flat-btn">
+                                <div id="MySqlStatus" class="flat-btn">
                                     <i class="ion-heart"></i>
                                     <h3 class="flat-btn-title">MySQL Satatus</h3>
                                 </div>
                             </div>
+
+
                             <div class="container">
                                 <!-- line # 3 -->
                                 <p class="menu-title">APACHE</p>
-                                <div id="apa_start" class="flat-btn">
+                                <div id="apacheStart" class="flat-btn">
                                     <i class="ion-android-arrow-dropright-circle"></i>
                                     <h3 class="flat-btn-title">APACHE Run</h3>
                                 </div>
-                                <div id="apa_off" class="flat-btn">
+                                <div id="apacheOff" class="flat-btn">
                                     <i class="ion-android-alert"></i>
                                     <h3 class="flat-btn-title">APACHE Off</h3>
                                 </div>
-                                <div id="apa_restart" class="flat-btn">
+                                <div id="apacheRestart" class="flat-btn">
                                     <i class="ion-android-refresh"></i>
                                     <h3 class="flat-btn-title">APACHE Restart</h3>
                                 </div>
-                                <div id="apa_stat" class="flat-btn">
+                                <div id="apacheStatus" class="flat-btn">
                                     <i class="ion-heart"></i>
                                     <h3 class="flat-btn-title">APACHE Status</h3>
                                 </div>
                             </div>
+
+                            <div class="container">
+                                <!-- line # 3 -->
+                                <p class="menu-title">NGINX</p>
+                                <div id="nginxStart" class="flat-btn">
+                                    <i class="ion-android-arrow-dropright-circle"></i>
+                                    <h3 class="flat-btn-title">NGINX Run</h3>
+                                </div>
+                                <div id="nginxOff" class="flat-btn">
+                                    <i class="ion-android-alert"></i>
+                                    <h3 class="flat-btn-title">NGINX Off</h3>
+                                </div>
+                                <div id="nginxRestart" class="flat-btn">
+                                    <i class="ion-android-refresh"></i>
+                                    <h3 class="flat-btn-title">NGINX Restart</h3>
+                                </div>
+                                <div id="nginxStatus" class="flat-btn">
+                                    <i class="ion-heart"></i>
+                                    <h3 class="flat-btn-title">NGINX Status</h3>
+                                </div>
+                            </div>
+
                         </section>
                     </div>
                 </div>

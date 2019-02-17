@@ -64,8 +64,7 @@ if ( ! class_exists('Main') ) {
                         'jQuery' => $baseStaticPath.'jQuery.js?ver=3.3.1&lastModify=2018-12-30',
                         'jConfirm' => $baseStaticPath.'jConfirm/confirm.js?ver=3.3.0&lastModify=2018-12-30',
                         'res' => $baseStaticPath.'res.js?ver=1.0.0&lastModify=2018-12-30',
-                        'methods' => $mainStaticPath.'js/userData.js?ver=1.0.0&lastModify=2019-01-05',
-                        // 'methods' => $this->config->base_url('application/static/main/js/userData.js'),
+                        'methods' => $mainStaticPath.'js/userData.js?ver=1.0.0&lastModify=2019-02-17',
                         'main' => $mainStaticPath.'js/main.js?ver=1.0.0&lastModify=2018-01-05'
                     ]
                 ]
@@ -77,7 +76,6 @@ if ( ! class_exists('Main') ) {
                     gotoPage( $this->config->site_url('Command/index') );
                     return;
                 }
-                
                 $this->load->view('main/head', $staticFile['head']);
                 $this->load->view('main/body', $staticFile['body']);
                 $this->load->view('main/foot', $staticFile['foot']);
@@ -86,7 +84,6 @@ if ( ! class_exists('Main') ) {
                 show_404();
 
             }
-            
         }
         
         public function authUserData() {
@@ -94,9 +91,12 @@ if ( ! class_exists('Main') ) {
             if ( chkPostMtd($_SERVER['REQUEST_METHOD']) ) {
                 $this->load->model('ServerAuth');
                 setJsonHeader();
+<<<<<<< HEAD
                 
 
 
+=======
+>>>>>>> refector
                 $dataArr = [
                     'serverAddress' => '',
                     'serverPort' => '',
@@ -110,7 +110,6 @@ if ( ! class_exists('Main') ) {
                     'page' => 'indexError'
                 ];
                 
-                
                 for ($i = 0, $key = array_keys($dataArr), $len = count($key); $i < $len; $i++) {
                     $dataArr[$key[$i]] = trimPost($key[$i]);
                 }
@@ -122,12 +121,10 @@ if ( ! class_exists('Main') ) {
                         $this->setSessionArray($dataArr);  
                     }
                 }
-                jsonEcho( $retArr );
-                return;
+                jsonEcho($retArr);
                 
             } else {
                 show_404();
-            
             }
         }
     }
