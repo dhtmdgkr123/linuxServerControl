@@ -97,31 +97,19 @@ class commandHelper  {
               'Accept': 'application/json',
               'Content-Type': 'application/json'
             }
-        }
-
-        // this.ajaxOpt = {
-        //     type: 'post',
-        //     async: true,
-        //     cache: false,
-        //     datatype: 'json',
-        //     data: '',
-        //     url: '',
-        //     success: '',
-        //     error: ''
-        // };
+        };
         this.userLang = navigator.language || navigator.userLanguage;
     }
 
     pwd() {
         let self = this;
         let txtArea = self.content.children[4];
-        let ajaxOpt = this.ajaxOpt;
         this.content.children[1].setAttribute('id', 'wait');
         this.inputTag.setAttribute('readonly', true);
         txtArea.value = 'wait...';
 
         fetch([location.origin, '/Command/getPwd'].join(''), self.fetchOpt )
-            .then((resp) => resp.json())
+            .then(resp => resp.status && resp.ok ? resp.json() : false)
             .then((resp) => {
                 if (resp.status) {
                     txtArea.value = savePwd = resp.message;
@@ -131,50 +119,49 @@ class commandHelper  {
                     alert(res[self.userLang][resp.page]['code'][resp.code]);
                 }
             });
-
-        // ajaxOpt.success = function (resp) {
-
-        //     if (resp.status) {
-        //         txtArea.value = savePwd = resp.message;
-        //         self.inputTag.removeAttribute('readonly');
-        //         self.content.children[1].setAttribute('id', 'proc_btn');
-        //     } else {
-        //         alert(res[self.userLang][resp.page]['code'][resp.code]);
-        //     }
-
-        // };
-
-        // $.ajax(ajaxOpt);
-
     }
     
     clearTxtarea(content) {
         content.value = savePwd;
-
     }
     
     isBlockingCommand(command) {
-        const firstKeyword = command[0];
-        return ['git', 'vi', 'vim', 'apt-get', 'apt', 'nano', 'more', 'wget', 'top'].some((arrVal) => {
-            return arrVal === firstKeyword;
+        return [
+            'git', 'vi', 'vim',
+            'apt-get', 'apt', 'nano',
+            'more', 'wget', 'top'
+        ].some((arrVal) => {
+            return arrVal === command;
         });
     }
 
     isShutdownCommand(command) {
-        const firstKeyword = command[0];
         return ['halt', 'shutdown'].some((arrVal) => {
-            return firstKeyword === arrVal;
+            return arrVal === command;
         });
     }
 
     isRebootCommand(command) {
-        const recoverCommand = command.join(' ');
         return [
             'shutdown -r now', 'init 6', 'reboot'
         ].some((arrVal) => {
-            return recoverCommand === arrVal;
+            return arrVal === command;
         });
     }
+
+
+    isApacheCommand(command) {
+        return [
+            'apachectl',
+            'httpd',
+            '/etc/rc.d/init.d/httpd',
+            'httpd',
+            'apache2',
+        ].some((val) => {
+            return command.includes(val);
+        });
+    }
+    
 
 
 
@@ -186,15 +173,47 @@ class commandHelper  {
             
         } else {
             const splitCommand = command.split(' ');
-
-            if (this.isBlockingCommand(splitCommand)) {
+            if (this.isBlockingCommand(splitCommand[0])) {
                 alert('사용할 수 없는 명령어 입니다.');
                 return false;
                 
-            } else if ( this.isRebootCommand(splitCommand) && confirm('재부팅하게요?') ) {
+            } else if ( this.isRebootCommand(command) && confirm('재부팅하게요?') ) {
                 
-            } else if (this.isShutdownCommand(splitCommand) && confirm('종료하시겠습니까?') ) {
+            } else if (this.isShutdownCommand(splitCommand[0]) && confirm('종료하시겠습니까?') ) {
                 
+            } else if (this.isApacheCommand(command)) {
+                console.log('i am apache2');
+
+
+                    // 아파치 시작
+                    // apachectl start
+                    // httpd start
+                    // /etc/rc.d/init.d/httpd start
+                    // systemctl start httpd
+                    // systemctl start apache2
+
+                    // 아파치 중지
+                    // # apachectl stop
+                    // # httpd stop
+                    // /etc/rc.d/init.d/httpd stop
+                    // systemctl stop httpd
+                    // systemctl stop apache2
+
+                    // 아파치 리스타트
+                    // # apachectl restart
+                    // # httpd restart
+                    // /etc/rc.d/init.d/httpd restart
+                    // systemctl restart httpd
+                    // systemctl restart apache2
+
+
+
+            }
+            
+            
+            
+            else {
+                console.log(splitCommand);
             }
         }
 
@@ -237,6 +256,10 @@ class commandHelper  {
     //         명령 = 스플릿 명령
     //         if ( 명령 스플릿[1] === apache2 또는 명령어[1] === httpd ) {
     //             if ( [2] === stop ) { 정지함수() } else if ( [2] === restart ) {재시작함수()} else if ( [2] === start ) { 시작함수() }
+
+
+
+
     //         }
     //     }
 

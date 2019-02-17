@@ -45,9 +45,9 @@ class checkUserData {
             'stat' : false,
             'data' : ''
         };
+        const formDataEntire = formData.entries();
 
-
-        for (const formPare of formData.entries()) {
+        for (const formPare of formDataEntire) {
             if ( ! formPare[1] ) {
                 statObject.data = formPare[0];
                 return statObject;
@@ -56,18 +56,27 @@ class checkUserData {
         statObject.stat = true;
         statObject.data = formData;
         return statObject;
-
-        
     }
     
     processData() {
         const statusObject = this.isEmptyData(this.generateData(this.formTag));
         
         if ( statusObject.stat ) {
-            this.sendUserData({
+
+            const jsonData = this.sendUserData({
                 'action' : this.formTag.getAttribute('action'),
                 'data' : statusObject.data
             });
+
+            if ( jsonData ) {
+                jsonData.then((resp) => {
+                    if (resp.status && resp.code) {
+                        location.href = resp.page;
+                    } else {
+                        alert(res[this.userLang][this.ErrorTag.idxError][this.ErrorTag.code][resp.code]);
+                    }
+                });
+            }
 
         } else {
             if (this.userLang === 'ko-KR') {
@@ -75,34 +84,18 @@ class checkUserData {
 
             } else {
                 res[this.userLang][this.ErrorTag.idxError][this.ErrorTag.code][this.ErrorTag.tag][1] = statusObject.data;
-
+            
             }
             alert(res[this.userLang][this.ErrorTag.idxError][this.ErrorTag.code][this.ErrorTag.tag].join(''));
             return false;
 
         }
-        
-        // this.generateData(this.tag)();
-        // for (let i of a.values()) {
-        // }
-        // let isEmpty = this.inputIsEmpty(this.generateData(this.tag));
-        // let a = this.asdfasdf(this.generateData(this.tag))();
-        
-        // 1. 값을 가져온다 (JSON으로)
-        // if ( 값이 비어있는지 확인한다 ) {
-        //     값을 보낸다()
-        // } else {
-        //     값에 해당하는 알럿을 띄운다.
-        // }
-        
     }
 
     sendUserData(dataSet) {
-        fetch(dataSet.action, {
+        return fetch(dataSet.action, {
             method: 'POST',
             body: dataSet.data
-        }).then((resp) => resp.json()).then((resp) => {
-            console.log(resp);
-        });
+        }).then(resp => resp.ok && resp.status === 200 ? resp.json() : false);
     }
 }

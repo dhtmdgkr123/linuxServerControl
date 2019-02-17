@@ -86,7 +86,6 @@ class Command extends CI_Controller {
     
     public function getPwd() {
         if ( chkPostMtd($_SERVER['REQUEST_METHOD']) && $this->session->isLogin ) {
-
             setJsonHeader();
             $this->load->model('ExecCommand');
             jsonEcho (
