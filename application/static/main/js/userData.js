@@ -96,12 +96,6 @@ class checkUserData {
         return fetch(dataSet.action, {
             method: 'POST',
             body: dataSet.data
-<<<<<<< HEAD
-        }).then((resp) => resp.json()).then((resp) => {
-            console.log(resp);
-        });
-=======
         }).then(resp => resp.ok && resp.status === 200 ? resp.json() : false);
->>>>>>> refector
     }
 }

@@ -65,7 +65,9 @@ if ( ! class_exists('Main') ) {
                         'jConfirm' => $baseStaticPath.'jConfirm/confirm.js?ver=3.3.0&lastModify=2018-12-30',
                         'res' => $baseStaticPath.'res.js?ver=1.0.0&lastModify=2018-12-30',
                         'methods' => $mainStaticPath.'js/userData.js?ver=1.0.0&lastModify=2019-02-17',
-                        'main' => $mainStaticPath.'js/main.js?ver=1.0.0&lastModify=2018-01-05'
+                        'main' => $mainStaticPath.'js/main.js?ver=1.0.0&lastModify=2018-01-05',
+                        // 'test' => filemtime($_SERVER['DOCUMENT_ROOT'].'/application/static/base/jConfirm/confirm.js'),
+                        // 'asdf' => $baseStaticPath/*filemtime($baseStaticPath.'jConfirm/confirm.js')*/
                     ]
                 ]
             ];
@@ -91,12 +93,6 @@ if ( ! class_exists('Main') ) {
             if ( chkPostMtd($_SERVER['REQUEST_METHOD']) ) {
                 $this->load->model('ServerAuth');
                 setJsonHeader();
-<<<<<<< HEAD
-                
-
-
-=======
->>>>>>> refector
                 $dataArr = [
                     'serverAddress' => '',
                     'serverPort' => '',
@@ -116,7 +112,6 @@ if ( ! class_exists('Main') ) {
 
                 if ( $this->allArrayKeyExists( array_keys($dataArr) ) ) {
                     $retArr = $this->ServerAuth->mainMethod($dataArr);
-                    
                     if ( $retArr['status'] ) {
                         $this->setSessionArray($dataArr);  
                     }

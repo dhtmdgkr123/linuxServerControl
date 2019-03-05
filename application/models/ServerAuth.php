@@ -56,16 +56,6 @@ if ( ! class_exists('ServerAuth') ) {
                     $retArr['page'] = $this->config->site_url('Command/index');
                 }
 
-<<<<<<< HEAD
-            } catch(failConnServerException $connExcept) {
-                $retArr['test'] = 'connexcept';
-                $retArr['code'] = $connExcept->getCode();
-                $retArr['page'] =  $connExcept->getMessage();
-                
-            } catch (failAuthServerException $authExcept) {
-                $retArr['code'] = $authExcept->getCode();
-                $retArr['page'] =  $authExcept->getMessage();
-=======
             } catch (failConnServerException $catchConnectError) {
                 $retArr['code'] = $catchConnectError->getCode();
                 $retArr['page'] =  $catchConnectError->getMessage();
@@ -73,7 +63,6 @@ if ( ! class_exists('ServerAuth') ) {
             } catch (failAuthServerException $cathAuthError) {
                 $retArr['code'] = $cathAuthError->getCode();
                 $retArr['page'] = $cathAuthError->getMessage();
->>>>>>> refector
 
             } finally {
                 return $retArr;

@@ -56,7 +56,7 @@ class TAB {
 
 
     fadeIn(self, ms) {
-        if ( ! self ) {
+        if (!self) {
             console.error('input element');
             return;
         }
@@ -85,7 +85,7 @@ class TAB {
     }
 }
 
-class commandHelper  {
+class commandHelper {
 
     constructor(content, doc) {
         this.content = content;
@@ -94,37 +94,55 @@ class commandHelper  {
         this.fetchOpt = {
             method: 'POST',
             headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
             }
         };
         this.userLang = navigator.language || navigator.userLanguage;
     }
 
     pwd() {
-        let self = this;
-        let txtArea = self.content.children[4];
-        this.content.children[1].setAttribute('id', 'wait');
-        this.inputTag.setAttribute('readonly', true);
-        txtArea.value = 'wait...';
 
-        fetch([location.origin, '/Command/getPwd'].join(''), self.fetchOpt )
-            .then(resp => resp.status && resp.ok ? resp.json() : false)
-            .then((resp) => {
-                if (resp.status) {
-                    txtArea.value = savePwd = resp.message;
-                    self.inputTag.removeAttribute('readonly');
-                    self.content.children[1].setAttribute('id', 'proc_btn');
-                } else {
-                    alert(res[self.userLang][resp.page]['code'][resp.code]);
-                }
-            });
+
+        const self = this;
+        const txtArea = self.content.children[4];
+
+
+        const request = async () => {
+            const compareStatus = (ok, code, txt) => ok && code === 200 && txt === 'OK';
+            const response = await fetch([location.origin, '/Command/getPwd'].join(''), self.fetchOpt);
+
+            return compareStatus(
+                response.ok,
+                response.status,
+                response.statusText
+            ) ? await response.json() : false;
+        };
+
+        const setPwd = (json) => {
+            if (json.status && json.code === 1) {
+                txtArea.value = savePwd = json.message;
+                self.inputTag.removeAttribute('readonly');
+                self.content.children[1].setAttribute('id', 'proc_btn');
+            } else {
+                alert(res[self.userLang][json.page]['code'][json.code]);
+            }
+        };
+
+        const setWaitStatus = () => {
+            self.inputTag.setAttribute('readonly', true);
+            self.content.children[1].setAttribute('id', 'wait');
+            txtArea.value = 'wait...';
+        };
+
+        setWaitStatus();
+        request().then((_val) => setPwd(_val));
     }
-    
+
     clearTxtarea(content) {
         content.value = savePwd;
     }
-    
+
     isBlockingCommand(command) {
         return [
             'git', 'vi', 'vim',
@@ -136,7 +154,9 @@ class commandHelper  {
     }
 
     isShutdownCommand(command) {
-        return ['halt', 'shutdown'].some((arrVal) => {
+        return [
+            'halt', 'shutdown'
+        ].some((arrVal) => {
             return arrVal === command;
         });
     }
@@ -149,6 +169,16 @@ class commandHelper  {
         });
     }
 
+    isMySQLCommand(command) {
+        return [
+            'mysql',
+            'mysqld',
+            '/etc/init.d/mysql',
+            '/etc/init.d/mysqld',
+        ].some((val) => {
+            return command.includes(val);
+        });
+    }
 
     isApacheCommand(command) {
         return [
@@ -161,147 +191,127 @@ class commandHelper  {
             return command.includes(val);
         });
     }
-    
 
-
-
-    processData(command) {
-        
-        let content = this.content.children[4];
-        if (command === 'clear') {
-            this.clearTxtarea(content);
-            
-        } else {
-            const splitCommand = command.split(' ');
-            if (this.isBlockingCommand(splitCommand[0])) {
-                alert('사용할 수 없는 명령어 입니다.');
-                return false;
-                
-            } else if ( this.isRebootCommand(command) && confirm('재부팅하게요?') ) {
-                
-            } else if (this.isShutdownCommand(splitCommand[0]) && confirm('종료하시겠습니까?') ) {
-                
-            } else if (this.isApacheCommand(command)) {
-                console.log('i am apache2');
-
-
-                    // 아파치 시작
-                    // apachectl start
-                    // httpd start
-                    // /etc/rc.d/init.d/httpd start
-                    // systemctl start httpd
-                    // systemctl start apache2
-
-                    // 아파치 중지
-                    // # apachectl stop
-                    // # httpd stop
-                    // /etc/rc.d/init.d/httpd stop
-                    // systemctl stop httpd
-                    // systemctl stop apache2
-
-                    // 아파치 리스타트
-                    // # apachectl restart
-                    // # httpd restart
-                    // /etc/rc.d/init.d/httpd restart
-                    // systemctl restart httpd
-                    // systemctl restart apache2
-
-
-
-            }
-            
-            
-            
-            else {
-                console.log(splitCommand);
-            }
-        }
-
-        // let respMsg = 'asdfasdfasdasdfasdfa';
-        // content.scrollTop = content.scrollHeight;
-        // content.value = [content.value, ' ', val, '\n', respMsg, '\n', savePwd].join('');
-
-
-        this.inputTag.value = '';
-
+    isNginxCommand(command) {
+        return [
+            '/etc/init.d/nginx',
+            'nginx',
+        ].some((val) => {
+            return command.includes(val);
+        });
     }
 
 
 
 
+    processData(command) {
+        const SYS_CTL = 'systemctl';
+        const content = this.content.children[4];
+        const isStop = (cmd) => cmd === 'stop';
+        const isRestart = (cmd) => cmd === 'restart';
+        const isStart = (cmd) => cmd === 'start';
+        const isReload = (cmd) => cmd === 'reload';
+
+        if (command === 'clear') {
+            this.clearTxtarea(content);
+
+        } else {
+
+            const splitCommand = command.split(' ');
+            if (this.isBlockingCommand(splitCommand[0])) {
+                alert('사용할 수 없는 명령어 입니다.');
+            } else if (this.isRebootCommand(command) && confirm('재부팅하게요?')) {
 
 
-    // function isBlockingCommand(cmd) {
-
-    //     return [git, vi, vim, apt-get, apt, nano, more, wget, top, ].some( (val) => {
-    //      val === cmd
-    //     } )
-
-    //     }
-
-    //     function isShutdownCommand() {
-    //         스플릿[0]
-    //         [ halt, shutdown ]
-    //     }
-
-    //     function mysql관련명령어() {
-    //         if ( 명령 스플릿[1] === mysql ) {
-    //             if ( [2] === stop ) else if ( [2] === restart ) else if ( [2] === start )
-    //         }
-    //         sysytmctl mysql start restart stop
-    //         service mysql start restart stop
-    //     }
-
-    //     function 아파치관련명령어() {
-    //         명령 = 스플릿 명령
-    //         if ( 명령 스플릿[1] === apache2 또는 명령어[1] === httpd ) {
-    //             if ( [2] === stop ) { 정지함수() } else if ( [2] === restart ) {재시작함수()} else if ( [2] === start ) { 시작함수() }
+            } else if (this.isShutdownCommand(splitCommand[0]) && confirm('종료하시겠습니까?')) {
 
 
+            } else if (this.isApacheCommand(command)) {
+                let finalCommand = null;
+                const SYSTEMCTL_INDEX = 1;
+                const OTHER_INEX = splitCommand.length - 1;
+                if (splitCommand.includes(SYS_CTL)) {
+                    finalCommand = splitCommand[SYSTEMCTL_INDEX].toLowerCase();
+                } else {
+                    finalCommand = splitCommand[OTHER_INEX].toLowerCase();
+                }
+                if (isStop(finalCommand)) {
+                    console.log('stop apa');
+                } else if (isRestart(finalCommand)) {
 
 
-    //         }
-    //     }
+                    console.log(`restart`);
+                } else if (isStart(finalCommand)) {
 
-    //     function 엔진엑스 관련 명령어() {
-    //         명령 = 스플릿 명령
-    //         if ( 명령 스플릿[1] === nginx ) {
-    //             if ( [2] === stop ) { 정지함수() } else if ( [2] === restart ) {재시작함수()} else if ( [2] === start ) { 시작함수() }
-    //         }
-    //     }
+                    console.log(`start`);
+                } else if (isReload(finalCommand)) {
 
-    //     }
+                    console.log('reload');
+                } else {
+                    console.log('status');
+                }
+            } else if (this.isMySQLCommand(command)) {
+                let finalCommand = null;
+                const SYSTEMCTL_INDEX = 1;
+                const OTHER_INEX = splitCommand.length - 1;
 
-    //     if (차단할 명령어(cmd)) {
-    //         알럿(사용불가명령어);
-    //     } else if ( 종료명령어(cmd) ) {
+                if (splitCommand.includes(SYS_CTL)) {
+                    finalCommand = splitCommand[SYSTEMCTL_INDEX].toLowerCase();
+                } else {
+                    finalCommand = splitCommand[OTHER_INEX].toLowerCase();
+                }
 
-    //     } else if ( 컴퓨터재시작 명령어(cmd) ) {
+                if (isStop(finalCommand)) {
 
-    //     } else if ( mysql관련 명령어(cmd) ) {
-
-    //     } else if ( 아파치관련명령어(cmd) ) {
-
-    //     } else if ( 엔진엑스 관련명령어(cmd) ) {
-
-
-    //     } else {
-    //         명령어 실행!
-
-    //     }
+                    console.log('stop apa');
+                } else if (isRestart(finalCommand)) {
 
 
+                    console.log(`restart`);
+                } else if (isStart(finalCommand)) {
+
+                    console.log(`start`);
+                } else if (isReload(finalCommand)) {
+
+                    console.log('reload');
+                } else {
+
+                    console.log('status');
+                }
 
 
+            } else if (this.isNginxCommand(command)) {
+
+                let finalCommand = null;
+                const SYSTEMCTL_INDEX = 1;
+                const OTHER_INEX = splitCommand.length - 1;
+                if (splitCommand.includes(SYS_CTL)) {
+                    finalCommand = splitCommand[SYSTEMCTL_INDEX].toLowerCase();
+                } else {
+                    finalCommand = splitCommand[OTHER_INEX].toLowerCase();
+                }
+
+                if (isStop(finalCommand)) {
+                    console.log('stop apa');
+                } else if (isRestart(finalCommand)) {
 
 
+                    console.log(`restart`);
+                } else if (isStart(finalCommand)) {
 
+                    console.log(`start`);
+                } else if (isReload(finalCommand)) {
 
+                    console.log('reload');
+                } else {
+                    console.log('status');
+                }
+            }
+            // let respMsg = 'asdfasdfasdasdfasdfa';
+            // content.scrollTop = content.scrollHeight;
+            // content.value = [content.value, ' ', val, '\n', respMsg, '\n', savePwd].join('');
 
-
-
-
-
-
+            this.inputTag.value = '';
+        }
+    }
 }
-
