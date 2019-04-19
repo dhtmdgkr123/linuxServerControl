@@ -22,17 +22,15 @@ class TAB {
     }
 
     clickEvt() {
-        let self = this;
-        this.list.addEventListener('click', function (evt) {
-            let target = evt.target;
+        const self = this;
+        self.list.addEventListener('click', function (evt) {
+            const target = evt.target;
             if (target.parentElement.classList.length) {
                 return;
             }
-
             if (target.nodeName === 'A' || target.nodeName === 'LI') {
                 self.tabProcess(target.parentElement);
             }
-
         });
     }
 
@@ -88,9 +86,10 @@ class TAB {
 class commandHelper {
 
     constructor(content, doc) {
+        this.emptyString = '';
         this.content = content;
         this.doc = doc;
-        this.inputTag = content.children[0];
+        this.inputTag = content.children[0].children[0];
         this.fetchOpt = {
             method: 'POST',
             headers: {
@@ -102,15 +101,11 @@ class commandHelper {
     }
 
     pwd() {
-
-
         const self = this;
-        const txtArea = self.content.children[4];
-
-
-        const request = async () => {
+        const txtArea = self.content.children[2];
+        const request = async (url) => {
             const compareStatus = (ok, code, txt) => ok && code === 200 && txt === 'OK';
-            const response = await fetch([location.origin, '/Command/getPwd'].join(''), self.fetchOpt);
+            const response = await fetch(url, self.fetchOpt);
 
             return compareStatus(
                 response.ok,
@@ -133,16 +128,18 @@ class commandHelper {
             self.inputTag.setAttribute('readonly', true);
             self.content.children[1].setAttribute('id', 'wait');
             txtArea.value = 'wait...';
+            return [
+                location.origin, '/Command/getPwd'
+            ].join(this.emptyString);
         };
-
-        setWaitStatus();
-        request().then((_val) => setPwd(_val));
+        
+        request(setWaitStatus()).then((_val) => setPwd(_val));
     }
 
     clearTxtarea(content) {
         content.value = savePwd;
     }
-
+    
     isBlockingCommand(command) {
         return [
             'git', 'vi', 'vim',
@@ -171,147 +168,188 @@ class commandHelper {
 
     isMySQLCommand(command) {
         return [
-            'mysql',
-            'mysqld',
-            '/etc/init.d/mysql',
-            '/etc/init.d/mysqld',
+            /mysql/,
+            /mysqld/,
+            /\/etc\/init.d\/mysql/,
+            /\/etc\/init.d\/mysqld/,
         ].some((val) => {
-            return command.includes(val);
+            return val.test(command);
         });
     }
 
     isApacheCommand(command) {
         return [
-            'apachectl',
-            'httpd',
-            '/etc/rc.d/init.d/httpd',
-            'httpd',
-            'apache2',
+            /apachectl/,
+            /httpd/,
+            /\/etc\/rc.d\/init.d\/httpd/,
+            /apache2/,
         ].some((val) => {
-            return command.includes(val);
+            return val.test(command);
         });
     }
 
     isNginxCommand(command) {
         return [
-            '/etc/init.d/nginx',
-            'nginx',
+            /\/etc\/init.d\/nginx/,
+            /nginx/,
         ].some((val) => {
-            return command.includes(val);
+            return val.test(command);
         });
     }
-
-
-
-
-    processData(command) {
-        const SYS_CTL = 'systemctl';
-        const content = this.content.children[4];
+    
+    checkCommand(command) {
+        const content = this.content.children[2];
         const isStop = (cmd) => cmd === 'stop';
         const isRestart = (cmd) => cmd === 'restart';
         const isStart = (cmd) => cmd === 'start';
         const isReload = (cmd) => cmd === 'reload';
-
-        if (command === 'clear') {
+        
+        let data = {
+            type: null,
+            action : null,
+            command : null
+        };
+        
+        if (command === KEY_WORD.clr) {
             this.clearTxtarea(content);
-
+            this.inputTag.value = this.emptyString;
+            return false;
+            
         } else {
-
+            data.command = command;
             const splitCommand = command.split(' ');
+            const OTHER_INEX = splitCommand.length - 1;
+
+
             if (this.isBlockingCommand(splitCommand[0])) {
-                alert('사용할 수 없는 명령어 입니다.');
-            } else if (this.isRebootCommand(command) && confirm('재부팅하게요?')) {
+                alert(res[this.userLang][KEY_WORD.notUsedCommand]);
+                data.type = data.action = 'block';
 
+            } else if (this.isRebootCommand(command) && confirm(res[this.userLang][KEY_WORD.rebootMsg])) {
+                data.action = KEY_WORD.action.reboot;
+                data.type = KEY_WORD.application.server;
 
-            } else if (this.isShutdownCommand(splitCommand[0]) && confirm('종료하시겠습니까?')) {
-
+            } else if (this.isShutdownCommand(splitCommand[0]) && confirm(res[this.userLang][KEY_WORD.shutdown])) {
+                data.action = KEY_WORD.action.shutdown;
+                data.type = KEY_WORD.application.server;
 
             } else if (this.isApacheCommand(command)) {
+                data.type = KEY_WORD.application.apache;
                 let finalCommand = null;
-                const SYSTEMCTL_INDEX = 1;
-                const OTHER_INEX = splitCommand.length - 1;
-                if (splitCommand.includes(SYS_CTL)) {
-                    finalCommand = splitCommand[SYSTEMCTL_INDEX].toLowerCase();
+                alert(';test');
+                if (splitCommand.includes(KEY_WORD.sysCtl)) {
+                    finalCommand = splitCommand[KEY_WORD.sysIndex].toLowerCase();
                 } else {
                     finalCommand = splitCommand[OTHER_INEX].toLowerCase();
                 }
                 if (isStop(finalCommand)) {
-                    console.log('stop apa');
+                    data.action = KEY_WORD.action.stop;
                 } else if (isRestart(finalCommand)) {
-
-
-                    console.log(`restart`);
+                    data.action = KEY_WORD.action.restart;
                 } else if (isStart(finalCommand)) {
-
-                    console.log(`start`);
+                    data.action = KEY_WORD.action.start;
                 } else if (isReload(finalCommand)) {
-
-                    console.log('reload');
+                    data.action = KEY_WORD.action.reload;
                 } else {
-                    console.log('status');
+                    data.action = KEY_WORD.action.status;
                 }
+
             } else if (this.isMySQLCommand(command)) {
+                data.type = KEY_WORD.application.mysql;
                 let finalCommand = null;
-                const SYSTEMCTL_INDEX = 1;
-                const OTHER_INEX = splitCommand.length - 1;
-
-                if (splitCommand.includes(SYS_CTL)) {
-                    finalCommand = splitCommand[SYSTEMCTL_INDEX].toLowerCase();
+                if (splitCommand.includes(KEY_WORD.sysCtl)) {
+                    finalCommand = splitCommand[KEY_WORD.sysIndex].toLowerCase();
                 } else {
                     finalCommand = splitCommand[OTHER_INEX].toLowerCase();
                 }
 
                 if (isStop(finalCommand)) {
-
-                    console.log('stop apa');
+                    data.action = KEY_WORD.action.stop;
                 } else if (isRestart(finalCommand)) {
-
-
-                    console.log(`restart`);
+                    data.action = KEY_WORD.action.restart;
                 } else if (isStart(finalCommand)) {
-
-                    console.log(`start`);
+                    data.action = KEY_WORD.action.start;
                 } else if (isReload(finalCommand)) {
-
-                    console.log('reload');
+                    data.action = KEY_WORD.action.reload;
                 } else {
-
-                    console.log('status');
+                    data.action = KEY_WORD.action.status;
                 }
 
-
-            } else if (this.isNginxCommand(command)) {
-
+            } else if ( this.isNginxCommand(command) ) {
+                data.type = KEY_WORD.application.nginx;
                 let finalCommand = null;
-                const SYSTEMCTL_INDEX = 1;
-                const OTHER_INEX = splitCommand.length - 1;
-                if (splitCommand.includes(SYS_CTL)) {
-                    finalCommand = splitCommand[SYSTEMCTL_INDEX].toLowerCase();
+
+                if (splitCommand.includes(KEY_WORD.sysCtl)) {
+                    finalCommand = splitCommand[KEY_WORD.sysIndex].toLowerCase();
                 } else {
                     finalCommand = splitCommand[OTHER_INEX].toLowerCase();
                 }
 
                 if (isStop(finalCommand)) {
-                    console.log('stop apa');
+                    data.action = KEY_WORD.action.stop;
                 } else if (isRestart(finalCommand)) {
-
-
-                    console.log(`restart`);
+                    data.action = KEY_WORD.action.restart;
                 } else if (isStart(finalCommand)) {
-
-                    console.log(`start`);
+                    data.action = KEY_WORD.action.start;
                 } else if (isReload(finalCommand)) {
-
-                    console.log('reload');
+                    data.action = KEY_WORD.action.reload;
                 } else {
-                    console.log('status');
+                    data.action = KEY_WORD.action.status;
                 }
+            } else {
+                data.type = KEY_WORD.application.user;
+                data.action = KEY_WORD.action.userComand;
             }
-            // let respMsg = 'asdfasdfasdasdfasdfa';
-            // content.scrollTop = content.scrollHeight;
-            // content.value = [content.value, ' ', val, '\n', respMsg, '\n', savePwd].join('');
-
-            this.inputTag.value = '';
         }
+        lastCommand = this.inputTag.value;
+        this.inputTag.value = this.emptyString;
+        return data;
     }
+    
+    mainProcess(formTag) {
+        const setTxtValue = (fetchObj) => {
+            const txtArea = this.content.children[2];
+            if (fetchObj.status && fetchObj.code === 1) {
+                txtArea.value = [
+                    txtArea.value, ' ', lastCommand, '\n', fetchObj.message, '\n', savePwd  
+                ].join(this.emptyString);
+            }
+        }
+
+
+
+        const generateForm = (formTag) => new FormData(formTag).get('proc');
+        const objToForm = (data) => {
+            const from = new FormData();
+            Object.keys(data).forEach(objData => {from.append(objData, data[objData])});
+            return from;
+        };
+        const request = async (url) => {
+            const compareStatus = (ok, code, txt) => ok && code === 200 && txt === 'OK';
+
+
+            console.log(
+                this.checkCommand(generateForm(formTag))
+            );
+            return false;
+
+            const fetchOpt = {
+                method : 'post',
+                body : objToForm(this.checkCommand(generateForm(formTag)))
+            };
+
+
+            const response = await fetch(url,fetchOpt);
+            return compareStatus(
+                response.ok,
+                response.status,
+                response.statusText
+            ) ? await response.json() : false;
+        };
+        
+        request(formTag.getAttribute('action')).then((_res)=>{setTxtValue(_res)});
+
+    }
+
+
 }

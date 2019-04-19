@@ -11,15 +11,26 @@ window.addEventListener('load', function () {
         doc.getElementsByClassName('article-wrap')
     ).init();
     
-    inputTag.addEventListener('keypress', function(evt){
-        if ( evt.keyCode === 13  && isSubmut) {
+    doc.getElementById('sendCommand').addEventListener('submit', function(e){
+        e.preventDefault();
+        if (isSubmut) {
             isSubmut = false;
-            commandObj.processData(
-                this.value.trim()
-            );
-            isSubmut = true;
+            commandObj.mainProcess( this );
         }
-        
+
+        isSubmut = true;
+
     });
+
+    // inputTag.addEventListener('keypress', function(evt){
+    //     if ( evt.keyCode === 13  && isSubmut) {
+    //         isSubmut = false;
+    //         commandObj.mainProcess(
+    //             this.value.trim()
+    //         );
+    //         isSubmut = true;
+    //     }
+        
+    // });
 });
 

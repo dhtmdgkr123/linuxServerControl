@@ -7,22 +7,24 @@ if ( ! class_exists('ExecCommand') ) {
         private $idxErr = 'indexError';
         private $userData = NULL;
         private $connInfo = NULL;
-
+        private $processCode = NULL;
 
         function __construct() {
-            
             parent::__construct();
             $this->load->library('session');
-            
+
+            $this->processCode = (object)[
+                'failConnect' => -1,
+                'ok' => 1,
+                'failGetStream' => -2
+            ];
             $this->userData = (object)[
                 'serverAddress' => $this->session->serverAddress,
                 'serverPort' => $this->session->serverPort,
                 'userId' => $this->session->userId,
                 'userPassword' => $this->session->userPassword
             ];
-
             
-
         }
 
         
@@ -55,43 +57,40 @@ if ( ! class_exists('ExecCommand') ) {
             stream_set_blocking($getErrout, TRUE);
             
             $getStdout = stream_get_contents($getStdout);
-            
             if ($getStdout) {
                 return trim($getStdout);
-
             } else {
-                return trim(
-                    stream_get_contents($getErrout)
-                );
-
+                return trim( stream_get_contents($getErrout) );
             }
-
         }
         
-
         private function isRoot(String $userId) {
-            return $userId === 'ROOT' || $userId === 'root';
+            return strtolower($userId) === 'root';
+        }
+
+        
+
+        private function isNotConnect($link) {
+            return ! $link;
         }
 
         public function printWorkingDir() {
-            
             $retArr = [
                 'status' => FALSE,
-                'code' => -1,
+                'code' => $this->processCode->failConnect,
                 'page' => 'getPwd'
             ];
             
             $connInfo = $this->getConnect();
-            if ( ! $connInfo ) {
+            if ( $this->isNotConnect($connInfo) ) {
                 return $retArr;
             }
-            
             $getStreamRlt = $this->execCommand(
                 $connInfo, 'pwd'
             );
 
             if ( $getStreamRlt ) {
-                $retArr['code'] = 1;
+                $retArr['code'] = $this->processCode->ok;
                 $retArr['status'] = TRUE;
                 $userId = $this->userData->userId;
                 $setDefaultPath = $userId.'@'.$this->userData->serverAddress.' : '.$getStreamRlt;
@@ -103,28 +102,37 @@ if ( ! class_exists('ExecCommand') ) {
                     $retArr['message'] = $setDefaultPath.' $';
                 }
                 
+            } else {
+                $retArr['code'] = $this->processCode->failGetStream;
             }
             return $retArr;
             
         }
-
-        private function checkCommand() {
-            $haltCommand = [
-                'shutdown', 'halt'
+        
+        public function execUserCommand($command) {
+            $retArr = [
+                'status' => FALSE,
+                'code' => $this->processCode->failConnect,
+                'page' => 'execCommand'
             ];
 
-
+            $connInfo = $this->getConnect();
+            if ( $this->isNotConnect($connInfo) ) {
+                return $retArr;
+            }
+            $getStreamRlt = $this->execCommand(
+                $connInfo, $command
+            );
+            if ( $getStreamRlt ) {
+                $retArr['status'] = TRUE;
+                $retArr['code'] = $this->processCode->ok;
+                $retArr['message'] = $getStreamRlt;
+            } else {
+                $retArr['code'] = $this->processCode->failGetStream;
+            }
+            return $retArr;
         }
-
-        public function execUserCommand($command) {
-
-        }
-
-
-
-        
     }
-
 }
 
 ?>

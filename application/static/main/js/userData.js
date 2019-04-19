@@ -60,7 +60,6 @@ class checkUserData {
     
     processData() {
         const statusObject = this.isEmptyData(this.generateData(this.formTag));
-        
         if ( statusObject.stat ) {
 
             const jsonData = this.sendUserData({
