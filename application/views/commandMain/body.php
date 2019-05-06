@@ -1,9 +1,5 @@
 <body>
     <div class="page-container">
-        <!-- mobile header layout -->
-        <header class="default-mobile no-mobile no-border">
-
-        </header>
         <!-- desktop header layout -->
         <header class="default-desktop no-border">
             <div class="container max-width">
@@ -36,111 +32,33 @@
                         </ul>
                     </div>
                     <div class="container">
+
                         <!-- tab1 : console-->
                         <section class="article-wrap" id="content0">
+                            
                             <form action="<?=$data['action']?>" id="sendCommand" method="post">
                                 <input name="command" id="proc" class="console-input" placeholder="Enter..">
                                 <button type="submit" id="proc_btn" class="console-btn btn-active">Run</button>
                                 <button id="res_btn" class="console-btn">Reset</button>
                             </form>
+
                             <span>Console Log</span>
                             <textarea class="console" id="console" contenteditable="true" cols="30" rows="10" readonly></textarea>
                         </section>
-                        <!--
-                           <section id="tab3" class="article-wrap">No Command</section>
-                            <section id="tab3" class="article-wrap"  class="tab_content">
-                                    <input id="db_proc" class="console-input" placeholder="Enter..">
-                                    <button id="db_proc_btn" class="console-btn btn-active">Run</button>
-                                    <button id="db_res_btn" class="console-btn">Reset</button>
-                                    <span>Console Log</span>
-                                    <textarea class="console" id="console" contenteditable="true" name="" cols="30" rows="10" readonly></textarea>
-                            </section>
-                        -->
+                        
                         <!-- tab 2 : Admin -->
-                        <?php print_r($data['admin']); ?>
                         <section id="content1" class="article-wrap">
-                            <?php foreach($data['admin'] as $key => $value): ?>
+                            <?php $iconClassName = 0; $title = 1; foreach($data['admin'] as $key => $value): ?>
                             <div class="container">
-                                <!-- line # 1 -->
                                 <p class="menu-title"><?=$key?></p>
-                                <div id="serverStatus" class="flat-btn">
-                                    <i class="ion-heart"></i>
-                                    <h3 class="flat-btn-title">Status</h3>
+                                <?php foreach($value as $v):?>
+                                <div id="<?=preg_replace('/\s+/', '', $v[$title])?>" class="flat-btn">
+                                    <i class="<?=$v[$iconClassName]?>"></i>
+                                    <h3 class="flat-btn-title"><?=$v[$title]?></h3>
                                 </div>
-                                <div id="serverOff" class="flat-btn">
-                                    <i class="ion-android-alert"></i>
-                                    <h3 class="flat-btn-title">Server Off</h3>
-                                </div>
-                                <div id="serverRestart" class="flat-btn">
-                                    <i class="ion-android-refresh"></i>
-                                    <h3 class="flat-btn-title">Server Restart</h3>
-                                </div>
+                                <?php endforeach; ?>
                             </div>
-                            <?php endforeach ?>
-                            <!-- <div class="container">
-                            
-                                <p class="menu-title">MySQL</p>
-                                <div id="MySqlStart" class="flat-btn">
-                                    <i class="ion-android-arrow-dropright-circle"></i>
-                                    <h3 class="flat-btn-title">MySQL Run</h3>
-                                </div>
-                                <div id="MySqlOff" class="flat-btn">
-                                    <i class="ion-android-alert"></i>
-                                    <h3 class="flat-btn-title">MySQL Off</h3>
-                                </div>
-                                <div id="MySqlReStart" class="flat-btn">
-                                    <i class="ion-android-refresh"></i>
-                                    <h3 class="flat-btn-title">MySQL Restart</h3>
-                                </div>
-                                
-                                <div id="MySqlStatus" class="flat-btn">
-                                    <i class="ion-heart"></i>
-                                    <h3 class="flat-btn-title">MySQL Satatus</h3>
-                                </div>
-                            </div>
-                            
-                            <div class="container">
-                            
-                                <p class="menu-title">APACHE</p>
-                                <div id="apacheStart" class="flat-btn">
-                                    <i class="ion-android-arrow-dropright-circle"></i>
-                                    <h3 class="flat-btn-title">APACHE Run</h3>
-                                </div>
-                                <div id="apacheOff" class="flat-btn">
-                                    <i class="ion-android-alert"></i>
-                                    <h3 class="flat-btn-title">APACHE Off</h3>
-                                </div>
-                                <div id="apacheRestart" class="flat-btn">
-                                    <i class="ion-android-refresh"></i>
-                                    <h3 class="flat-btn-title">APACHE Restart</h3>
-                                </div>
-                                <div id="apacheStatus" class="flat-btn">
-                                    <i class="ion-heart"></i>
-                                    <h3 class="flat-btn-title">APACHE Status</h3>
-                                </div>
-                            </div>
-
-                            <div class="container">
-                            
-                                <p class="menu-title">NGINX</p>
-                                <div id="nginxStart" class="flat-btn">
-                                    <i class="ion-android-arrow-dropright-circle"></i>
-                                    <h3 class="flat-btn-title">NGINX Run</h3>
-                                </div>
-                                <div id="nginxOff" class="flat-btn">
-                                    <i class="ion-android-alert"></i>
-                                    <h3 class="flat-btn-title">NGINX Off</h3>
-                                </div>
-                                <div id="nginxRestart" class="flat-btn">
-                                    <i class="ion-android-refresh"></i>
-                                    <h3 class="flat-btn-title">NGINX Restart</h3>
-                                </div>
-                                <div id="nginxStatus" class="flat-btn">
-                                    <i class="ion-heart"></i>
-                                    <h3 class="flat-btn-title">NGINX Status</h3>
-                                </div>
-                            </div> -->
-
+                            <?php endforeach; ?>
                         </section>
                     </div>
                 </div>

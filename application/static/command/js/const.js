@@ -37,5 +37,22 @@ const KEY_WORD = {
         'git', 'vi', 'vim',
         'apt-get', 'apt', 'nano',
         'more', 'wget', 'top'
-    ]
+    ],
+    commandIdFilter: () => {
+        return Array.from(document.getElementsByClassName('container'))
+                    .filter((i, v) => v >= 3)
+                    .map(i => Array
+                                .from(i.children)
+                                .filter(j => j.hasAttribute('id'))
+                                .map(j => j.getAttribute('id'))
+                    )
+                    .toString()
+                    .split(',')
+                    .map(i => i.trim());
+    }
 };
+
+
+
+
+

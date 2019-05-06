@@ -38,7 +38,8 @@ if ( ! class_exists('Main') ) {
         
         private function setSessionArray(Array $reqData) {
             $this->session->set_userdata(array_merge([
-                'isLogin' => TRUE
+                'isLogin' => TRUE,
+                'pwd' => FALSE,
             ], $reqData));
         }
         

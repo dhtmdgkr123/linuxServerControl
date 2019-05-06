@@ -39,15 +39,28 @@ if ( ! class_exists('Command') ) {
         
         private function renderServiceCommand() {
             $categoryList = ['Server' => [], 'MySQL' => [], 'APACHE' => [], 'NGINX' => [] ];
-            $serviceList = [' Start', ' Restart', ' Off', ' Status' ];
-            for ($i = 0, $firstKey = array_keys($categoryList), $categoryListLen = count($firstKey), $serviceListLen = count($serviceList); $i < $categoryListLen; $i++) {
+            $serviceList = [
+                ['ion-android-arrow-dropright-circle', ' Start'],
+                ['ion-android-refresh', ' Restart'],
+                ['ion-android-alert', ' Off'],
+                ['ion-heart', ' Status']
+            ];
+            $tmp = $serviceList;
+            $categoryKey = array_keys($categoryList);
+            for ($i = 0, $categoryListLen = count($categoryKey), $serviceListLen = count($serviceList); $i < $categoryListLen; $i++) {
                 for ($j = 0; $j < $serviceListLen; $j++) {
-                    $categoryList[$firstKey[$i]][] = $firstKey[$i].$serviceList[$j];
+                    $serviceList[$j][1] = $categoryKey[$i].$serviceList[$j][1];
+
+                }
+                $categoryList[$categoryKey[$i]] = $serviceList;
+                $serviceList = $tmp;
+                if ($categoryList[$categoryKey[$i]][0][1] === $categoryKey[0].$tmp[0][1]) {
+                    array_shift($categoryList[$categoryKey[$i]]);
                 }
             }
             return $categoryList;
         }
-        
+
         public function logout() {
             $userData = $this->session->all_userdata();
             foreach ($userData as $key => $value) {
@@ -125,8 +138,10 @@ if ( ! class_exists('Command') ) {
         public function getPwd() {
             if ( $this->chkStatus() ) {
                 setJsonHeader();
+                
                 $this->load->model('ExecCommand');
-                jsonEcho ( $this->ExecCommand->printWorkingDir() );
+
+                jsonEcho ( $this->ExecCommand->printWorkingDir($this->session->pwd) );
             } else {
                 show_404();
             }

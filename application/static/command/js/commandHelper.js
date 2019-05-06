@@ -34,7 +34,7 @@ class commandHelper {
                 alert(res[self.userLang][json.page]['code'][json.code]);
             }
         };
-
+        
         const setWaitStatus = () => {
             self.inputTag.setAttribute('readonly', true);
             self.content.children[1].setAttribute('id', 'wait');

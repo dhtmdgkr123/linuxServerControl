@@ -71,35 +71,43 @@ if ( ! class_exists('ExecCommand') ) {
             return ! $link;
         }
 
-        public function printWorkingDir() {
+        public function printWorkingDir($cachePwd) {
             $retArr = [
                 'status' => FALSE,
                 'code' => $this->processCode->failConnect,
                 'page' => 'getPwd'
             ];
-            
-            $connInfo = $this->getConnect();
-            if ( $this->isNotConnect($connInfo) ) {
-                return $retArr;
-            }
 
-            $getStreamRlt = $this->execCommand($connInfo, 'pwd');
-
-            if ( $getStreamRlt ) {
+            if ($cachePwd) {
                 $retArr['code'] = $this->processCode->ok;
                 $retArr['status'] = TRUE;
-                $userId = $this->userData->userId;
-                $setDefaultPath = $userId.'@'.$this->userData->serverAddress.' : '.$getStreamRlt;
-                if ( $this->isRoot($userId) ) {
-
-                    $retArr['message'] = $setDefaultPath.' #';
-                } else {
-
-                    $retArr['message'] = $setDefaultPath.' $';
-                }
+                $retArr['message'] = $cachePwd;
                 
             } else {
-                $retArr['code'] = $this->processCode->failGetStream;
+                $connInfo = $this->getConnect();
+                if ( $this->isNotConnect($connInfo) ) {
+                    return $retArr;
+                }
+    
+                $getStreamRlt = $this->execCommand($connInfo, 'pwd');
+    
+                if ( $getStreamRlt ) {
+                    $retArr['code'] = $this->processCode->ok;
+                    $retArr['status'] = TRUE;
+                    $userId = $this->userData->userId;
+                    $setDefaultPath = $userId.'@'.$this->userData->serverAddress.' : '.$getStreamRlt;
+                    if ( $this->isRoot($userId) ) {
+    
+                        $retArr['message'] = $setDefaultPath.' #';
+                    } else {
+    
+                        $retArr['message'] = $setDefaultPath.' $';
+                    }
+                    $this->session->set_userdata('pwd', $retArr['message']);
+
+                } else {
+                    $retArr['code'] = $this->processCode->failGetStream;
+                }
             }
             return $retArr;
             

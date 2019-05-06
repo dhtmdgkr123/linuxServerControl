@@ -19,7 +19,6 @@ window.addEventListener('load', function () {
             commandObj.mainProcess( this );
         }
         isSubmut = true;
-
     });
 
     doc.getElementById('content1').addEventListener('click', function(evt){
@@ -33,10 +32,7 @@ window.addEventListener('load', function () {
             id = target.getAttribute('id');
         }
 
-        new servicePipe(id);
-        
-        console.log(id);
-        
+        new servicePipe(id).mainProcess();
     });
 });
 
