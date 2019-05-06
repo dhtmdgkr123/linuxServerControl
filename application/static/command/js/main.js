@@ -4,8 +4,9 @@ window.addEventListener('load', function () {
     const doc = document;
     const firstContent = doc.getElementById('content0');
     const commandObj = new commandHelper(firstContent, doc);
+    
     commandObj.pwd();
-    const inputTag = doc.getElementById('proc');
+    
     new TAB(
         doc.getElementsByClassName('tabs')[0],
         doc.getElementsByClassName('article-wrap')
@@ -17,20 +18,25 @@ window.addEventListener('load', function () {
             isSubmut = false;
             commandObj.mainProcess( this );
         }
-
         isSubmut = true;
 
     });
 
-    // inputTag.addEventListener('keypress', function(evt){
-    //     if ( evt.keyCode === 13  && isSubmut) {
-    //         isSubmut = false;
-    //         commandObj.mainProcess(
-    //             this.value.trim()
-    //         );
-    //         isSubmut = true;
-    //     }
+    doc.getElementById('content1').addEventListener('click', function(evt){
+        const target = evt.target;
+        const nodeName = target.nodeName.toLowerCase();
+        let id = null;
         
-    // });
+        if (nodeName === 'i' || nodeName === 'h3') {
+            id = target.parentElement.getAttribute('id');
+        } else {
+            id = target.getAttribute('id');
+        }
+
+        new servicePipe(id);
+        
+        console.log(id);
+        
+    });
 });
 

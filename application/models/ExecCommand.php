@@ -26,10 +26,7 @@ if ( ! class_exists('ExecCommand') ) {
             ];
             
         }
-
         
-
-
         private function getConnect() {
             $connInfo = ssh2_connect(
                 $this->userData->serverAddress,
@@ -85,9 +82,8 @@ if ( ! class_exists('ExecCommand') ) {
             if ( $this->isNotConnect($connInfo) ) {
                 return $retArr;
             }
-            $getStreamRlt = $this->execCommand(
-                $connInfo, 'pwd'
-            );
+
+            $getStreamRlt = $this->execCommand($connInfo, 'pwd');
 
             if ( $getStreamRlt ) {
                 $retArr['code'] = $this->processCode->ok;
@@ -110,6 +106,7 @@ if ( ! class_exists('ExecCommand') ) {
         }
         
         public function execUserCommand($command) {
+
             $retArr = [
                 'status' => FALSE,
                 'code' => $this->processCode->failConnect,

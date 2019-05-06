@@ -8,16 +8,6 @@
         <header class="default-desktop no-border">
             <div class="container max-width">
                 <!-- site logo -->
-
-                <!--
-                    
-                    <div class="logo-wrap">
-                        <div class="logo-position">
-                        </div>
-                    </div>
-                
-                -->
-
                 <!--log out-->
                 <div class="sign-btn">
                     <a href="<?=$data['logout']?>">
@@ -48,9 +38,11 @@
                     <div class="container">
                         <!-- tab1 : console-->
                         <section class="article-wrap" id="content0">
-                            <input id="proc" class="console-input" placeholder="Enter..">
-                            <button id="proc_btn" class="console-btn btn-active">Run</button>
-                            <button id="res_btn" class="console-btn">Reset</button>
+                            <form action="<?=$data['action']?>" id="sendCommand" method="post">
+                                <input name="command" id="proc" class="console-input" placeholder="Enter..">
+                                <button type="submit" id="proc_btn" class="console-btn btn-active">Run</button>
+                                <button id="res_btn" class="console-btn">Reset</button>
+                            </form>
                             <span>Console Log</span>
                             <textarea class="console" id="console" contenteditable="true" cols="30" rows="10" readonly></textarea>
                         </section>
@@ -65,12 +57,12 @@
                             </section>
                         -->
                         <!-- tab 2 : Admin -->
+                        <?php print_r($data['admin']); ?>
                         <section id="content1" class="article-wrap">
-
-
+                            <?php foreach($data['admin'] as $key => $value): ?>
                             <div class="container">
                                 <!-- line # 1 -->
-                                <p class="menu-title">Server</p>
+                                <p class="menu-title"><?=$key?></p>
                                 <div id="serverStatus" class="flat-btn">
                                     <i class="ion-heart"></i>
                                     <h3 class="flat-btn-title">Status</h3>
@@ -84,10 +76,9 @@
                                     <h3 class="flat-btn-title">Server Restart</h3>
                                 </div>
                             </div>
-
-
-                            <div class="container">
-                                <!-- line # 2 -->
+                            <?php endforeach ?>
+                            <!-- <div class="container">
+                            
                                 <p class="menu-title">MySQL</p>
                                 <div id="MySqlStart" class="flat-btn">
                                     <i class="ion-android-arrow-dropright-circle"></i>
@@ -101,16 +92,15 @@
                                     <i class="ion-android-refresh"></i>
                                     <h3 class="flat-btn-title">MySQL Restart</h3>
                                 </div>
-                                <!-- button -->
+                                
                                 <div id="MySqlStatus" class="flat-btn">
                                     <i class="ion-heart"></i>
                                     <h3 class="flat-btn-title">MySQL Satatus</h3>
                                 </div>
                             </div>
-
-
+                            
                             <div class="container">
-                                <!-- line # 3 -->
+                            
                                 <p class="menu-title">APACHE</p>
                                 <div id="apacheStart" class="flat-btn">
                                     <i class="ion-android-arrow-dropright-circle"></i>
@@ -131,7 +121,7 @@
                             </div>
 
                             <div class="container">
-                                <!-- line # 3 -->
+                            
                                 <p class="menu-title">NGINX</p>
                                 <div id="nginxStart" class="flat-btn">
                                     <i class="ion-android-arrow-dropright-circle"></i>
@@ -149,7 +139,7 @@
                                     <i class="ion-heart"></i>
                                     <h3 class="flat-btn-title">NGINX Status</h3>
                                 </div>
-                            </div>
+                            </div> -->
 
                         </section>
                     </div>

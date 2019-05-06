@@ -1,2 +1,7 @@
 test.php
 linuxServerControl/
+application/controllers/Test.php
+phpmyadmin
+license.txt
+composer.json
+package.json

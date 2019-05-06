@@ -8,10 +8,10 @@
                 <a>SERVER</a>
                 <div class="border-type-spear">
                 </div>
-                <form id="myForm" action="<?=$data['actionUrl']?>" method="post">
 
+                <form id="myForm" action="<?=$data['actionUrl']?>" method="post">
                     <input placeholder="Server Addresses" type="text" id="serverAddress" name="serverAddress"
-                        autoncomplete="off">
+                        autoncomplete="off" value="<?=$_SERVER['HTTP_HOST']?>">
                     <!--Port  -->
                     <input placeholder="Port" type="text" id="serverPort" name="serverPort" autoncomplete="off">
                     <div class="border-title">

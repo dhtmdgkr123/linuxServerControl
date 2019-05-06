@@ -45,8 +45,8 @@ class checkUserData {
             'stat' : false,
             'data' : ''
         };
-        const formDataEntire = formData.entries();
 
+        const formDataEntire = formData.entries();
         for (const formPare of formDataEntire) {
             if ( ! formPare[1] ) {
                 statObject.data = formPare[0];

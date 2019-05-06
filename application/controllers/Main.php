@@ -5,14 +5,27 @@ if ( ! class_exists('Main') ) {
     class Main extends CI_Controller {
     
         private $appPath = NULL;
-    
+        private $staticPath = NULL;
+        private $commonBasePath = NULL;
+        private $jsFilePath = NULL;
+        private $cssFilePath = NULL;
+
         function __construct() {
             parent::__construct();
-            $this->appPath = APPPATH.'views/';
+            
             $this->load->library('session');
             $this->load->helper('ajax');
-        }
+            $this->load->helper('file');
+            
+            $this->appPath = APPPATH.'views/';
+            $this->staticPath = APPPATH.'static/';
+            $this->commonBasePath = $this->staticPath.'base/';
+            
+            $this->jsFilePath = $this->staticPath.'main/js/';
+            $this->cssFilePath = $this->staticPath.'main/css/';
 
+        }
+        
         private function allArrayKeyExists(Array $dataArr) {
             $arrKeys = [
                 'serverAddress',
@@ -27,7 +40,6 @@ if ( ! class_exists('Main') ) {
             $this->session->set_userdata(array_merge([
                 'isLogin' => TRUE
             ], $reqData));
-
         }
         
         public function index() {
@@ -37,18 +49,19 @@ if ( ! class_exists('Main') ) {
             $footPath = $mainPath.'foot.php';
 
             $staticPath = '../application/static/';
-            $baseStaticPath = $staticPath.'base/';
 
+            $baseStaticPath = $staticPath.'base/';
             $mainStaticPath = $staticPath.'main/';
 
+            $commonAbosolutePath = $this->commonBasePath;
 
             $staticFile = [
                 'head' => [
                     'css' => [
-                        'reset' => $baseStaticPath.'reset.css?ver=1.6.1&lastModify=2018-12-30',
-                        'font' => $baseStaticPath.'font.css',
-                        'jConfirm' => $baseStaticPath.'jConfirm/confirm.css?ver=3.3.0&lastModify=2018-12-30',
-                        'style' => $mainStaticPath.'css/style.css?ver=1.0.1&lastModify=2018-12-30'
+                        'reset' => $baseStaticPath.'reset.css?ver=1.6.1&'.getModifyTime($commonAbosolutePath, 'reset.css'),
+                        'font' => $baseStaticPath.'font.css&'.getModifyTime($commonAbosolutePath, 'font.css'),
+                        'jConfirm' => $baseStaticPath.'jConfirm/confirm.css?ver=3.3.0&'.getModifyTime($commonAbosolutePath, 'jConfirm/confirm.css'),
+                        'style' => $mainStaticPath.'css/style.css?ver=1.0.1&'.getModifyTime($this->cssFilePath, 'style.css')
                     ]
                 ],
                 'body' => [
@@ -61,13 +74,11 @@ if ( ! class_exists('Main') ) {
                 ],
                 'foot' => [
                     'js' => [
-                        'jQuery' => $baseStaticPath.'jQuery.js?ver=3.3.1&lastModify=2018-12-30',
-                        'jConfirm' => $baseStaticPath.'jConfirm/confirm.js?ver=3.3.0&lastModify=2018-12-30',
-                        'res' => $baseStaticPath.'res.js?ver=1.0.0&lastModify=2018-12-30',
-                        'methods' => $mainStaticPath.'js/userData.js?ver=1.0.0&lastModify=2019-02-17',
-                        'main' => $mainStaticPath.'js/main.js?ver=1.0.0&lastModify=2018-01-05',
-                        // 'test' => filemtime($_SERVER['DOCUMENT_ROOT'].'/application/static/base/jConfirm/confirm.js'),
-                        // 'asdf' => $baseStaticPath/*filemtime($baseStaticPath.'jConfirm/confirm.js')*/
+                        'jQuery' => $baseStaticPath.'jQuery.js?ver=3.3.1&'.getModifyTime($commonAbosolutePath, 'jQuery.js'),
+                        'jConfirm' => $baseStaticPath.'jConfirm/confirm.js?ver=3.3.0&'.getModifyTime($commonAbosolutePath, 'jConfirm/confirm.js'),
+                        'res' => $baseStaticPath.'res.js?ver=1.0.0&'.getModifyTime($commonAbosolutePath,'res.js'),
+                        'methods' => $mainStaticPath.'js/userData.js?ver=1.0.0&'.getModifyTime($this->jsFilePath, 'userData.js'),
+                        'main' => $mainStaticPath.'js/main.js?ver=1.0.0&'.getModifyTime($this->jsFilePath, 'main.js'),
                     ]
                 ]
             ];
@@ -84,8 +95,21 @@ if ( ! class_exists('Main') ) {
 
             } else {
                 show_404();
-
+                
             }
+        }
+
+        private function getUserData() {
+            $dataArr = [
+                'serverAddress' => '',
+                'serverPort' => '',
+                'userId' => '',
+                'userPassword' => ''
+            ];
+            for ($i = 0, $key = array_keys($dataArr), $len = count($key); $i < $len; $i++) {
+                $dataArr[$key[$i]] = trimPost($key[$i]);
+            }
+            return $dataArr;
         }
         
         public function authUserData() {
@@ -93,22 +117,13 @@ if ( ! class_exists('Main') ) {
             if ( chkPostMtd($_SERVER['REQUEST_METHOD']) ) {
                 $this->load->model('ServerAuth');
                 setJsonHeader();
-                $dataArr = [
-                    'serverAddress' => '',
-                    'serverPort' => '',
-                    'userId' => '',
-                    'userPassword' => ''
-                ];
-                
                 $retArr = [
                     'status' => FALSE,
                     'code' => -3,
                     'page' => 'indexError'
                 ];
                 
-                for ($i = 0, $key = array_keys($dataArr), $len = count($key); $i < $len; $i++) {
-                    $dataArr[$key[$i]] = trimPost($key[$i]);
-                }
+                $dataArr = $this->getUserData();
 
                 if ( $this->allArrayKeyExists( array_keys($dataArr) ) ) {
                     $retArr = $this->ServerAuth->mainMethod($dataArr);
