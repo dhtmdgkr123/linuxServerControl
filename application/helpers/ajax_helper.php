@@ -15,7 +15,7 @@ if ( ! function_exists('trimPost') ) {
                 $self->input->post($key)
             )
         );
-         
+        
     }
 }
 
@@ -37,9 +37,10 @@ if ( ! function_exists('gotoPage') ) {
 
 
 if ( ! function_exists('chkPostMtd') ) {
-    function chkPostMtd(String $reqMethod) {
+    function chkPostMtd(String $reqMethod): bool {
         return $reqMethod === 'POST';
     }
 }
+
 
 ?>

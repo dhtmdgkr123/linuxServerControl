@@ -13,7 +13,7 @@
                     <input placeholder="Server Addresses" type="text" id="serverAddress" name="serverAddress"
                         autoncomplete="off" value="<?=$_SERVER['HTTP_HOST']?>">
                     <!--Port  -->
-                    <input placeholder="Port" type="text" id="serverPort" name="serverPort" autoncomplete="off">
+                    <input placeholder="Port" type="text" id="serverPort" name="serverPort" autoncomplete="off" value="22">
                     <div class="border-title">
                         <a>CONNECT</a>
                         <div class="border-type-spear">

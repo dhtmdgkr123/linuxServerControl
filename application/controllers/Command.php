@@ -29,15 +29,15 @@ if ( ! class_exists('Command') ) {
             ];
         }
         
-        private function chkStatus() {
+        private function chkStatus(): bool {
             return $this->session->isLogin && chkPostMtd($_SERVER['REQUEST_METHOD']);
         }
     
-        private function isNotLogin() {
+        private function isNotLogin(): bool {
             return ! $this->session->isLogin;
         }
         
-        private function renderServiceCommand() {
+        private function renderServiceCommand(): Array {
             $categoryList = ['Server' => [], 'MySQL' => [], 'APACHE' => [], 'NGINX' => [] ];
             $serviceList = [
                 ['ion-android-arrow-dropright-circle', ' Start'],
@@ -46,11 +46,9 @@ if ( ! class_exists('Command') ) {
                 ['ion-heart', ' Status']
             ];
             $tmp = $serviceList;
-            $categoryKey = array_keys($categoryList);
-            for ($i = 0, $categoryListLen = count($categoryKey), $serviceListLen = count($serviceList); $i < $categoryListLen; $i++) {
+            for ($i = 0, $categoryKey = array_keys($categoryList), $categoryListLen = count($categoryKey), $serviceListLen = count($serviceList); $i < $categoryListLen; $i++) {
                 for ($j = 0; $j < $serviceListLen; $j++) {
                     $serviceList[$j][1] = $categoryKey[$i].$serviceList[$j][1];
-
                 }
                 $categoryList[$categoryKey[$i]] = $serviceList;
                 $serviceList = $tmp;
@@ -82,7 +80,6 @@ if ( ! class_exists('Command') ) {
             $baseStaticPath = $staticPath.'base/';
             $commandPath = $staticPath.'command/';
             
-            $categoryList = [ 'Server', 'MySQL', 'APACHE', 'NGINX' ];
             
             $staticFile = [
                 'head' => [
@@ -137,11 +134,9 @@ if ( ! class_exists('Command') ) {
         
         public function getPwd() {
             if ( $this->chkStatus() ) {
-                setJsonHeader();
-                
                 $this->load->model('ExecCommand');
-
                 jsonEcho ( $this->ExecCommand->printWorkingDir($this->session->pwd) );
+                setJsonHeader();
             } else {
                 show_404();
             }
@@ -164,7 +159,7 @@ if ( ! class_exists('Command') ) {
             }
         }
         
-        public function filterCommand(String $data) {
+        private function filterCommand(String $data): bool {
             $this->load->helper('command');
             return (new commandFilter($data))->filterMain();
         }

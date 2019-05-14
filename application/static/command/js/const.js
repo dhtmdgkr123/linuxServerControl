@@ -10,6 +10,7 @@ const KEY_WORD = {
     rebootMsg : 'isRebootMessage',
     shutdown : 'isShutDownMessage',
     notUsedCommand : 'canNotUsedCommand',
+    buttonActied: 'buttonAction',
     sysIndex : 1,
     checkStatus: [true, 200, 'OK'],
     application : {
@@ -37,19 +38,7 @@ const KEY_WORD = {
         'git', 'vi', 'vim',
         'apt-get', 'apt', 'nano',
         'more', 'wget', 'top'
-    ],
-    commandIdFilter: () => {
-        return Array.from(document.getElementsByClassName('container'))
-                    .filter((i, v) => v >= 3)
-                    .map(i => Array
-                                .from(i.children)
-                                .filter(j => j.hasAttribute('id'))
-                                .map(j => j.getAttribute('id'))
-                    )
-                    .toString()
-                    .split(',')
-                    .map(i => i.trim());
-    }
+    ]
 };
 
 

@@ -22,17 +22,19 @@ window.addEventListener('load', function () {
     });
 
     doc.getElementById('content1').addEventListener('click', function(evt){
-        const target = evt.target;
+        let target = evt.target;
         const nodeName = target.nodeName.toLowerCase();
-        let id = null;
         
         if (nodeName === 'i' || nodeName === 'h3') {
-            id = target.parentElement.getAttribute('id');
+            target = target.parentElement;
         } else {
-            id = target.getAttribute('id');
+            target = target;
         }
-
-        new servicePipe(id).mainProcess();
+        if (isSubmut) {
+            isSubmut = false;
+            new servicePipe(target).mainProcess();
+        }
+        isSubmut = true;
     });
 });
 

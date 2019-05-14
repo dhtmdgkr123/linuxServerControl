@@ -12,6 +12,7 @@ if ( ! class_exists('ExecCommand') ) {
         function __construct() {
             parent::__construct();
             $this->load->library('session');
+            $this->load->helper('idfilter');
 
             $this->processCode = (object)[
                 'failConnect' => -1,
@@ -24,6 +25,46 @@ if ( ! class_exists('ExecCommand') ) {
                 'userId' => $this->session->userId,
                 'userPassword' => $this->session->userPassword
             ];
+            
+        }
+
+        public function printWorkingDir($cachePwd): Array {
+            $retArr = [
+                'status' => FALSE,
+                'code' => $this->processCode->failConnect,
+                'page' => 'getPwd'
+            ];
+
+            if ($cachePwd) {
+                $retArr['code'] = $this->processCode->ok;
+                $retArr['status'] = TRUE;
+                $retArr['message'] = $cachePwd;
+            } else {
+                $connInfo = $this->getConnect();
+                if ( $this->isNotConnect($connInfo) ) {
+                    return $retArr;
+                }
+    
+                $getStreamRlt = $this->execCommand($connInfo, 'pwd');
+                if ( $getStreamRlt ) {
+                    $retArr['code'] = $this->processCode->ok;
+                    $retArr['status'] = TRUE;
+                    $userId = $this->userData->userId;
+                    $setDefaultPath = $userId.'@'.$this->userData->serverAddress.' : '.$getStreamRlt;
+                    if ( isRoot($userId) ) {
+    
+                        $retArr['message'] = $setDefaultPath.' #';
+                    } else {
+    
+                        $retArr['message'] = $setDefaultPath.' $';
+                    }
+                    $this->session->set_userdata('pwd', $retArr['message']);
+
+                } else {
+                    $retArr['code'] = $this->processCode->failGetStream;
+                }
+            }
+            return $retArr;
             
         }
         
@@ -42,10 +83,8 @@ if ( ! class_exists('ExecCommand') ) {
 
         }
 
-        private function execCommand($link, $cmd) {
-            $getStream = ssh2_exec(
-                $link , $cmd
-            );
+        private function execCommand($link, $cmd): String {
+            $getStream = ssh2_exec( $link, $cmd );
             
             $getStdout = ssh2_fetch_stream($getStream, SSH2_STREAM_STDIO);
             $getErrout = ssh2_fetch_stream($getStream, SSH2_STREAM_STDERR);
@@ -54,87 +93,41 @@ if ( ! class_exists('ExecCommand') ) {
             stream_set_blocking($getErrout, TRUE);
             
             $getStdout = stream_get_contents($getStdout);
+            
             if ($getStdout) {
                 return trim($getStdout);
             } else {
-                return trim( stream_get_contents($getErrout) );
+                return trim(stream_get_contents($getErrout));
             }
         }
         
-        private function isRoot(String $userId) {
-            return strtolower($userId) === 'root';
-        }
-
-        
-
         private function isNotConnect($link) {
             return ! $link;
         }
-
-        public function printWorkingDir($cachePwd) {
-            $retArr = [
-                'status' => FALSE,
-                'code' => $this->processCode->failConnect,
-                'page' => 'getPwd'
-            ];
-
-            if ($cachePwd) {
-                $retArr['code'] = $this->processCode->ok;
-                $retArr['status'] = TRUE;
-                $retArr['message'] = $cachePwd;
-                
-            } else {
-                $connInfo = $this->getConnect();
-                if ( $this->isNotConnect($connInfo) ) {
-                    return $retArr;
-                }
-    
-                $getStreamRlt = $this->execCommand($connInfo, 'pwd');
-    
-                if ( $getStreamRlt ) {
-                    $retArr['code'] = $this->processCode->ok;
-                    $retArr['status'] = TRUE;
-                    $userId = $this->userData->userId;
-                    $setDefaultPath = $userId.'@'.$this->userData->serverAddress.' : '.$getStreamRlt;
-                    if ( $this->isRoot($userId) ) {
-    
-                        $retArr['message'] = $setDefaultPath.' #';
-                    } else {
-    
-                        $retArr['message'] = $setDefaultPath.' $';
-                    }
-                    $this->session->set_userdata('pwd', $retArr['message']);
-
-                } else {
-                    $retArr['code'] = $this->processCode->failGetStream;
-                }
-            }
-            return $retArr;
-            
-        }
         
-        public function execUserCommand($command) {
-
+        public function execUserCommand($command): Array {
+            
             $retArr = [
                 'status' => FALSE,
                 'code' => $this->processCode->failConnect,
-                'page' => 'execCommand'
+                'page' => 'execCommand',
             ];
 
             $connInfo = $this->getConnect();
             if ( $this->isNotConnect($connInfo) ) {
                 return $retArr;
             }
-            $getStreamRlt = $this->execCommand(
-                $connInfo, $command
-            );
+
+            $getStreamRlt = $this->execCommand($connInfo, $command);
             if ( $getStreamRlt ) {
                 $retArr['status'] = TRUE;
                 $retArr['code'] = $this->processCode->ok;
                 $retArr['message'] = $getStreamRlt;
+                
             } else {
                 $retArr['code'] = $this->processCode->failGetStream;
             }
+            
             return $retArr;
         }
     }
