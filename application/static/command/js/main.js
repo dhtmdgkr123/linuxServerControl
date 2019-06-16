@@ -11,28 +11,44 @@ window.addEventListener('load', function () {
         doc.getElementsByClassName('tabs')[0],
         doc.getElementsByClassName('article-wrap')
     ).init();
-    
+
+
+    doc.getElementById('proc').addEventListener('keydown', function(e){
+        if (e.keyCode === 38) {
+            if ( arrIdx >= 0 ) {
+                this.value = saveCommand[arrIdx--];
+            }
+        } else if (e.keyCode === 40) {
+            if ( arrIdx >= 0 ) {
+                this.value = saveCommand[arrIdx++];
+            }
+        }
+    });
+
+
     doc.getElementById('sendCommand').addEventListener('submit', function(e){
         e.preventDefault();
         if (isSubmut) {
             isSubmut = false;
-            commandObj.mainProcess( this );
+            commandObj.mainProcess(this);
         }
         isSubmut = true;
     });
 
     doc.getElementById('content1').addEventListener('click', function(evt){
-        const target = evt.target;
+        let target = evt.target;
         const nodeName = target.nodeName.toLowerCase();
-        let id = null;
         
         if (nodeName === 'i' || nodeName === 'h3') {
-            id = target.parentElement.getAttribute('id');
+            target = target.parentElement;
         } else {
-            id = target.getAttribute('id');
+            target = target;
         }
-
-        new servicePipe(id).mainProcess();
+        if (isSubmut) {
+            isSubmut = false;
+            new servicePipe(target).mainProcess();
+        }
+        isSubmut = true;
     });
 });
 

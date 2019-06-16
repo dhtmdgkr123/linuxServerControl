@@ -1,16 +1,23 @@
 class commandHelper {
 
     constructor(content, doc) {
-        this.emptyString = '';
-        this.content = content;
-        this.doc = doc;
-        this.inputTag = content.children[0].children[0];
+        if (content && doc) {
+            this.content = content;
+            this.doc = doc;
+            this.inputTag = content.children[0].children[0];
+        }
         this.fetchOpt = {
             method: 'POST'
         };
+        this.emptyString = '';
         this.userLang = navigator.language || navigator.userLanguage;
     }
-
+    
+    strToConfirm(actionName, serviceName, servicePattern) {
+        const makeString = (arr, command) => this.userLang === Object.keys(res)[0] ? [command, arr].join(this.emptyString) : [arr, command].join(this.emptyString);
+        return confirm(makeString(res[this.userLang][KEY_WORD.exec][actionName][serviceName], servicePattern));
+    }
+    
     pwd() {
         const self = this;
         const txtArea = self.content.children[2];
@@ -80,8 +87,8 @@ class commandHelper {
         const splitedCommand = command.split(' ').map(i => i.toLowerCase());
         const content = this.content.children[2];
 
-        const makeString = (arr, command) => this.userLang === Object.keys(res)[0] ? [command, arr].join(this.emptyString) : [arr, command].join(this.emptyString)
-        const strToConfirm = (firstIdx, secondIdx, servicePattern) => confirm(makeString(res[this.userLang][KEY_WORD.exec][firstIdx][secondIdx], servicePattern));
+        // const makeString = (arr, command) => this.userLang === Object.keys(res)[0] ? [command, arr].join(this.emptyString) : [arr, command].join(this.emptyString)
+        // const strToConfirm = (firstIdx, secondIdx, servicePattern) => confirm(makeString(res[this.userLang][KEY_WORD.exec][firstIdx][secondIdx], servicePattern));
 
         if (commandUtil.isClear(splitedCommand)) {
             commandUtil.clearTxtarea(content);
@@ -94,7 +101,7 @@ class commandHelper {
             if (commandUtil.isConfirmSupport(splitedCommand[2])) {
                 if (commandUtil.checkAction(splitedCommand[1])) {
                     if (commandUtil.isNotStatus(splitedCommand)) {
-                        if (strToConfirm(splitedCommand[0], splitedCommand[1], splitedCommand[2])) {
+                        if (this.strToConfirm(splitedCommand[0], splitedCommand[1], splitedCommand[2])) {
                             sendData.command = command;
                         }
                     } else {
@@ -110,7 +117,7 @@ class commandHelper {
             if (commandUtil.isConfirmSupport(splitedCommand[2])) {
                 if (commandUtil.checkAction(splitedCommand[2])) {
                     if (commandUtil.isNotStatus(splitedCommand)) {
-                        if (strToConfirm(KEY_WORD.sysCtl, splitedCommand[2], splitedCommand[1])) {
+                        if (this.strToConfirm(KEY_WORD.sysCtl, splitedCommand[2], splitedCommand[1])) {
                             sendData.command = command;
                         }
                     } else {
@@ -125,7 +132,7 @@ class commandHelper {
             // @TODO USING LOOP
         } else if (commandUtil.isHttpd(splitedCommand[0])) {
             if (commandUtil.isNotStatus(splitedCommand)) {
-                if(strToConfirm(KEY_WORD.sysCtl, splitedCommand[1], serviceList[0])) {
+                if(this.strToConfirm(KEY_WORD.sysCtl, splitedCommand[1], serviceList[0])) {
                     sendData.command = command;
                 }
             } else {
@@ -133,7 +140,7 @@ class commandHelper {
             }
         } else if (commandUtil.isNginx(splitedCommand[0])) {
             if (commandUtil.isNotStatus(splitedCommand)) {
-                if (strToConfirm(KEY_WORD.sysCtl, splitedCommand[1], serviceList[1])) {
+                if (this.strToConfirm(KEY_WORD.sysCtl, splitedCommand[1], serviceList[1])) {
                     sendData.command = command;
                 }
             } else {
@@ -141,7 +148,7 @@ class commandHelper {
             }
         } else if (commandUtil.isMySql(splitedCommand[0])) {
             if (commandUtil.isNotStatus(splitedCommand)) {
-                if (strToConfirm(KEY_WORD.sysCtl, splitedCommand[1], serviceList[2])) {
+                if (this.strToConfirm(KEY_WORD.sysCtl, splitedCommand[1], serviceList[2])) {
                     sendData.command = command;
                 }
             } else {
@@ -164,30 +171,33 @@ class commandHelper {
 
     mainProcess(formTag) {
         const form = new FormData(formTag);
-
+        let inputValue = form.get(this.inputTag.getAttribute('name'));
         const setTxtValue = (fetchObj) => {
+
             const txtArea = this.content.children[2];
             txtArea.value = [
-                txtArea.value, ' ', form.get(this.inputTag.getAttribute('name')), '\n',
+                txtArea.value, ' ', inputValue, '\n',
                 fetchObj.message, '\n', savePwd
             ].join(this.emptyString);
             txtArea.scrollTop = txtArea.scrollHeight;
             
         };
         this.inputTag.value = this.emptyString;
-        const isChecked = this.checkCommand(form.get(this.inputTag.getAttribute('name')));
+        const isChecked = this.checkCommand(inputValue);
         
         if (isChecked.command.length) {
             const body = {
                 body: form,
                 method: 'post'
             };
-            const checkStatus = (arr) => ! (KEY_WORD.checkStatus.filter( v => ! arr.includes(v) ).length);
             (async (url) => {
                 const getData = await fetch(url, body);
+                const checkStatus = (arr) => ! (KEY_WORD.checkStatus.filter( v => ! arr.includes(v) ).length);
                 if (checkStatus([getData.ok, getData.status, getData.statusText])) {
-                    setTxtValue(await getData.json());
                     
+                    setTxtValue(await getData.json());
+                    saveCommand.push(inputValue);
+                    ++arrIdx;
                 } else {
                     console.log('server conn fail');
                     

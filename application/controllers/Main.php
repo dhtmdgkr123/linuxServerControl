@@ -26,7 +26,7 @@ if ( ! class_exists('Main') ) {
 
         }
         
-        private function allArrayKeyExists(Array $dataArr) {
+        private function allArrayKeyExists(Array $dataArr): bool {
             $arrKeys = [
                 'serverAddress',
                 'serverPort',
@@ -100,7 +100,7 @@ if ( ! class_exists('Main') ) {
             }
         }
 
-        private function getUserData() {
+        private function getUserData(): Array {
             $dataArr = [
                 'serverAddress' => '',
                 'serverPort' => '',
@@ -114,7 +114,6 @@ if ( ! class_exists('Main') ) {
         }
         
         public function authUserData() {
-
             if ( chkPostMtd($_SERVER['REQUEST_METHOD']) ) {
                 $this->load->model('ServerAuth');
                 setJsonHeader();
@@ -125,7 +124,7 @@ if ( ! class_exists('Main') ) {
                 ];
                 
                 $dataArr = $this->getUserData();
-
+    
                 if ( $this->allArrayKeyExists( array_keys($dataArr) ) ) {
                     $retArr = $this->ServerAuth->mainMethod($dataArr);
                     if ( $retArr['status'] ) {
