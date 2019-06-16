@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?php
 if ( ! function_exists('isRoot') ) {
     function isRoot(String $userId): bool {
@@ -5,4 +6,13 @@ if ( ! function_exists('isRoot') ) {
     }
 }
 
+=======
+<?php
+if ( ! function_exists('isRoot') ) {
+    function isRoot(String $userId): bool {
+        return strtolower($userId) === 'root';
+    }
+}
+
+>>>>>>> refector
 ?>
