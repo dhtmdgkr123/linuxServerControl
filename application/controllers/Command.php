@@ -30,22 +30,14 @@ if ( ! class_exists('Command') ) {
         }
         
         private function chkStatus(): bool {
-<<<<<<< HEAD
             return $this->session->isLogin && chkPostMtd($this->input->server('REQUEST_METHOD'));
-=======
-            return $this->session->isLogin && chkPostMtd($_SERVER['REQUEST_METHOD']);
->>>>>>> refector
         }
     
         private function isNotLogin(): bool {
             return ! $this->session->isLogin;
         }
         
-<<<<<<< HEAD
-        private function renderServiceCommand() : Array {
-=======
         private function renderServiceCommand(): Array {
->>>>>>> refector
             $categoryList = ['Server' => [], 'MySQL' => [], 'APACHE' => [], 'NGINX' => [] ];
             $serviceList = [
                 ['ion-android-arrow-dropright-circle', ' Start'],
@@ -87,12 +79,6 @@ if ( ! class_exists('Command') ) {
             $staticPath = '../application/static/';
             $baseStaticPath = $staticPath.'base/';
             $commandPath = $staticPath.'command/';
-<<<<<<< HEAD
-
-=======
-            
-            
->>>>>>> refector
             $staticFile = [
                 'head' => [
                     'css' => [
@@ -147,10 +133,7 @@ if ( ! class_exists('Command') ) {
         public function getPwd() {
             if ( $this->chkStatus() ) {
                 $this->load->model('ExecCommand');
-<<<<<<< HEAD
                 setJsonHeader();
-=======
->>>>>>> refector
                 jsonEcho ( $this->ExecCommand->printWorkingDir($this->session->pwd) );
                 setJsonHeader();
             } else {

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <?php
 
 if ( ! function_exists('getModifyTime') ) {
@@ -7,14 +6,4 @@ if ( ! function_exists('getModifyTime') ) {
     }
 }
 
-=======
-<?php
-
-if ( ! function_exists('getModifyTime') ) {
-    function getModifyTime(String $path, String $fileName): String {
-        return 'lastModify='.date('Y-m-d', filemtime($path.$fileName));
-    }
-}
-
->>>>>>> refector
 ?>
