@@ -4,12 +4,25 @@ if ( ! class_exists('GetStatus') ) {
         function __construct(Type $var = null) {
             parent::__construct();
             $this->load->library('session');
-            $this->load->helper('ajax');
+            $this->load->library('json');
             $this->load->helper('idFilter');
         }
+        
 
-        public function checkRootId() {
-            setJsonHeader();
+
+
+        public function dfdfdfd(Type $var = null)
+        {
+
+            phpinfo();
+            # code...
+
+            // echo "extension=redis.so" > /etc/php/7.3/mods-available/redis.ini && ln -sf /etc/php/7.3/mods-available/redis.ini /etc/php/7.3/fpm/conf.d/20-redis.ini && ln -sf /etc/php/7.3/mods-available/redis.ini /etc/php/7.3/cli/conf.d/20-redis.ini
+        }
+
+
+        public function checkRootId(){
+            $this->json->header();
 
             $retArray = [
                 'stat' => FALSE,
@@ -25,8 +38,8 @@ if ( ! class_exists('GetStatus') ) {
                 $retArray['message'] = $this->config->base_url();
 
             }
-            jsonEcho($retArray);
-        }
+            $this->json->echo($retArray);
+        }   
     }
     
 }

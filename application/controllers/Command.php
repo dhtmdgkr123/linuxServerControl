@@ -37,7 +37,7 @@ if ( ! class_exists('Command') ) {
             return ! $this->session->isLogin;
         }
         
-        private function renderServiceCommand(): Array {
+        private function renderServiceCommand() : Array {
             $categoryList = ['Server' => [], 'MySQL' => [], 'APACHE' => [], 'NGINX' => [] ];
             $serviceList = [
                 ['ion-android-arrow-dropright-circle', ' Start'],
@@ -79,6 +79,7 @@ if ( ! class_exists('Command') ) {
             $staticPath = '../application/static/';
             $baseStaticPath = $staticPath.'base/';
             $commandPath = $staticPath.'command/';
+
             $staticFile = [
                 'head' => [
                     'css' => [
@@ -135,7 +136,6 @@ if ( ! class_exists('Command') ) {
                 $this->load->model('ExecCommand');
                 setJsonHeader();
                 jsonEcho ( $this->ExecCommand->printWorkingDir($this->session->pwd) );
-                setJsonHeader();
             } else {
                 show_404();
             }

@@ -62,7 +62,8 @@ if ( ! class_exists('ServerStatus') ) {
                         ],
                         'footer' => [
                             'js' => [
-                                'status' => $cfg->site_url('application/static/status/js/status.js').'?ver=1.0.0&'.getModifyTime(APPPATH.'static/status/js/', 'status.js'),
+                                'servicePipe' => $cfg->site_url('application/static/status/js/servicePipe.js').'?ver=1.0.0&'.getModifyTime(APPPATH.'static/status/js/', 'servicePipe.js'),
+                                'status' => $cfg->site_url('application/static/status/js/render.js').'?ver=1.0.0&'.getModifyTime(APPPATH.'static/status/js/', 'render.js'),
                                 'main' => $cfg->site_url('application/static/status/js/main.js').'?ver=1.0.0&'.getModifyTime(APPPATH.'static/status/js/', 'main.js')
                             ]
                         ]

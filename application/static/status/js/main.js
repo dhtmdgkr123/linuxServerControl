@@ -1,13 +1,19 @@
 window.addEventListener('load', function(e){
-    const stat = new status();
+    new renderImage();
     let target = null;
-    // this.document.getElementById('')
-    document.getElementById('getTarget').addEventListener('click', function(e){
-        // console.log(e.target);
+
+
+
+
+
+
+    document.getElementById('getTarget').addEventListener('click', function(e) {
         if ( e.target.nodeName === 'LI' ) {
             target = e.target;
-            console.log(target);
-            console.log(target.getAttribute('id'));
+            new servicePipe(target).main()
+            target = null;
         }
-    })
+    });
+
+    
 });
