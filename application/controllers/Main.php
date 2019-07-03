@@ -16,9 +16,10 @@ if ( ! class_exists('Main') ) {
             $this->load->library('session');
             $this->load->helper('ajax');
             $this->load->helper('file');
+            $this->load->library('json');
             
             $this->appPath = APPPATH.'views/';
-            $this->staticPath = APPPATH.'static/';
+            $this->staticPath = realpath('./static/').'/';
             $this->commonBasePath = $this->staticPath.'base/';
             
             $this->jsFilePath = $this->staticPath.'main/js/';
@@ -44,23 +45,25 @@ if ( ! class_exists('Main') ) {
         }
         
         public function index() {
+            
             $mainPath = $this->appPath.'main/';
             $headPath = $mainPath.'head.php';
             $bodyPath = $mainPath.'body.php';
             $footPath = $mainPath.'foot.php';
 
-            $staticPath = '../application/static/';
+            $staticPath = './static/';
 
             $baseStaticPath = $staticPath.'base/';
             $mainStaticPath = $staticPath.'main/';
 
             $commonAbosolutePath = $this->commonBasePath;
+            
 
             $staticFile = [
                 'head' => [
                     'css' => [
                         'reset' => $baseStaticPath.'reset.css?ver=1.6.1&'.getModifyTime($commonAbosolutePath, 'reset.css'),
-                        'font' => $baseStaticPath.'font.css&'.getModifyTime($commonAbosolutePath, 'font.css'),
+                        'font' => $baseStaticPath.'font.css?ver=1.0.0&'.getModifyTime($commonAbosolutePath, 'font.css'),
                         'jConfirm' => $baseStaticPath.'jConfirm/confirm.css?ver=3.3.0&'.getModifyTime($commonAbosolutePath, 'jConfirm/confirm.css'),
                         'style' => $mainStaticPath.'css/style.css?ver=1.0.1&'.getModifyTime($this->cssFilePath, 'style.css')
                     ]
@@ -86,7 +89,7 @@ if ( ! class_exists('Main') ) {
             
             if (file_exists($headPath) && file_exists($bodyPath) && file_exists($footPath)) {
 
-                if ($this->session->isLogin) {
+                if ( $this->session->isLogin ) {
                     gotoPage( $this->config->site_url('Command/index') );
                     return;
                 }
@@ -96,7 +99,6 @@ if ( ! class_exists('Main') ) {
 
             } else {
                 show_404();
-                
             }
         }
 
@@ -112,11 +114,17 @@ if ( ! class_exists('Main') ) {
             }
             return $dataArr;
         }
+
+
+        private function cryptPassword(String $userPassword) {
+            return openssl_encrypt($userPassword, getenv('method'), getenv('key'), TRUE, getenv('iv'));
+        }
         
         public function authUserData() {
-            if ( chkPostMtd($_SERVER['REQUEST_METHOD']) ) {
+
+            if ( chkPostMtd($this->input->server('REQUEST_METHOD')) ) {
+                $this->json->header();
                 $this->load->model('ServerAuth');
-                setJsonHeader();
                 $retArr = [
                     'status' => FALSE,
                     'code' => -3,
@@ -128,11 +136,11 @@ if ( ! class_exists('Main') ) {
                 if ( $this->allArrayKeyExists( array_keys($dataArr) ) ) {
                     $retArr = $this->ServerAuth->mainMethod($dataArr);
                     if ( $retArr['status'] ) {
-                        $this->setSessionArray($dataArr);  
+                        $dataArr['userPassword'] = $this->cryptPassword($dataArr['userPassword']);
+                        $this->setSessionArray($dataArr);
                     }
                 }
-                jsonEcho($retArr);
-                
+                $this->json->echo($retArr);
             } else {
                 show_404();
             }

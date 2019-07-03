@@ -11,13 +11,63 @@ if ( ! class_exists('GetStatus') ) {
 
 
 
-        public function dfdfdfd(Type $var = null)
-        {
+        private function renderTemplate() {
+            $url = $this->config->site_url('Command');
+            return [
+                'root'   => "<a href='{$url}'><div id='root' class='flex_align logo_height_set logo_img'></div></a>",
+                'unRoot' => "<a href='{$url}'><div id='unroot' class='flex_align logo_height_set logo_img'></div></a>"
+            ];
+        }
+        
+        public function getDiskUsage() {
+            
+            // $this->load->model('ExecCommand');
+            
+            // 1. dependency check
+            //   - mpstat, bc, 
+            // if (packageExists('bc') && packageExists('mpstat')) {
 
-            phpinfo();
-            # code...
+            // }
+            // $usedDisk = "usedDisk"; $totalDisk = "totalDisk";
 
-            // echo "extension=redis.so" > /etc/php/7.3/mods-available/redis.ini && ln -sf /etc/php/7.3/mods-available/redis.ini /etc/php/7.3/fpm/conf.d/20-redis.ini && ln -sf /etc/php/7.3/mods-available/redis.ini /etc/php/7.3/cli/conf.d/20-redis.ini
+            // TOTAL=`free | grep ^Mem | awk '{print $2}'`;USED1=`free | grep ^Mem | awk '{print $3}'`;n=$((100*USED1/TOTAL));echo \$n;
+            // "
+            // totalDisk=`df -P | grep -v ^Filesystem | awk '{sum += $2} END { print sum; }'`; usedDisk=`df -P | grep -v ^Filesystem | awk '{sum += $3} END { print sum; }'`; per_1=`echo "100*$use/\$tot" | bc -l`;
+            // per=`echo \$per_1 | cut -c 1-4`;echo \$per;"
+            // packageExists(){ return dpkg -l "$1" &> /dev/null ; }; if as bc; then echo "fail"; else echo "ex"; fi
+
+
+
+            $commandList = [
+                'ip'           => 'ipAddress=$(ifconfig | head -2 | tail -1 | awk \'{print $2}\' | cut -f 2 -d ":")',
+                'diskUsagePer' => "diskPercent=$(df -P | grep -v ^Filesystem | awk '{total += $2; used += $3} END {printf(\"%.2f\",used/total * 100.0)}')",
+                'ramUsagePer'  => "ramPercent=$(free | grep Mem | awk '{ printf(\"%.2f\",$3/$2 * 100.0) }')",
+                'diskInfo'     => "diskInfo=$(df -T -P)",
+                'hostInfo'     => "userInfo=$(hostname)",
+                'cpuUsage'     => "cpuUsage=$(mpstat | tail -1 | awk '{printf(\"%.2f\",100-$13)}')" 
+            ];
+            $command = "
+            packageExists(){ return dpkg -l \"$1\" &> /dev/null ; };
+            rlt=null;
+            if ! packageExists sysstat; then
+                echo \"install Mpsata\";
+            elif ! packageExists bc; then
+                echo \"install bc\";
+            else
+                \n
+            ";
+            $command = ltrim($command);
+            // $command = '';
+            foreach ($commandList as $key => $value) {
+                # code...
+                $command .= $value.';';
+                // echo $value.';<br>';
+            }
+            echo $command.'fi;'; //debug
+            // print_r($commandList);
+            // $command = 'packageExists(){ return dpkg -l "$1" &> /dev/null ; }; if packageExists bc && packageExists mpstat; then echo "exists"; else echo "fail"; fi'
+            // $getIp .= "&& echo \$ipAddress";
+            // print_r($this->ExecCommand->execUserCommand($getIp));
         }
 
 
@@ -30,10 +80,11 @@ if ( ! class_exists('GetStatus') ) {
             ];
             $url = $this->config->site_url('Command');
             if ( $this->session->isLogin ) {
-                $rootTemplate = "<a href='{$url}'><div id='root' class='flex_align logo_height_set logo_img'></div></a>";
-                $defaultTemplate = "<a href='{$url}'><div id='unroot' class='flex_align logo_height_set logo_img'></div></a>";
-                $retArray['message'] = isRoot($this->session->userId) ? $rootTemplate : $defaultTemplate;
+                
+                $template = $this->renderTemplate();
+                $retArray['message'] = isRoot($this->session->userId) ? $template['root'] : $template['unRoot'];
                 $retArray['stat'] = TRUE;
+
             } else {
                 $retArray['message'] = $this->config->base_url();
 

@@ -39,8 +39,7 @@ if ( ! class_exists('ServerAuth') ) {
                     $reqArr['serverAddress'], 
                     intval($reqArr['serverPort'])  
                 );
-
-
+                
                 if ( ! $sshConnInfo ) {
                     
                     throw new failConnServerException(
@@ -53,7 +52,7 @@ if ( ! class_exists('ServerAuth') ) {
                     );
                 } else {
                     $retArr['status'] = TRUE;
-                    $retArr['page'] = $this->config->site_url('Command/index');
+                    $retArr['page'] = $this->config->site_url('Command');
                 }
 
             } catch (failConnServerException $catchConnectError) {
@@ -65,6 +64,9 @@ if ( ! class_exists('ServerAuth') ) {
                 $retArr['page'] = $cathAuthError->getMessage();
 
             } finally {
+                if ( ! $retArr['page'] ) {
+                    $retArr['code'] = -5;
+                }
                 return $retArr;
 
             }

@@ -42,7 +42,7 @@ if ( ! class_exists('ServicePipe') ) {
                 'isUrl' => FALSE
             ];
             
-            if ($filterObject->filterMain()) {
+            if ( $filterObject->filterMain() ) {
                 $this->load->model('ExecCommand');
                 $command = $filterObject->generateCommand();
                 if (isStatus($service)) {

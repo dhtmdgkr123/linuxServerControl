@@ -14,12 +14,14 @@ if ( ! class_exists('Command') ) {
             parent::__construct();
     
             $this->load->library('session');
+            $this->load->library('json');
             $this->load->helper('ajax');
             $this->load->helper('file');
-    
-            $this->appPath = APPPATH.'views/';
-            $this->jsFilePath = APPPATH.'static/command/js/';
-            $this->commonStaticPath = APPPATH.'static/base/';
+            
+            $this->staticPath = realpath('./static').'/';
+            $this->jsFilePath = $this->staticPath.'command/js/';
+            $this->commonStaticPath = $this->staticPath.'base/';
+            
             $this->statusArray = ['blocked', 'success'];
             $this->returnValue = [ $this->statusArray[0] => -1 ];
             $this->returnArray = [
@@ -37,29 +39,38 @@ if ( ! class_exists('Command') ) {
             return ! $this->session->isLogin;
         }
         
-        private function renderServiceCommand() : Array {
-            $categoryList = ['Server' => [], 'MySQL' => [], 'APACHE' => [], 'NGINX' => [] ];
-            $serviceList = [
-                ['ion-android-arrow-dropright-circle', ' Start'],
-                ['ion-android-refresh', ' Restart'],
-                ['ion-android-alert', ' Off'],
-                ['ion-heart', ' Status']
-            ];
-            $tmp = $serviceList;
-            for ($i = 0, $categoryKey = array_keys($categoryList), $categoryListLen = count($categoryKey), $serviceListLen = count($serviceList); $i < $categoryListLen; $i++) {
-                for ($j = 0; $j < $serviceListLen; $j++) {
-                    $serviceList[$j][1] = $categoryKey[$i].$serviceList[$j][1];
+        private function renderServiceCommand($saveValue) : Array {
+            $retArr = NULL;
+            
+            if ( $saveValue ) {
+                $retArr = $saveValue;
+            } else {
+                $categoryList = ['Server' => [], 'MySQL' => [], 'APACHE' => [], 'NGINX' => [] ];
+                $serviceList = [
+                    ['ion-android-arrow-dropright-circle', ' Start'],
+                    ['ion-android-refresh', ' Restart'],
+                    ['ion-android-alert', ' Off'],
+                    ['ion-heart', ' Status']
+                ];
+                $tmp = $serviceList;
+                for ($i = 0, $categoryKey = array_keys($categoryList), $categoryListLen = count($categoryKey), $serviceListLen = count($serviceList); $i < $categoryListLen; $i++) {
+                    for ($j = 0; $j < $serviceListLen; $j++) {
+                        $serviceList[$j][1] = $categoryKey[$i].$serviceList[$j][1];
+                    }
+                    $categoryList[$categoryKey[$i]] = $serviceList;
+                    $serviceList = $tmp;
+                    if ($categoryList[$categoryKey[$i]][0][1] === $categoryKey[0].$tmp[0][1]) {
+                        array_shift($categoryList[$categoryKey[$i]]);
+                    }
                 }
-                $categoryList[$categoryKey[$i]] = $serviceList;
-                $serviceList = $tmp;
-                if ($categoryList[$categoryKey[$i]][0][1] === $categoryKey[0].$tmp[0][1]) {
-                    array_shift($categoryList[$categoryKey[$i]]);
-                }
+                $this->session->set_userdata('commandRenderValue', $categoryList);
+                $retArr = $categoryList;
             }
-            return $categoryList;
+
+            return $retArr;
         }
         
-        public function logout() {
+        public function logout() : void {
             $userData = $this->session->all_userdata();
             foreach ($userData as $key => $value) {
                 if ($key !== 'session_id' && $key !== 'ip_address' && $key !== 'user_agent' && $key !== 'last_activity') {
@@ -70,13 +81,13 @@ if ( ! class_exists('Command') ) {
             gotoPage('/');
         }
         
-        public function index() {
-    
-            $mainPath = $this->appPath.'commandMain/';
+        public function index() : void {
+            
+            $mainPath = VIEWPATH.'commandMain/';
             $headPath = $mainPath.'head.php';
             $bodyPath = $mainPath.'body.php';
             $footPath = $mainPath.'foot.php';
-            $staticPath = '../application/static/';
+            $staticPath = '/static/';
             $baseStaticPath = $staticPath.'base/';
             $commandPath = $staticPath.'command/';
 
@@ -96,7 +107,7 @@ if ( ! class_exists('Command') ) {
                         'img' => [
                             'user' => 'test.png'
                         ],
-                        'admin' => $this->renderServiceCommand(),
+                        'admin' => $this->renderServiceCommand($this->session->commandRenderValue),
                     ]
                 ],
                 'foot' => [
@@ -112,8 +123,7 @@ if ( ! class_exists('Command') ) {
                     ]
                 ]
             ];
-    
-    
+            
             if (file_exists($headPath) && file_exists($bodyPath) && file_exists($footPath)) {
                 
                 if ( $this->isNotLogin() ) {
@@ -131,7 +141,7 @@ if ( ! class_exists('Command') ) {
             
         }
         
-        public function getPwd() {
+        public function getPwd() : void {
             if ( $this->chkStatus() ) {
                 $this->load->model('ExecCommand');
                 setJsonHeader();
@@ -141,17 +151,19 @@ if ( ! class_exists('Command') ) {
             }
         }
         
-        public function commandMainProcess() {
+        public function commandMainProcess() : void {
             if ( $this->chkStatus() ) {
-                setJsonHeader();
+                $this->json->header();
                 $data = $this->getUserCommand();
+                $retArr = NULL;
                 if ( ( !($data)) && $this->filterCommand($data) ) {
                     $this->returnArray['code'] = $this->returnValue[$this->statusArray[0]];
-                    jsonEcho($this->returnArray);
+                    $retArr = $this->returnArray;
                 } else {
                     $this->load->model('ExecCommand');
-                    jsonEcho($this->ExecCommand->execUserCommand($data));
+                    $retArr = $this->ExecCommand->execUserCommand($data);
                 }
+                $this->json->echo($retArr);
     
             } else {
                 show_404();
@@ -163,9 +175,9 @@ if ( ! class_exists('Command') ) {
             return (new commandFilter($data))->filterMain();
         }
         
-        private function getUserCommand() {
+        private function getUserCommand() : String {
             $postDataTmp = trimPost('command');
-            return $postDataTmp ? $postDataTmp : NULL;
+            return $postDataTmp ? $postDataTmp : '';
         }
     }
 

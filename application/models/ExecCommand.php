@@ -24,10 +24,9 @@ if ( ! class_exists('ExecCommand') ) {
                 'serverPort' => $this->session->serverPort,
                 'userId' => $this->session->userId,
                 'userPassword' => $this->session->userPassword
-            ];
-            
+            ];    
         }
-
+        
         public function printWorkingDir($cachePwd): Array {
             $retArr = [
                 'status' => FALSE,
@@ -67,6 +66,12 @@ if ( ! class_exists('ExecCommand') ) {
             return $retArr;
             
         }
+
+
+
+        private function decryptPassword(String $userPassword) {
+            return openssl_decrypt($userPassword, getenv('method'), getenv('key'), TRUE, getenv('iv'));
+        }
         
         private function getConnect() {
             $connInfo = ssh2_connect(
@@ -77,10 +82,14 @@ if ( ! class_exists('ExecCommand') ) {
             if ( ! $connInfo ) {
                 return FALSE;
             } else {
-                ssh2_auth_password($connInfo, $this->userData->userId, $this->userData->userPassword);
+                ssh2_auth_password($connInfo, $this->userData->userId, $this->decryptPassword($this->userData->userPassword));
                 return $connInfo;
             }
+        }
 
+
+        public function FunctionName(String $id) {
+            # code...
         }
 
         private function execCommand($link, $cmd): String {
