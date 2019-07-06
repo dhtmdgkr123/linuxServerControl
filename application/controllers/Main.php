@@ -116,8 +116,28 @@ if ( ! class_exists('Main') ) {
         }
 
 
-        private function cryptPassword(String $userPassword) {
-            return openssl_encrypt($userPassword, getenv('method'), getenv('key'), TRUE, getenv('iv'));
+        private function valueIsEmpty(Array $arr) {
+            foreach ($arr as $value) {
+                if ( ! $value ) {
+                    return FALSE;
+                }
+            }
+            return TRUE;
+        }
+        
+        private function cryptPassword(String $userPassword) : String {
+            $retPassword = '';
+            $envList = [
+                'method' => getenv('method'),
+                'key' => getenv('key'),
+                'vector' => getenv('iv')
+            ];
+
+            if ( $this->valueIsEmpty($envList) ) {
+                $retPassword = openssl_encrypt($userPassword, getenv('method'), getenv('key'), TRUE, getenv('iv'));
+            }
+            
+            return $retPassword;
         }
         
         public function authUserData() {
@@ -134,10 +154,15 @@ if ( ! class_exists('Main') ) {
                 $dataArr = $this->getUserData();
     
                 if ( $this->allArrayKeyExists( array_keys($dataArr) ) ) {
-                    $retArr = $this->ServerAuth->mainMethod($dataArr);
-                    if ( $retArr['status'] ) {
-                        $dataArr['userPassword'] = $this->cryptPassword($dataArr['userPassword']);
-                        $this->setSessionArray($dataArr);
+                    $cryptPassword = $this->cryptPassword($dataArr['userPassword']);
+                    if ( $cryptPassword ) {
+                        $retArr = $this->ServerAuth->mainMethod($dataArr);
+                        if ( $retArr['status'] ) {
+                            $dataArr['userPassword'] = $cryptPassword;
+                            $this->setSessionArray($dataArr);
+                        }
+                    } else {
+                        $retArr['code'] = -6;
                     }
                 }
                 $this->json->echo($retArr);
