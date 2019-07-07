@@ -86,12 +86,7 @@ if ( ! class_exists('ExecCommand') ) {
                 return $connInfo;
             }
         }
-
-
-        public function FunctionName(String $id) {
-            # code...
-        }
-
+        
         private function execCommand($link, $cmd): String {
             $getStream = ssh2_exec( $link, $cmd );
             

@@ -1,12 +1,7 @@
 window.addEventListener('load', function(e){
     new renderImage();
     let target = null;
-
-
-
-
-
-
+   
     document.getElementById('getTarget').addEventListener('click', function(e) {
         if ( e.target.nodeName === 'LI' ) {
             target = e.target;
@@ -14,6 +9,8 @@ window.addEventListener('load', function(e){
             target = null;
         }
     });
+
+    new renderDiskUsgae();
 
     
 });

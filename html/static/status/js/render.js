@@ -54,20 +54,21 @@ class renderImage extends renderInterFace {
 class renderDiskUsgae extends renderInterFace {
     constructor() {
         super();
-        console.log(
-            this.renderUrl({
-                className: 'getStatus',
-                methodName: 'getDiskUsage'
-            })
-        );
+        this.req();
     }
 
 
     async req() {
         const url = this.renderUrl({
             className: 'getStatus',
-            methodName: 'getDiskUsage'
+            methodName: 'getServerInfo'
         });
+        const req = await fetch(url, {
+            method : 'get'
+        });
+        if ( this.checkStatus(req) ) {
+            console.log(await req.json());
+        }
 
     }
 
@@ -144,5 +145,3 @@ class renderDiskUsgae extends renderInterFace {
 
 
 }
-
-new renderDiskUsgae()
