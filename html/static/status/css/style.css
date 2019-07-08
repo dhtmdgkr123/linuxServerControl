@@ -4,9 +4,11 @@
  * @version: 1.0.1.1
  * @Contact: osh12201@gmail.com
  */
- *{
+*{
     font-family: 'Roboto','Open Sans', 'Source Sans Pro', sans-serif;
 }
+
+
 /* demo set */
 .demo_hide{
     display:none;
@@ -194,7 +196,7 @@ html{
     overflow-x: hidden;
     position: relative;
 }
-.content_wrap .top_card{
+.content_wrap .top-card{
     position: absolute;
     left: 0;
     right: 0;
@@ -214,7 +216,7 @@ html{
     color: #fff;
     text-align: center;
 }
-.content_wrap .top_card img{
+.content_wrap .top-card img{
     max-height: 100%;
 }
 .content_wrap .card{

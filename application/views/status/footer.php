@@ -1,4 +1,5 @@
     <script src="<?=$js['servicePipe']?>"></script>
+    <script src="<?=$js['slideToggle']?>"></script>
     <script src="<?=$js['status']?>"></script>
     <script src="<?=$js['main']?>"></script>
 </body>

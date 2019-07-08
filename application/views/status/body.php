@@ -42,10 +42,10 @@
         </div>
 
         <div class="content_wrap flex_02">
-            <div class="top_card">
-                <div class="gauge_chart" id="chart_div_1"></div>
-                <div class="gauge_chart" id="chart_div_2"></div>
-                <div class="gauge_chart" id="chart_div_3"></div>
+            <div class="top-card">
+                <?php for ($i = 1; $i <= 3; $i++ ): ?>
+                    <div class="gauge_chart" id="chartDiv<?=$i?>"></div>
+                <?php endfor; ?>
             </div>
             <div id="card_main" class="card">
 
@@ -54,7 +54,7 @@
 
                 
                 
-                <div class="card_container">
+                <!-- <div class="card_container">
                     <div class="card_item flex">
                         <div class="disk flex_00 disk_bg">
                             <div class="disk_img">
@@ -121,7 +121,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
 
                 <!-- endTemplate -->

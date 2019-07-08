@@ -74,6 +74,7 @@ if ( ! class_exists('ServerStatus') ) {
                             'js' => [
                                 'servicePipe' => $cfg->site_url('static/status/js/servicePipe.js').'?ver=1.0.0&'.getModifyTime($staticPath.'status/js/', 'servicePipe.js'),
                                 'status' => $cfg->site_url('static/status/js/render.js').'?ver=1.0.0&'.getModifyTime($staticPath.'status/js/', 'render.js'),
+                                'slideToggle' => $cfg->site_url('static/status/js/slideToggle.js'.'?ver=1.0.0&'.getModifyTime($staticPath.'status/js/', 'slideToggle.js')),
                                 'main' => $cfg->site_url('static/status/js/main.js').'?ver=1.0.0&'.getModifyTime($staticPath.'status/js/', 'main.js')
                             ]
                         ]

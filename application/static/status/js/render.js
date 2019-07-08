@@ -66,8 +66,15 @@ class renderDiskUsgae extends renderInterFace {
     async req() {
         const url = this.renderUrl({
             className: 'getStatus',
-            methodName: 'getDiskUsage'
+            methodName: 'getServerInfo'
         });
+        const request = fetch(url, {
+            method: 'get'
+        });
+        if ( this.checkStatus(request) ) {
+            console.log(await request.json());
+            console.log('asdf')
+        }
 
     }
 

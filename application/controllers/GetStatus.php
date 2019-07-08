@@ -11,6 +11,12 @@ if ( ! class_exists('GetStatus') ) {
                 redirect($this->config->base_url(), 'refresh');
             }
         }
+
+
+
+        private function setServerInfoCahche(Array $info) {
+            $this->session->set_userdata('infoCache', $info);
+        }
         
 
 
@@ -19,12 +25,15 @@ if ( ! class_exists('GetStatus') ) {
         }
 
 
-        private function renderTemplate() : Array {
+        private function renderTemplate(bool $isRoot) : String {
             $url = $this->config->site_url('Command');
-            return [
+
+            $template = [
                 'root'   => "<a href='{$url}'><div id='root' class='flex_align logo_height_set logo_img'></div></a>",
                 'unRoot' => "<a href='{$url}'><div id='unroot' class='flex_align logo_height_set logo_img'></div></a>"
             ];
+            return $isRoot ? $template['root'] : $template['unRoot'];
+
         }
         
         private function dfParser(String $dfResult) : Array {
@@ -47,8 +56,8 @@ if ( ! class_exists('GetStatus') ) {
             return $rltArray;
         }
         
-        public function getServerInfo() {
-            $this->json->header();
+        private function getServerInfo() : Array {
+            // $this->json->header();
             $setting = [
                 'depenDency' => [
                     'bc', 'mpstat', // im-sensors
@@ -68,7 +77,7 @@ if ( ! class_exists('GetStatus') ) {
                     'ramUsagePer'  => "ramPercent=$(free | grep Mem | awk '{ printf(\"%.2f\",$3/$2 * 100.0) }')",
                     'hostInfo'     => "userInfo=$(hostname)",
                     'cpuUsage'     => "cpuUsage=$(mpstat | tail -1 | awk '{printf(\"%.2f\",100-$13)}')",
-                    'diskInfo'     => "diskInfo=$(df -T -P)",
+                    'diskInfo'     => "diskInfo=$(df -T -P -h)",
                 ]
             ];
             $this->load->model('ExecCommand');
@@ -83,31 +92,34 @@ if ( ! class_exists('GetStatus') ) {
                     
                 }
             }
-
-            $this->json->echo($getCommandResult);
+            return $getCommandResult;
         }
 
 
-        public function checkRootId(){
+        public function renderMainInfo() {
             $this->json->header();
-
             $retArray = [
-                'stat' => FALSE,
+                'status' => FALSE,
                 'message' => NULL
             ];
-            $url = $this->config->site_url('Command');
             if ( $this->session->isLogin ) {
-                
-                $template = $this->renderTemplate();
-                $retArray['message'] = isRoot($this->session->userId) ? $template['root'] : $template['unRoot'];
-                $retArray['stat'] = TRUE;
+                $retArray['status'] = TRUE;
+                $retArray['message']['userTemplate'] = $this->renderTemplate(isRoot($this->session->userId));
+                $retArray['message']['serverInfo'] = $this->getServerInfo();
+                // $this->setServerInfoCahche($retArray['message']);
+                // if ( $this->sesson->infoCache ) {
+                //     if (  )
+                // } else {
+
+                // }
 
             } else {
                 $retArray['message'] = $this->config->base_url();
-
             }
             $this->json->echo($retArray);
-        }   
+        }
+
+
     }
     
 }
