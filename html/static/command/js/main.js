@@ -4,7 +4,7 @@ window.addEventListener('load', function () {
     const doc = document;
     const firstContent = doc.getElementById('content0');
     const commandObj = new commandHelper(firstContent, doc);
-    
+    const commandPipe = new servicePipe();
     commandObj.pwd();
     
     new TAB(
@@ -46,7 +46,7 @@ window.addEventListener('load', function () {
         }
         if (isSubmut) {
             isSubmut = false;
-            new servicePipe(target).mainProcess();
+            commandPipe.setTarget(target).mainProcess();
         }
         isSubmut = true;
     });

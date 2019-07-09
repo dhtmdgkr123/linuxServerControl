@@ -21,6 +21,7 @@ if ( ! class_exists('ServicePipe') ) {
             ];
         }
         
+        
         private function checkStatus(): bool {
             return $this->session->isLogin && chkPostMtd($_SERVER['REQUEST_METHOD']);
         }
@@ -30,6 +31,7 @@ if ( ! class_exists('ServicePipe') ) {
         }
         
         public function getServiceName() {
+            // setJsonHeader();
             $this->json->header();
 
             $service = trimPost('test');
@@ -43,11 +45,14 @@ if ( ! class_exists('ServicePipe') ) {
                 'isUrl' => FALSE
             ];
             
+            
             if ( $filterObject->filterMain() ) {
                 $this->load->model('ExecCommand');
                 $command = $filterObject->generateCommand();
-                if (isStatus($service)) {
-                    
+
+
+                
+                if (isStatus($service) || isShell($service) ) {
                     if (filter_var($command, FILTER_VALIDATE_URL)) {
                         $returnMessage['message'] = $command;
                         $returnMessage['status'] = TRUE;
@@ -70,7 +75,9 @@ if ( ! class_exists('ServicePipe') ) {
             } else {
                 $returnMessage = $this->returnMessage[1];
             }
+            $returnMessage['asdf'] = $filterObject->generateCommand();
             $this->json->echo($returnMessage);
+            // jsonEcho($returnMessage);
         }
     }
 }

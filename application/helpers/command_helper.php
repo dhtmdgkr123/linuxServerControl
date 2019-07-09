@@ -4,8 +4,9 @@ if ( ! function_exists('checkAllKeys') ) {
         return ! ((bool) count(array_diff(array_keys($data), array_keys($refArray))));
     }
 }
-if ( (! function_exists('isStatus')) && (! function_exists('isOff')) && (! function_exists('isStart')) && (! function_exists('isRestart')) ) {
+if ( (! function_exists('isCommand')) && (! function_exists('isStatus')) && (! function_exists('isOff')) && (! function_exists('isStart')) && (! function_exists('isRestart')) ) {
     function isStatus(String $str): bool { return strpos(strtolower($str), 'status') !== FALSE; }
+    function isShell(String $str): bool { return strpos(strtolower($str), 'shell') !== FALSE; }
     function isOff(String $str): bool {return strpos(strtolower($str, 'off')) !== FALSE; }
     function isStart(String $str): bool {return strpos(strtolower($str, 'start')) !== FALSE; }
     function isRestart(String $str): bool {return strpos(strtolower($str, 'restart')) !== FALSE; }
@@ -87,6 +88,7 @@ if ( ! class_exists('serviceFilter')) {
                 'NGINXStart' => '/etc/init.d/nginx start', 'NGINXRestart' => '/etc/init.d/nginx restart',
                 'NGINXOff' => '/etc/init.d/nginx stop', 'NGINXStatus' => '/etc/init.d/nginx status',
                 'ServerRestart' => 'init 6;', 'ServerOff' => 'init 0;', 'ServerStatus' => $this->baseUrl('ServerStatus'),
+                'WebShell' => $this->baseUrl('Command')
             ];
 
 

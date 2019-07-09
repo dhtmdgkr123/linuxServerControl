@@ -1,12 +1,35 @@
 class servicePipe extends commandHelper {
     constructor(target) {
-        super()
-        this.target = target
-        this.servicePattern = target.getAttribute('id');
+        super();
+        this.patternArray = [
+            'status',
+            'command'
+        ];
+        if ( target ) {
+            this.target = target
+            this.servicePattern = target.getAttribute('id');
+        }
     }
 
-    isNotStatus() {
-        return this.servicePattern.toLowerCase().indexOf('status') === -1;
+    setTarget(target) {
+        this.target = target;
+        this.servicePattern = this.target.getAttribute('id');
+        // console.log(id);
+        return this;
+    }
+
+    isStatus() {
+        const lower = this.servicePattern.toLowerCase();
+        let flag = false;
+        let arr = [
+            'serverstatus', 'webshell'
+        ];
+        for (let i in arr) {
+            if ( arr[i] === lower ) {
+                return false
+            }
+        }
+        return true;
     }
 
     sendData() {
@@ -20,7 +43,7 @@ class servicePipe extends commandHelper {
             
             const response = await request.json();
             const resKeys = Object.keys(res[this.userLang][KEY_WORD.buttonActied]);
-
+            
             if (response.status) {
                 if (response.isUrl) {
                     location.href = response.message;
@@ -59,18 +82,21 @@ class servicePipe extends commandHelper {
         }));
     }
 
-    mainProcess() {
-        if (this.getServiceList(this.servicePattern)) {
-            let serviceName = this.target.children[1]
+    getInnerText(target) {
+        target = target.children.length ? target.children[1] : target;
+        return target
                 .innerText
                 .split(' ')
-                .map(i => i.toLowerCase());
+                .map((i) => i.toLowerCase());
+    }
 
+    mainProcess() {
+        if (this.getServiceList(this.servicePattern)) {
+            let serviceName = this.getInnerText(this.target);
             if (serviceName[1] === 'off') {
                 serviceName[1] = 'stop';
             }
-            
-            if (this.isNotStatus()) {
+            if (this.isStatus()) {
                 if (this.strToConfirm(KEY_WORD.sysCtl, serviceName[1], serviceName[0])) {
                     this.sendData();
                 }
@@ -79,14 +105,7 @@ class servicePipe extends commandHelper {
             }
         }
     }
-
-    // renderUrl() {
-    //     return [
-    //         location.origin, '/ServicePipe/getServiceName'
-    //     ].join('');
-    // }
-
-
+    
     renderUrl(urlObject = {}) {
         let retVal = false;
         if (urlObject.className && urlObject.methodName) {
@@ -98,16 +117,29 @@ class servicePipe extends commandHelper {
     }
 
     getServiceList(serviceId) {
-        return Array
-                .from(document.getElementsByClassName('container'))
-                .filter((i, v) => v >= 3)
-                .map(i => Array
-                    .from(i.children)
-                    .filter(j => j.hasAttribute('id'))
-                    .map(j => j.getAttribute('id'))
-                )
-                .flat()
-                .some(arrVal => serviceId === arrVal)
+        const checkUrl = location.pathname.split('/')[1].toLowerCase() === 'ServerStatus'.toLowerCase();
+        if ( checkUrl ) {
+            return Array
+                    .from(document.getElementById('getTarget').children)
+                    .map((i) => Array.from(i.children[0].children)
+                                     .filter((j) => j.hasAttribute('id'))
+                                     .map((j) => j.getAttribute('id').trim())
+                    )
+                    .flatMap(i => i)
+                    .some(i => i === serviceId);
+        } else {
+            return Array
+                    .from(document.getElementsByClassName('container'))
+                    .filter((i, v) => v >= 3)
+                    .map(i => Array
+                        .from(i.children)
+                        .filter(j => j.hasAttribute('id'))
+                        .map(j => j.getAttribute('id'))
+                    )
+                    .flat()
+                    .some(arrVal => serviceId === arrVal)
+
+        }
     }
 
 

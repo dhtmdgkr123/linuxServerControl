@@ -106,6 +106,7 @@ class commandHelper {
          * @TODO : USING LOOP
          */
         else if (commandUtil.isSystemCtl(splitedCommand)) {
+            
             if (commandUtil.isConfirmSupport(splitedCommand[2])) {
                 if (commandUtil.checkAction(splitedCommand[1])) {
                     if (commandUtil.isNotStatus(splitedCommand)) {

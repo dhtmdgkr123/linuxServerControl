@@ -1,6 +1,7 @@
 window.addEventListener('load', function(e){
     const serverInfo = new renderServerInfo();
     const toggleSlider = new slideToggle();
+    const commandPipe = new servicePipe();
     let target = null;
     document.getElementById('card_main').addEventListener('click', function(e) {
         target = e.target;
@@ -12,7 +13,7 @@ window.addEventListener('load', function(e){
     document.getElementById('getTarget').addEventListener('click', function(e) {
         if ( e.target.nodeName === 'LI' ) {
             target = e.target;
-            new servicePipe(target).main()
+            commandPipe.setTarget(target).mainProcess()
             target = null;
         }
     });

@@ -11,29 +11,31 @@ if ( ! class_exists('ServerStatus') ) {
             return file_exists(VIEWPATH.$head.$ext) && file_exists(VIEWPATH.$body.$ext) && file_exists(VIEWPATH.$foot.$ext);
         }
 
-        private function renderUI($saveValue) : array {
+
+        private function renderUI($saveValue) : Array {
             $retArr = NULL;
+
             if ( $saveValue ) {
                 $retArr = $saveValue;
             } else {
                 $serviceList = [
-                    'Server' => [], 'MySQL' => [],
-                    'APACHE' => [], 'NGINX' => []
+                    'Server ' => [], 'MySQL ' => [],
+                    'APACHE ' => [], 'NGINX ' => []
                 ];
-    
                 $action = [
                     'Start', 'Restart', 'Off', 'Status'
                 ];
-                
                 $flag = TRUE;
-                for ($i = 0, $serviceKey = array_keys($serviceList) , $actionLen = count($action) , $serviceLen = count($serviceList); $i < $serviceLen; $i++) {
+                for ($i = 0, $passStatus = NULL, $serviceKey = array_keys($serviceList) , $actionLen = count($action) , $serviceLen = count($serviceList); $i < $serviceLen; $i++) {
                     for ($j = 0; $j < $actionLen; $j++) {
-                        if ( $serviceKey[$i] === $serviceKey[0] && $action[$j] === $action[$actionLen - 1]) {
+                        $passStatus = $serviceKey[$i] === $serviceKey[0] && $action[$j] === $action[$actionLen - 1];
+                        $passStart = $serviceKey[$i] === $serviceKey[0] && $action[$j] === $action[0];
+                        if ( $passStatus || $passStart ) {
                             continue;
                         } else {
                             if ( $serviceKey[$i] === $serviceKey[0] ) {
                                 if ( $flag ) {
-                                    array_push($serviceList[$serviceKey[$i]], 'command');
+                                    array_push($serviceList[$serviceKey[$i]], 'Web Shell');
                                     $flag = FALSE;
                                 }
                             }
@@ -41,14 +43,82 @@ if ( ! class_exists('ServerStatus') ) {
                         }
                     }
                 }
-                $retArr = $serviceList;
                 $this->session->set_userdata('statusRenderValue', $serviceList);
+                $retArr = $serviceList;
             }
-
-
+            
             return $retArr;
         }
-        
+
+
+        // private function renderUI($saveValue) : array {
+        //     $serviceList = [
+        //         'Server ' => [], 'MySQL ' => [],
+        //         'APACHE ' => [], 'NGINX ' => []
+        //     ];
+
+        //     $action = [
+        //         'Start', 'Restart', 'Off', 'Status'
+        //     ];
+            
+        //     $flag = TRUE;
+        //     for ($i = 0, $serviceKey = array_keys($serviceList) , $actionLen = count($action) , $serviceLen = count($serviceList); $i < $serviceLen; $i++) {
+        //         for ($j = 0; $j < $actionLen; $j++) {
+        //             if ( $serviceKey[$i] === $serviceKey[0] && $action[$j] === $action[$actionLen - 1]) {
+        //                 continue;
+        //             } else {
+        //                 if ( $serviceKey[$i] === $serviceKey[0] ) {
+        //                     if ( $flag ) {
+        //                         array_push($serviceList[$serviceKey[$i]], 'Web Shell');
+        //                         $flag = FALSE;
+        //                     }
+        //                 }
+        //                 array_push($serviceList[$serviceKey[$i]], $serviceKey[$i].$action[$j]);
+        //             }
+        //         }
+        //     }
+            
+
+        //     return $serviceList;
+        // }
+
+        // private function renderUI($saveValue) : array {
+        //     $retArr = NULL;
+        //     if ( $saveValue ) {
+        //         $retArr = $saveValue;
+        //     } else {
+        //         $serviceList = [
+        //             'Server ' => [], 'MySQL ' => [],
+        //             'APACHE ' => [], 'NGINX ' => []
+        //         ];
+    
+        //         $action = [
+        //             'Start', 'Restart', 'Off', 'Status'
+        //         ];
+                
+        //         $flag = TRUE;
+        //         for ($i = 0, $serviceKey = array_keys($serviceList) , $actionLen = count($action) , $serviceLen = count($serviceList); $i < $serviceLen; $i++) {
+        //             for ($j = 0; $j < $actionLen; $j++) {
+        //                 if ( $serviceKey[$i] === $serviceKey[0] && $action[$j] === $action[$actionLen - 1]) {
+        //                     continue;
+        //                 } else {
+        //                     if ( $serviceKey[$i] === $serviceKey[0] ) {
+        //                         if ( $flag ) {
+        //                             array_push($serviceList[$serviceKey[$i]], 'WebShell');
+        //                             $flag = FALSE;
+        //                         }
+        //                     }
+        //                     array_push($serviceList[$serviceKey[$i]], $serviceKey[$i].$action[$j]);
+        //                 }
+        //             }
+        //         }
+        //         $retArr = $serviceList;
+        //         $this->session->set_userdata('statusRenderValue', $serviceList);
+        //     }
+
+
+        //     return $retArr;
+        // }
         public function index() {
             if ( $this->checkFileExists('status/head', 'status/body', 'status/footer') ) {
                 $load = $this->load;
@@ -72,7 +142,11 @@ if ( ! class_exists('ServerStatus') ) {
                         ],
                         'footer' => [
                             'js' => [
-                                'servicePipe' => $cfg->site_url('static/status/js/servicePipe.js').'?ver=1.0.0&'.getModifyTime($staticPath.'status/js/', 'servicePipe.js'),
+                                'res' => $cfg->site_url('static/base/res.js').'?ver=1.0.0&'.getModifyTime($staticPath.'base/', 'res.js'),
+                                
+                                'const' => $cfg->site_url('static/command/js/const.js').'?ver=1.0.0&'.getModifyTime($staticPath.'status/js/', 'servicePipe.js'),
+                                'commandHelper' => $cfg->site_url('static/command/js/commandHelper.js').'?ver=1.0.0&'.getModifyTime($staticPath.'status/js/', 'servicePipe.js'),
+                                'servicePipe' => $cfg->site_url('static/command/js/servicePipe.js').'?ver=1.0.0&'.getModifyTime($staticPath.'status/js/', 'servicePipe.js'),
                                 'status' => $cfg->site_url('static/status/js/render.js').'?ver=1.0.0&'.getModifyTime($staticPath.'status/js/', 'render.js'),
                                 'slideToggle' => $cfg->site_url('static/status/js/slideToggle.js'.'?ver=1.0.0&'.getModifyTime($staticPath.'status/js/', 'slideToggle.js')),
                                 'main' => $cfg->site_url('static/status/js/main.js').'?ver=1.0.0&'.getModifyTime($staticPath.'status/js/', 'main.js')

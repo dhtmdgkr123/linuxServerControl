@@ -30,7 +30,7 @@
                         <ul class="category_list">
                             <h3 class="side_item_title"><?=$title?></h3>
                             <?php foreach($actionList as $action): ?>
-                            <li id="<?=$action?>"><?=$action?></li>
+                                <li id="<?=preg_replace('/\s+/', '', $action)?>"><?=$action?></li>
                             <?php endforeach;?>
                         </ul>
                     </div>

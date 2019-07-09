@@ -11,23 +11,17 @@ if ( ! class_exists('GetStatus') ) {
                 redirect($this->config->base_url(), 'refresh');
             }
         }
-
-
-
+        
         private function setServerInfoCahche(Array $info) {
             $this->session->set_userdata('infoCache', $info);
         }
         
-
-
         private function castBoolean(String $boolVal) : bool {
             return strtolower($boolVal) === 'true' ? TRUE : FALSE;
         }
-
-
+        
         private function renderTemplate(bool $isRoot) : String {
             $url = $this->config->site_url('Command');
-
             $template = [
                 'root'   => "<a href='{$url}'><div id='root' class='flex_align logo_height_set logo_img'></div></a>",
                 'unRoot' => "<a href='{$url}'><div id='unroot' class='flex_align logo_height_set logo_img'></div></a>"
@@ -35,13 +29,26 @@ if ( ! class_exists('GetStatus') ) {
             return $isRoot ? $template['root'] : $template['unRoot'];
 
         }
-        
+
         private function dfParser(String $dfResult) : Array {
+            if ( ! function_exists('replaceAll') ) {
+                function replaceAll(Array $pattern, String $target) : String {
+                    foreach ($pattern as $key => $value) {
+                        $target = str_replace($key, $value, $target);
+                    }
+                    return $target;
+                }
+            }
             $rltArray = [];
             $titleArray = [];
             $counter = 0;
             $arrayKeyCounter = 0;
-            $diskInfo = preg_split('/\s+/', str_replace("1024-blocks", "Size", str_replace("Mounted on", "MountedOn", str_replace("%", "", trim($dfResult)))));
+            $patternArray = [
+                '1024-blocks' => 'Size',
+                'Mounted on' => 'MountedOn',
+                '%' => ''
+            ];
+            $diskInfo = preg_split('/\s+/', replaceAll($patternArray, trim($dfResult)));
             foreach ( $diskInfo as $k => $v) {
                 if ( $k <= 6 ) {
                     array_push($titleArray, $v);
@@ -55,9 +62,38 @@ if ( ! class_exists('GetStatus') ) {
             }
             return $rltArray;
         }
-        
+
         private function getServerInfo() : Array {
-            // $this->json->header();
+            // @TODO : add optional, require
+            // $setting = [
+            //     'depenDency' => [
+            //         'require' => [
+            //             'bc', 'mpstat', // im-sensors
+            //         ],
+            //         'option' => [
+            //             'im-sensors',
+            //         ]
+            //     ],
+            //     'response' => [
+            //         "status" => 'TRUE',
+            //         "ip" => '$ipAddress',
+            //         "diskUsagePercent" => '$diskPercent',
+            //         "ramUsagePercent" => '$ramPercent',
+            //         "diskInfo" => '$diskInfo',
+            //         "hostName" => '$userInfo',
+            //         "cpuUsage" => '$cpuUsage'
+            //     ],
+            //     'commandList' => [
+            //         'ip'           => 'ipAddress=$(ifconfig | head -2 | tail -1 | awk \'{print $2}\' | cut -f 2 -d ":")',
+            //         'diskUsagePer' => "diskPercent=$(df -P | grep -v ^Filesystem | awk '{total += $2; used += $3} END {printf(\"%.2f\",used/total * 100.0)}')",
+            //         'ramUsagePer'  => "ramPercent=$(free | grep Mem | awk '{ printf(\"%.2f\",$3/$2 * 100.0) }')",
+            //         'hostInfo'     => "userInfo=$(hostname)",
+            //         'cpuUsage'     => "cpuUsage=$(mpstat | tail -1 | awk '{printf(\"%.2f\",100-$13)}')",
+            //         'diskInfo'     => "diskInfo=$(df -T -P -h)",
+            //     ]
+            // ];
+
+
             $setting = [
                 'depenDency' => [
                     'bc', 'mpstat', // im-sensors
@@ -80,6 +116,7 @@ if ( ! class_exists('GetStatus') ) {
                     'diskInfo'     => "diskInfo=$(df -T -P -h)",
                 ]
             ];
+
             $this->load->model('ExecCommand');
             $this->load->library('GenerateCommand', $setting);
             
@@ -89,7 +126,6 @@ if ( ! class_exists('GetStatus') ) {
                 $getCommandResult['status'] = $this->castBoolean($getCommandResult['status']);
                 if ( $getCommandResult['status'] ) {
                     $getCommandResult['diskInfo'] = $this->dfParser($getCommandResult['diskInfo']);
-                    
                 }
             }
             return $getCommandResult;
