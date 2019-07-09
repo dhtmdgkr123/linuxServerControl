@@ -122,14 +122,10 @@ if ( ! class_exists('serviceFilter')) {
         
 
         
-        public function generateCommand() {
+        public function generateCommand() : String {
             if ( ! function_exists('isHttpd') && ! function_exists('isInit')) {
-                function isHttpd(String $str): bool {
-                    return strpos($str, 'httpd') !== FALSE;
-                }
-                function isServerCommand(String $str): bool {
-                    return explode(' ', $str)[0] === 'init';
-                }
+                function isHttpd(String $str): bool { return strpos($str, 'httpd') !== FALSE; }
+                function isServerCommand(String $str): bool { return explode(' ', $str)[0] === 'init'; }
             }
             
             $serviceCommand = $this->serviceArray[$this->service];

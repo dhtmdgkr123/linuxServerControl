@@ -144,8 +144,8 @@ if ( ! class_exists('Command') ) {
         public function getPwd() : void {
             if ( $this->chkStatus() ) {
                 $this->load->model('ExecCommand');
-                setJsonHeader();
-                jsonEcho ( $this->ExecCommand->printWorkingDir($this->session->pwd) );
+                $this->json->header();
+                $this->json->echo( $this->ExecCommand->printWorkingDir($this->session->pwd) );
             } else {
                 show_404();
             }

@@ -14,12 +14,12 @@ if ( ! class_exists('ServicePipe') ) {
             $this->load->helper('file');
             $this->load->helper('command');
             $this->load->helper('idfilter');
+            $this->load->library('json');
 
             $this->returnMessage = [
                 'onlyRoot', 'canNotUsedCommand'
             ];
         }
-        
         
         private function checkStatus(): bool {
             return $this->session->isLogin && chkPostMtd($_SERVER['REQUEST_METHOD']);
@@ -30,7 +30,8 @@ if ( ! class_exists('ServicePipe') ) {
         }
         
         public function getServiceName() {
-            setJsonHeader();
+            $this->json->header();
+
             $service = trimPost('test');
 
             $filterObject = new serviceFilter($service);
@@ -69,7 +70,7 @@ if ( ! class_exists('ServicePipe') ) {
             } else {
                 $returnMessage = $this->returnMessage[1];
             }
-            jsonEcho($returnMessage);
+            $this->json->echo($returnMessage);
         }
     }
 }

@@ -40,12 +40,10 @@ class renderServerInfo extends renderInterFace {
         });
         if (this.checkStatus(req)) {
             const json = await req.json();
-            console.log(json);
             this.imgInput.insertAdjacentHTML('afterbegin', json.message.userTemplate);
             document.getElementById('card_main').insertAdjacentHTML('afterbegin', json.message.serverInfo.diskInfo.map((i) => this.renderTemplate(i)).join(''))
             document.getElementsByClassName('top-card')[0].insertAdjacentHTML('afterbegin', this.renderInfo(json.message.serverInfo));
         }
-
     }
 
     renderInfo(serverInfo) {

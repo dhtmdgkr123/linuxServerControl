@@ -11,7 +11,6 @@ class servicePipe extends commandHelper {
 
     sendData() {
         (async (url) => {
-
             const f = new FormData();
             f.append('test', this.servicePattern);
             const request = await fetch(url, {
@@ -54,7 +53,10 @@ class servicePipe extends commandHelper {
                 
                 alert(res[this.userLang][KEY_WORD.exec][response.message]);
             }
-        })(this.renderUrl());
+        })(this.renderUrl({
+            className: 'ServicePipe',
+            methodName: 'getServiceName'
+        }));
     }
 
     mainProcess() {
@@ -78,12 +80,22 @@ class servicePipe extends commandHelper {
         }
     }
 
-    renderUrl() {
-        return [
-            location.origin, '/ServicePipe/getServiceName'
-        ].join('');
-    }
+    // renderUrl() {
+    //     return [
+    //         location.origin, '/ServicePipe/getServiceName'
+    //     ].join('');
+    // }
 
+
+    renderUrl(urlObject = {}) {
+        let retVal = false;
+        if (urlObject.className && urlObject.methodName) {
+            retVal = [
+                location.origin, urlObject.className, urlObject.methodName
+            ].join('/');
+        }
+        return retVal;
+    }
 
     getServiceList(serviceId) {
         return Array
@@ -94,10 +106,8 @@ class servicePipe extends commandHelper {
                     .filter(j => j.hasAttribute('id'))
                     .map(j => j.getAttribute('id'))
                 )
-                .toString()
-                .split(',')
-                .map(i => i.trim())
-                .some(arrVal => serviceId === arrVal);
+                .flat()
+                .some(arrVal => serviceId === arrVal)
     }
 
 
