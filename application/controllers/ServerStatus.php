@@ -49,76 +49,7 @@ if ( ! class_exists('ServerStatus') ) {
             
             return $retArr;
         }
-
-
-        // private function renderUI($saveValue) : array {
-        //     $serviceList = [
-        //         'Server ' => [], 'MySQL ' => [],
-        //         'APACHE ' => [], 'NGINX ' => []
-        //     ];
-
-        //     $action = [
-        //         'Start', 'Restart', 'Off', 'Status'
-        //     ];
-            
-        //     $flag = TRUE;
-        //     for ($i = 0, $serviceKey = array_keys($serviceList) , $actionLen = count($action) , $serviceLen = count($serviceList); $i < $serviceLen; $i++) {
-        //         for ($j = 0; $j < $actionLen; $j++) {
-        //             if ( $serviceKey[$i] === $serviceKey[0] && $action[$j] === $action[$actionLen - 1]) {
-        //                 continue;
-        //             } else {
-        //                 if ( $serviceKey[$i] === $serviceKey[0] ) {
-        //                     if ( $flag ) {
-        //                         array_push($serviceList[$serviceKey[$i]], 'Web Shell');
-        //                         $flag = FALSE;
-        //                     }
-        //                 }
-        //                 array_push($serviceList[$serviceKey[$i]], $serviceKey[$i].$action[$j]);
-        //             }
-        //         }
-        //     }
-            
-
-        //     return $serviceList;
-        // }
-
-        // private function renderUI($saveValue) : array {
-        //     $retArr = NULL;
-        //     if ( $saveValue ) {
-        //         $retArr = $saveValue;
-        //     } else {
-        //         $serviceList = [
-        //             'Server ' => [], 'MySQL ' => [],
-        //             'APACHE ' => [], 'NGINX ' => []
-        //         ];
-    
-        //         $action = [
-        //             'Start', 'Restart', 'Off', 'Status'
-        //         ];
-                
-        //         $flag = TRUE;
-        //         for ($i = 0, $serviceKey = array_keys($serviceList) , $actionLen = count($action) , $serviceLen = count($serviceList); $i < $serviceLen; $i++) {
-        //             for ($j = 0; $j < $actionLen; $j++) {
-        //                 if ( $serviceKey[$i] === $serviceKey[0] && $action[$j] === $action[$actionLen - 1]) {
-        //                     continue;
-        //                 } else {
-        //                     if ( $serviceKey[$i] === $serviceKey[0] ) {
-        //                         if ( $flag ) {
-        //                             array_push($serviceList[$serviceKey[$i]], 'WebShell');
-        //                             $flag = FALSE;
-        //                         }
-        //                     }
-        //                     array_push($serviceList[$serviceKey[$i]], $serviceKey[$i].$action[$j]);
-        //                 }
-        //             }
-        //         }
-        //         $retArr = $serviceList;
-        //         $this->session->set_userdata('statusRenderValue', $serviceList);
-        //     }
-
-
-        //     return $retArr;
-        // }
+        
         public function index() {
             if ( $this->checkFileExists('status/head', 'status/body', 'status/footer') ) {
                 $load = $this->load;

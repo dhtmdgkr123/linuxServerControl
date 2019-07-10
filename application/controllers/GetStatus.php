@@ -63,6 +63,57 @@ if ( ! class_exists('GetStatus') ) {
             return $rltArray;
         }
 
+
+        public function asdf() : void {
+            // @TODO : add optional, require
+            $setting = [
+                'depenDency' => [
+                    // 'bc', 'mpstat', // im-sensors
+                    'require' => [
+                        'bc', 'mpstat',
+                    ],
+                    'option' => [
+                        'im-sensors','testPackage'
+                    ]
+                ],
+                'response' => [
+                    "status" => 'TRUE',
+                    "ip" => '$ipAddress',
+                    "diskUsagePercent" => '$diskPercent',
+                    "ramUsagePercent" => '$ramPercent',
+                    "diskInfo" => '$diskInfo',
+                    "hostName" => '$userInfo',
+                    "cpuUsage" => '$cpuUsage'
+                ],
+                'commandList' => [
+                    'option' => [
+                        'asdf=$(asdfasdf df df)'
+                    ],
+                    'ip'           => 'ipAddress=$(ifconfig | head -2 | tail -1 | awk \'{print $2}\' | cut -f 2 -d ":")',
+                    'diskUsagePer' => "diskPercent=$(df -P | grep -v ^Filesystem | awk '{total += $2; used += $3} END {printf(\"%.2f\",used/total * 100.0)}')",
+                    'ramUsagePer'  => "ramPercent=$(free | grep Mem | awk '{ printf(\"%.2f\",$3/$2 * 100.0) }')",
+                    'hostInfo'     => "userInfo=$(hostname)",
+                    'cpuUsage'     => "cpuUsage=$(mpstat | tail -1 | awk '{printf(\"%.2f\",100-$13)}')",
+                    'diskInfo'     => "diskInfo=$(df -T -P -h)",
+                ]
+            ];
+            
+            // $this->load->model('ExecCommand');
+            $this->load->library('GenerateCommand', $setting);
+            // echo ;
+            $this->generatecommand->main();
+            
+            // $getCommandResult = $this->ExecCommand->execUserCommand($this->generatecommand->main());
+            // if ( $getCommandResult['status'] ) {
+            //     $getCommandResult = json_decode( $getCommandResult['message'], TRUE);
+            //     $getCommandResult['status'] = $this->castBoolean($getCommandResult['status']);
+            //     if ( $getCommandResult['status'] ) {
+            //         $getCommandResult['diskInfo'] = $this->dfParser($getCommandResult['diskInfo']);
+            //     }
+            // }
+            // return $getCommandResult;
+        }
+
         private function getServerInfo() : Array {
             // @TODO : add optional, require
             // $setting = [
