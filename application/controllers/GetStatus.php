@@ -6,10 +6,10 @@ if ( ! class_exists('GetStatus') ) {
             $this->load->library('session');
             $this->load->library('json');
             $this->load->helper('idFilter');
-            if ( ! $this->session->isLogin ) {
-                $this->load->helper('url');
-                redirect($this->config->base_url(), 'refresh');
-            }
+            // if ( ! $this->session->isLogin ) {
+            //     $this->load->helper('url');
+            //     redirect($this->config->base_url(), 'refresh');
+            // }
         }
         
         private function setServerInfoCahche(Array $info) {
@@ -77,17 +77,22 @@ if ( ! class_exists('GetStatus') ) {
                     ]
                 ],
                 'response' => [
-                    "status" => 'TRUE',
+                    // 'imSensors' => '$imSensors',
+                    "status" => true,
                     "ip" => '$ipAddress',
                     "diskUsagePercent" => '$diskPercent',
                     "ramUsagePercent" => '$ramPercent',
                     "diskInfo" => '$diskInfo',
                     "hostName" => '$userInfo',
-                    "cpuUsage" => '$cpuUsage'
+                    "cpuUsage" => '$cpuUsage',
+                    'imSensors' => '$imSensors',
+
+
                 ],
                 'commandList' => [
                     'option' => [
-                        'asdf=$(asdfasdf df df)'
+                        'imSensors=$(asdfasdfasdf)',
+                        'testPackage=$(asdfasdf df df)'
                     ],
                     'ip'           => 'ipAddress=$(ifconfig | head -2 | tail -1 | awk \'{print $2}\' | cut -f 2 -d ":")',
                     'diskUsagePer' => "diskPercent=$(df -P | grep -v ^Filesystem | awk '{total += $2; used += $3} END {printf(\"%.2f\",used/total * 100.0)}')",
@@ -102,7 +107,6 @@ if ( ! class_exists('GetStatus') ) {
             $this->load->library('GenerateCommand', $setting);
             // echo ;
             $this->generatecommand->main();
-            
             // $getCommandResult = $this->ExecCommand->execUserCommand($this->generatecommand->main());
             // if ( $getCommandResult['status'] ) {
             //     $getCommandResult = json_decode( $getCommandResult['message'], TRUE);
