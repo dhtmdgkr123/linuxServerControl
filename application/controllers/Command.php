@@ -1,7 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 if ( ! class_exists('Command') ) {
-
     class Command extends CI_Controller {
         private $appPath = NULL;
         private $mainJsPath = NULL;
@@ -142,13 +141,13 @@ if ( ! class_exists('Command') ) {
         }
         
         public function getPwd() : void {
-            if ( $this->chkStatus() ) {
-                $this->load->model('ExecCommand');
-                $this->json->header();
-                $this->json->echo( $this->ExecCommand->printWorkingDir($this->session->pwd) );
-            } else {
-                show_404();
-            }
+            $this->load->model('ExecCommand');
+            $this->json->header();
+            $this->json->echo( $this->ExecCommand->printWorkingDir($this->session->pwd) );
+            // if ( $this->chkStatus() ) {
+            // } else {
+            //     show_404();
+            // }
         }
         
         public function commandMainProcess() : void {

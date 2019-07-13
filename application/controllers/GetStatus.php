@@ -48,8 +48,8 @@ if ( ! class_exists('GetStatus') ) {
                 'Mounted on' => 'MountedOn',
                 '%' => ''
             ];
-            $diskInfo = preg_split('/\s+/', replaceAll($patternArray, trim($dfResult)));
-            foreach ( $diskInfo as $k => $v) {
+            // $diskInfo = ;
+            foreach ( preg_split('/\s+/', replaceAll($patternArray, trim($dfResult))) as $k => $v) {
                 if ( $k <= 6 ) {
                     array_push($titleArray, $v);
                 } else {
@@ -62,10 +62,8 @@ if ( ! class_exists('GetStatus') ) {
             }
             return $rltArray;
         }
-
-
-        public function asdf() : void {
-            // @TODO : add optional, require
+        
+        private function getServerInfo() : Array {
             $setting = [
                 'depenDency' => [
                     // 'bc', 'mpstat', // im-sensors
@@ -73,102 +71,22 @@ if ( ! class_exists('GetStatus') ) {
                         'bc', 'mpstat',
                     ],
                     'option' => [
+                        // 'im-sensors','testPackage'
                         'im-sensors','testPackage'
                     ]
                 ],
-                'response' => [
-                    // 'imSensors' => '$imSensors',
-                    "status" => true,
-                    "ip" => '$ipAddress',
-                    "diskUsagePercent" => '$diskPercent',
-                    "ramUsagePercent" => '$ramPercent',
-                    "diskInfo" => '$diskInfo',
-                    "hostName" => '$userInfo',
-                    "cpuUsage" => '$cpuUsage',
-                    'imSensors' => '$imSensors',
-
-
-                ],
                 'commandList' => [
                     'option' => [
-                        'imSensors=$(asdfasdfasdf)',
-                        'testPackage=$(asdfasdf df df)'
+                        'imSensors'   => '$(ls -a)',
+                        'testPackage' => '$(asdfasdf df df)'
                     ],
-                    'ip'           => 'ipAddress=$(ifconfig | head -2 | tail -1 | awk \'{print $2}\' | cut -f 2 -d ":")',
-                    'diskUsagePer' => "diskPercent=$(df -P | grep -v ^Filesystem | awk '{total += $2; used += $3} END {printf(\"%.2f\",used/total * 100.0)}')",
-                    'ramUsagePer'  => "ramPercent=$(free | grep Mem | awk '{ printf(\"%.2f\",$3/$2 * 100.0) }')",
-                    'hostInfo'     => "userInfo=$(hostname)",
-                    'cpuUsage'     => "cpuUsage=$(mpstat | tail -1 | awk '{printf(\"%.2f\",100-$13)}')",
-                    'diskInfo'     => "diskInfo=$(df -T -P -h)",
-                ]
-            ];
-            
-            // $this->load->model('ExecCommand');
-            $this->load->library('GenerateCommand', $setting);
-            // echo ;
-            $this->generatecommand->main();
-            // $getCommandResult = $this->ExecCommand->execUserCommand($this->generatecommand->main());
-            // if ( $getCommandResult['status'] ) {
-            //     $getCommandResult = json_decode( $getCommandResult['message'], TRUE);
-            //     $getCommandResult['status'] = $this->castBoolean($getCommandResult['status']);
-            //     if ( $getCommandResult['status'] ) {
-            //         $getCommandResult['diskInfo'] = $this->dfParser($getCommandResult['diskInfo']);
-            //     }
-            // }
-            // return $getCommandResult;
-        }
-
-        private function getServerInfo() : Array {
-            // @TODO : add optional, require
-            // $setting = [
-            //     'depenDency' => [
-            //         'require' => [
-            //             'bc', 'mpstat', // im-sensors
-            //         ],
-            //         'option' => [
-            //             'im-sensors',
-            //         ]
-            //     ],
-            //     'response' => [
-            //         "status" => 'TRUE',
-            //         "ip" => '$ipAddress',
-            //         "diskUsagePercent" => '$diskPercent',
-            //         "ramUsagePercent" => '$ramPercent',
-            //         "diskInfo" => '$diskInfo',
-            //         "hostName" => '$userInfo',
-            //         "cpuUsage" => '$cpuUsage'
-            //     ],
-            //     'commandList' => [
-            //         'ip'           => 'ipAddress=$(ifconfig | head -2 | tail -1 | awk \'{print $2}\' | cut -f 2 -d ":")',
-            //         'diskUsagePer' => "diskPercent=$(df -P | grep -v ^Filesystem | awk '{total += $2; used += $3} END {printf(\"%.2f\",used/total * 100.0)}')",
-            //         'ramUsagePer'  => "ramPercent=$(free | grep Mem | awk '{ printf(\"%.2f\",$3/$2 * 100.0) }')",
-            //         'hostInfo'     => "userInfo=$(hostname)",
-            //         'cpuUsage'     => "cpuUsage=$(mpstat | tail -1 | awk '{printf(\"%.2f\",100-$13)}')",
-            //         'diskInfo'     => "diskInfo=$(df -T -P -h)",
-            //     ]
-            // ];
-
-
-            $setting = [
-                'depenDency' => [
-                    'bc', 'mpstat', // im-sensors
-                ],
-                'response' => [
-                    "status" => 'TRUE',
-                    "ip" => '$ipAddress',
-                    "diskUsagePercent" => '$diskPercent',
-                    "ramUsagePercent" => '$ramPercent',
-                    "diskInfo" => '$diskInfo',
-                    "hostName" => '$userInfo',
-                    "cpuUsage" => '$cpuUsage'
-                ],
-                'commandList' => [
-                    'ip'           => 'ipAddress=$(ifconfig | head -2 | tail -1 | awk \'{print $2}\' | cut -f 2 -d ":")',
-                    'diskUsagePer' => "diskPercent=$(df -P | grep -v ^Filesystem | awk '{total += $2; used += $3} END {printf(\"%.2f\",used/total * 100.0)}')",
-                    'ramUsagePer'  => "ramPercent=$(free | grep Mem | awk '{ printf(\"%.2f\",$3/$2 * 100.0) }')",
-                    'hostInfo'     => "userInfo=$(hostname)",
-                    'cpuUsage'     => "cpuUsage=$(mpstat | tail -1 | awk '{printf(\"%.2f\",100-$13)}')",
-                    'diskInfo'     => "diskInfo=$(df -T -P -h)",
+                    'ipAddress'    => '$(ifconfig | head -2 | tail -1 | awk \'{print $2}\' | cut -f 2 -d ":")',
+                    'diskPercent'  => "$(df -P | grep -v ^Filesystem | awk '{total += $2; used += $3} END {printf(\"%.2f\",used/total * 100.0)}')",
+                    'ramPercent'   => "$(free | grep Mem | awk '{ printf(\"%.2f\",$3/$2 * 100.0) }')",
+                    'userInfo'     => "$(hostname)",
+                    'cpuUsage'     => "$(mpstat | tail -1 | awk '{printf(\"%.2f\",100-$13)}')",
+                    // (100*cpucnt)-idleSum
+                    'diskInfo'     => "$(df -T -P -h)",
                 ]
             ];
 
@@ -178,7 +96,6 @@ if ( ! class_exists('GetStatus') ) {
             $getCommandResult = $this->ExecCommand->execUserCommand($this->generatecommand->main());
             if ( $getCommandResult['status'] ) {
                 $getCommandResult = json_decode( $getCommandResult['message'], TRUE);
-                $getCommandResult['status'] = $this->castBoolean($getCommandResult['status']);
                 if ( $getCommandResult['status'] ) {
                     $getCommandResult['diskInfo'] = $this->dfParser($getCommandResult['diskInfo']);
                 }
@@ -197,13 +114,6 @@ if ( ! class_exists('GetStatus') ) {
                 $retArray['status'] = TRUE;
                 $retArray['message']['userTemplate'] = $this->renderTemplate(isRoot($this->session->userId));
                 $retArray['message']['serverInfo'] = $this->getServerInfo();
-                // $this->setServerInfoCahche($retArray['message']);
-                // if ( $this->sesson->infoCache ) {
-                //     if (  )
-                // } else {
-
-                // }
-
             } else {
                 $retArray['message'] = $this->config->base_url();
             }
