@@ -12,7 +12,7 @@ if ( ! class_exists('ExecCommand') ) {
         function __construct() {
             parent::__construct();
             $this->load->library('session');
-            $this->load->helper('idfilter');
+            $this->load->helper('idFilter');
 
             $this->processCode = (object)[
                 'failConnect' => -1,
