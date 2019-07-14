@@ -335,7 +335,7 @@ html{
 .gauge_chart{
     position: relative;
     display:inline-block;
-    width:120px;
+    width:calc(90%/4);
     height:120px;
     padding:0 15px;
 }

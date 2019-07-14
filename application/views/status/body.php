@@ -44,7 +44,7 @@
         <div class="content_wrap flex_02">
             <div class="top-card">
                 <?php for ($i = 1; $i <= 3; $i++ ): ?>
-                    <div class="gauge_chart" id="chartDiv<?=$i?>"></div>
+                    <span class="gauge_chart" id="chartDiv<?=$i?>"></span>
                 <?php endfor; ?>
             </div>
             <div id="card_main" class="card">

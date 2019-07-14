@@ -1,5 +1,4 @@
 <?php
-
 if ( ! class_exists('GenerateCommand') ) {
     class GenerateCommand {
         function __construct(Array $require) {
@@ -20,43 +19,17 @@ if ( ! class_exists('GenerateCommand') ) {
             }
             return $rlt;
         }
-
         private function hypenToCamelCase(String $str) : String {
             
             $explodeByHypen = explode('-', $str);
             return trim($explodeByHypen[0].strtoupper(substr($explodeByHypen[1], 0, 1)).substr($explodeByHypen[1], 1));
         }
         
-        private function bashJson(Array $arr, bool $isEcho, String $varName = NULL) : String {
-            $jsonStr = $isEcho ? '"{' : '"{';
-            $retVal = '';
-            
-            foreach ($arr as $key => $value) {
-                if ( is_bool($value) ) {
-                    if ( $value ) {
-                        $jsonStr .= '\"'.$key.'\"'.":".json_encode($value).',';
+        private function bashJson(Array $arr, bool $isEcho, String $varName = NULL) : String {         
+            $toBashJson = implode('\"', explode('"', json_encode($arr)));            
+            return $isEcho ? 'echo "'.$toBashJson.'"; exit 1;' : $varName.'='.implode('\\\\\"',explode('\"', $toBashJson)).'; ';
 
-                    } else {
-                        $jsonStr .= '\\\"\"'.$key.'\\\"\"'.":".json_encode($value).',';
-                    }
-                } else {
-                    $jsonStr .= "\\\"".$key."\\\"".":\\\"".$value."\\\",";
-                }
-            }
-            if ( $isEcho ) {
-                
-                $retVal = 'echo '.trim(rtrim(trim($jsonStr), ',').'}"').';';
-            
-            } else {
-                
-                $retVal = strpos($varName, '-') !== FALSE ? $this->hypenToCamelCase($varName) : $varName;
-                $retVal .= '="'.trim(rtrim(trim($jsonStr), ',')."}\"").'";';
-            }
-            return $retVal;
         }
-
-
-
         private function optionCheckCommand(Array $packageList, Array $execOptionList) : String {
             $command = '';
             // im-sensors
@@ -94,7 +67,6 @@ if ( ! class_exists('GenerateCommand') ) {
             return ltrim($command.' else ');
         }
         
-
         private function setVariable(Array $commandList) : String {
             unset($commandList['status']);
             $rltStr = '';
@@ -105,7 +77,6 @@ if ( ! class_exists('GenerateCommand') ) {
             }
             return $rltStr;
         }
-
         private function commandArraySetter(Array $execList) : Array {
             $retArr = [];
             foreach ($execList as $key => $value) {
@@ -120,8 +91,6 @@ if ( ! class_exists('GenerateCommand') ) {
             
             return $retArr;
         }
-
-
         private function setResponse(Array $settingArray) : Array {
             $retArr = [];
             unset($settingArray['staus']);
@@ -132,11 +101,8 @@ if ( ! class_exists('GenerateCommand') ) {
             $retArr['status'] = TRUE;
             return $retArr;
         }
-
-
         
         public function main() : String {
-
             $this->depenDency = $this->generateDependencyArray($this->depenDency);
             $command = $this->requireCheckCommand($this->depenDency);
             $command .= $this->optionCheckCommand($this->depenDency, $this->execList['option']);

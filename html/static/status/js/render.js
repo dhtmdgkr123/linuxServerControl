@@ -3,6 +3,8 @@ class renderInterFace {
         if (target) {
             this.imgInput = document.getElementById(target);
         }
+        this.userLang = navigator.language || navigator.userLanguage;
+        this.pageName = 'viewStatus';
     }
     renderUrl(urlObject = {}) {
         let retVal = false;
@@ -20,16 +22,13 @@ class renderInterFace {
     async req() {}
 }
 
-
-
 class renderServerInfo extends renderInterFace {
     constructor() {
         super('selectImg');
         this.percentStyle = ["668de5", "71e096", "ffdc89", "ff9548", "ff4848"];
         this.req();
     }
-
-
+    
     async req() {
         const url = this.renderUrl({
             className: 'getStatus',
@@ -41,20 +40,86 @@ class renderServerInfo extends renderInterFace {
         if (this.checkStatus(req)) {
             const json = await req.json();
             
-            this.imgInput.insertAdjacentHTML('afterbegin', json.message.userTemplate);
             if ( json.message.serverInfo.status ) {
+                this.imgInput.insertAdjacentHTML('afterbegin', json.message.userTemplate);
                 document.getElementById('card_main').insertAdjacentHTML('afterbegin', json.message.serverInfo.diskInfo.map((i) => this.renderTemplate(i)).join(''))
+                
                 document.getElementsByClassName('top-card')[0].insertAdjacentHTML('afterbegin', this.renderInfo(json.message.serverInfo));
+                this.renderGraph(json.message.serverInfo);
+                
             } else {
-                console.log(json)
+
+                alert([
+                    json.message.serverInfo.packageName, res[this.userLang][this.pageName]
+                ].join(''));
+                location.href = json.message.url;
             }
         }
+    }
+    
+    getConfig(name, value) {
+        return {
+            label: name,
+            size: 120,
+            min: 0,
+            max: 100,
+            initValue: value,
+            minorTicks: 5,
+            yellowZones: [{from: this.mi}],
+            get range() {
+                return this.max - this.min;
+            },
+            get yellowZones () {
+                return [{
+                    from: this.min + this.range * 0.75,
+                    to: this.min + this.range * 0.9
+                }];
+            },
+            get redZones() {
+                return [{
+                    from: this.yellowZones[0].to,
+                    to: this.max
+                }];
+            }
+        };
+    }
+
+    renderGraph(info) {
+        const chart = {
+            'cpu': new Gauge('chartDiv1', this.getConfig('cpu', info.cpuUsage)),
+            'ram': new Gauge('chartDiv2', this.getConfig('ram', info.ramPercent)),
+            'disk': new Gauge('chartDiv3', this.getConfig('disk', info.diskPercent))
+        };
+        let isSend = true;
+        const intervalUrl = this.renderUrl({
+            className: 'GetStatus',
+            methodName : 'interValServerInfo'
+        });
+        let json = null;
+        setInterval(async () => {
+            if ( isSend ) {
+                isSend = false;
+                const getServerInfo = await fetch(intervalUrl, {
+                    method: 'get'
+                });
+                if ( this.checkStatus(getServerInfo) ) {
+                    json = await getServerInfo.json();
+                    if ( json.status ) {
+                        chart.cpu.redraw(json.cpuUsage);
+                        chart.ram.redraw(json.ramPercent);
+                        chart.disk.redraw(json.diskPercent);
+                    }
+                    
+                }
+                isSend = true;
+            }
+        }, 1000);
     }
 
     renderInfo(serverInfo) {
         return (`
-            <h2>IP Address : ${serverInfo.ip}</h2>
-            <h2>Host name : ${serverInfo.hostName}</h2>
+            <h2>IP Address : ${serverInfo.ipAddress}</h2>
+            <h2>Host name : ${serverInfo.userInfo}</h2>
         `);
     }
 

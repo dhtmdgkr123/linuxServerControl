@@ -10,8 +10,7 @@ if ( ! class_exists('ServerStatus') ) {
             $ext = '.php';
             return file_exists(VIEWPATH.$head.$ext) && file_exists(VIEWPATH.$body.$ext) && file_exists(VIEWPATH.$foot.$ext);
         }
-
-
+        
         private function renderUI($saveValue) : Array {
             $retArr = NULL;
 
@@ -51,6 +50,8 @@ if ( ! class_exists('ServerStatus') ) {
         }
         
         public function index() {
+
+            
             if ( $this->checkFileExists('status/head', 'status/body', 'status/footer') ) {
                 $load = $this->load;
                 $staticPath = realpath('../html/static').'/';
@@ -80,6 +81,8 @@ if ( ! class_exists('ServerStatus') ) {
                                 'servicePipe' => $cfg->site_url('static/command/js/servicePipe.js').'?ver=1.0.0&'.getModifyTime($staticPath.'status/js/', 'servicePipe.js'),
                                 'status' => $cfg->site_url('static/status/js/render.js').'?ver=1.0.0&'.getModifyTime($staticPath.'status/js/', 'render.js'),
                                 'slideToggle' => $cfg->site_url('static/status/js/slideToggle.js'.'?ver=1.0.0&'.getModifyTime($staticPath.'status/js/', 'slideToggle.js')),
+                                'd3' => $cfg->site_url('static/status/js/d3.min.js'.'?ver=1.0.0&'.getModifyTime($staticPath.'status/js/', 'd3.min.js')),
+                                'gaugeChart' => $cfg->site_url('static/status/js/gaugeChart.js'.'?ver=1.0.0&'.getModifyTime($staticPath.'status/js/', 'gaugeChart.js')),
                                 'main' => $cfg->site_url('static/status/js/main.js').'?ver=1.0.0&'.getModifyTime($staticPath.'status/js/', 'main.js')
                             ]
                         ]
