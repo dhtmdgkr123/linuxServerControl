@@ -27,6 +27,7 @@ Installation
 ```bash
 $ cd WAS root down level folder 
 $ rm -rf $(pwd)/{,.[!.],..?}*   # clean up all of with hidden file
+# Please Check your working Directory
 $ git clone https://github.com/dhtmdgkr123/linuxServerControl.git .
 ```
 
