@@ -34,9 +34,6 @@ $ git clone https://github.com/dhtmdgkr123/linuxServerControl.git .
 
 Usage
 =
-1. Goto index.php
-1. Type your Server address, Server port, Id and password
-1. Enjoy~
 
 <h2>Change Log</h2>
 
