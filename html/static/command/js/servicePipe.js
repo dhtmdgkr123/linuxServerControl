@@ -14,7 +14,6 @@ class servicePipe extends commandHelper {
     setTarget(target) {
         this.target = target;
         this.servicePattern = this.target.getAttribute('id');
-        // console.log(id);
         return this;
     }
 
@@ -27,7 +26,7 @@ class servicePipe extends commandHelper {
     sendData() {
         (async (url) => {
             const f = new FormData();
-            f.append('test', this.servicePattern);
+            f.append('pipeCommand', this.servicePattern);
             const request = await fetch(url, {
                 body: f,
                 method: 'post'

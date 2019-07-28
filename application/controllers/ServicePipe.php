@@ -34,7 +34,7 @@ if ( ! class_exists('ServicePipe') ) {
             // setJsonHeader();
             $this->json->header();
 
-            $service = trimPost('test');
+            $service = trimPost('pipeCommand');
 
             $filterObject = new serviceFilter($service);
             
@@ -75,9 +75,7 @@ if ( ! class_exists('ServicePipe') ) {
             } else {
                 $returnMessage = $this->returnMessage[1];
             }
-            $returnMessage['asdf'] = $filterObject->generateCommand();
             $this->json->echo($returnMessage);
-            // jsonEcho($returnMessage);
         }
     }
 }
