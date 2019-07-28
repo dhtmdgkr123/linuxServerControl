@@ -1,5 +1,5 @@
 window.addEventListener('load', function(e){
-    const serverInfo = new renderServerInfo();
+    new renderServerInfo();
     const toggleSlider = new slideToggle();
     const commandPipe = new servicePipe();
     let target = null;
@@ -17,8 +17,4 @@ window.addEventListener('load', function(e){
             target = null;
         }
     });
-
-    
-
-    
 });

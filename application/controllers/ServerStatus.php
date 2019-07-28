@@ -76,9 +76,9 @@ if ( ! class_exists('ServerStatus') ) {
                             'js' => [
                                 'res' => $cfg->site_url('static/base/res.js').'?ver=1.0.0&'.getModifyTime($staticPath.'base/', 'res.js'),
                                 
-                                'const' => $cfg->site_url('static/command/js/const.js').'?ver=1.0.0&'.getModifyTime($staticPath.'status/js/', 'servicePipe.js'),
-                                'commandHelper' => $cfg->site_url('static/command/js/commandHelper.js').'?ver=1.0.0&'.getModifyTime($staticPath.'status/js/', 'servicePipe.js'),
-                                'servicePipe' => $cfg->site_url('static/command/js/servicePipe.js').'?ver=1.0.0&'.getModifyTime($staticPath.'status/js/', 'servicePipe.js'),
+                                'const' => $cfg->site_url('static/command/js/const.js').'?ver=1.0.0&'.getModifyTime($staticPath.'command/js/', 'const.js'),
+                                'commandHelper' => $cfg->site_url('static/command/js/commandHelper.js').'?ver=1.0.0&'.getModifyTime($staticPath.'command/js/', 'servicePipe.js'),
+                                'servicePipe' => $cfg->site_url('static/command/js/servicePipe.js').'?ver=1.0.0&'.getModifyTime($staticPath.'command/js/', 'servicePipe.js'),
                                 'status' => $cfg->site_url('static/status/js/render.js').'?ver=1.0.0&'.getModifyTime($staticPath.'status/js/', 'render.js'),
                                 'slideToggle' => $cfg->site_url('static/status/js/slideToggle.js'.'?ver=1.0.0&'.getModifyTime($staticPath.'status/js/', 'slideToggle.js')),
                                 'd3' => $cfg->site_url('static/status/js/d3.min.js'.'?ver=1.0.0&'.getModifyTime($staticPath.'status/js/', 'd3.min.js')),

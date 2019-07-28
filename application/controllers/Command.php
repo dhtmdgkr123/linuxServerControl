@@ -110,9 +110,7 @@ if ( ! class_exists('Command') ) {
                     ]
                 ],
                 'foot' => [
-                    'js' => [  
-                        'jQuery' => $baseStaticPath.'jQuery.js?ver=3.3.1&'.getModifyTime($this->commonStaticPath, 'jQuery.js'),
-                        'jConfirm' => $baseStaticPath.'jConfirm/confirm.js?ver=3.3.0&'.getModifyTime($this->commonStaticPath, 'jConfirm/confirm.js'),
+                    'js' => [
                         'res' => $baseStaticPath.'res.js?ver=1.0.0&'.getModifyTime($this->commonStaticPath, 'res.js'),
                         'const' => $commandPath.'js/const.js?ver=1.0.0&'.getModifyTime($this->jsFilePath, 'const.js'),
                         'uiHelper' => $commandPath.'js/uiHelper.js?ver=1.0.0&'.getModifyTime($this->jsFilePath, 'uiHelper.js'),
@@ -144,10 +142,6 @@ if ( ! class_exists('Command') ) {
             $this->load->model('ExecCommand');
             $this->json->header();
             $this->json->echo( $this->ExecCommand->printWorkingDir($this->session->pwd) );
-            // if ( $this->chkStatus() ) {
-            // } else {
-            //     show_404();
-            // }
         }
         
         public function commandMainProcess() : void {

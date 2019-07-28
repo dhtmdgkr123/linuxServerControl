@@ -20,16 +20,8 @@ class servicePipe extends commandHelper {
 
     isStatus() {
         const lower = this.servicePattern.toLowerCase();
-        let flag = false;
-        let arr = [
-            'serverstatus', 'webshell'
-        ];
-        for (let i in arr) {
-            if ( arr[i] === lower ) {
-                return false
-            }
-        }
-        return true;
+        const checkCommand = /(webshell|status)/.test(lower)
+        return checkCommand;
     }
 
     sendData() {
@@ -96,12 +88,13 @@ class servicePipe extends commandHelper {
             if (serviceName[1] === 'off') {
                 serviceName[1] = 'stop';
             }
-            if (this.isStatus()) {
+
+            if ( this.isStatus() ) {
+                this.sendData();
+            } else {
                 if (this.strToConfirm(KEY_WORD.sysCtl, serviceName[1], serviceName[0])) {
                     this.sendData();
                 }
-            } else {
-                this.sendData();
             }
         }
     }

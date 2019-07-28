@@ -65,10 +65,9 @@ class renderServerInfo extends renderInterFace {
             max: 100,
             initValue: value,
             minorTicks: 5,
-            yellowZones: [{from: this.mi}],
-            get range() {
-                return this.max - this.min;
-            },
+            yellowZones: [{from: this.min}],
+            
+            range: null,
             get yellowZones () {
                 return [{
                     from: this.min + this.range * 0.75,
@@ -90,13 +89,20 @@ class renderServerInfo extends renderInterFace {
             'ram': new Gauge('chartDiv2', this.getConfig('ram', info.ramPercent)),
             'disk': new Gauge('chartDiv3', this.getConfig('disk', info.diskPercent))
         };
+        
         let isSend = true;
         const intervalUrl = this.renderUrl({
             className: 'GetStatus',
             methodName : 'interValServerInfo'
         });
         let json = null;
-        setInterval(async () => {
+        function getRandomInt(min, max) {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+        
+        setInterval( async () => {
             if ( isSend ) {
                 isSend = false;
                 const getServerInfo = await fetch(intervalUrl, {
@@ -109,11 +115,10 @@ class renderServerInfo extends renderInterFace {
                         chart.ram.redraw(json.ramPercent);
                         chart.disk.redraw(json.diskPercent);
                     }
-                    
+                    isSend = true;
                 }
-                isSend = true;
             }
-        }, 1000);
+        }, 2000);
     }
 
     renderInfo(serverInfo) {
@@ -189,6 +194,4 @@ class renderServerInfo extends renderInterFace {
             </div>
         </div>`);
     }
-
-
 }
