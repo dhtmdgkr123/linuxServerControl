@@ -58,26 +58,27 @@ class checkUserData {
         return statObject;
     }
     
-    processData() {
+    async processData() {
         const statusObject = this.isEmptyData(this.generateData(this.formTag));
         if ( statusObject.stat ) {
-
-            const jsonData = this.sendUserData({
-                'action' : this.formTag.getAttribute('action'),
-                'data' : statusObject.data
+            
+            const checkStatus = req => req.ok && req.status === 200 && req.statusText === 'OK';
+            const req = await fetch(this.formTag.getAttribute('action'), {
+                method: 'POST',
+                body: statusObject.data
             });
-
-            if ( jsonData ) {
-                jsonData.then((resp) => {
-                    if (resp.status && resp.code) {
-                        location.href = resp.page;
-                    } else {
-                        alert(res[this.userLang][this.ErrorTag.idxError][this.ErrorTag.code][resp.code]);
-                    }
-                });
+            
+            if (checkStatus(req)) {
+                const resp = await req.json();
+                if ( resp.status && resp.code ) {
+                    location.href = resp.page;
+                } else {
+                    alert(res[this.userLang][this.ErrorTag.idxError][this.ErrorTag.code][resp.code]);
+                }
             }
-
+        
         } else {
+            
             if (this.userLang === 'ko-KR') {
                 res[this.userLang][this.ErrorTag.idxError][this.ErrorTag.code][this.ErrorTag.tag][0] = statusObject.data;
 
@@ -86,15 +87,8 @@ class checkUserData {
             
             }
             alert(res[this.userLang][this.ErrorTag.idxError][this.ErrorTag.code][this.ErrorTag.tag].join(''));
-            return false;
+            return ;
 
         }
-    }
-
-    sendUserData(dataSet) {
-        return fetch(dataSet.action, {
-            method: 'POST',
-            body: dataSet.data
-        }).then(resp => resp.ok && resp.status === 200 ? resp.json() : false);
     }
 }

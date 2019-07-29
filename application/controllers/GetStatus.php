@@ -62,20 +62,44 @@ if ( ! class_exists('GetStatus') ) {
             }
             return $rltArray;
         }
-        private function recoverType(Array $resultArray) : Array {
-            if ( ! function_exists('isJson') ) {
-                function isJson(String $data) : bool {
-                    json_decode($data);
-                    return json_last_error() === JSON_ERROR_NONE;
+
+
+
+        private function isJson(String $resultArray) : bool {
+            json_decode($resultArray);
+            return json_last_error() === JSON_ERROR_NONE;
+        }
+
+
+        private function getCpuAvgTemp(String $value) {
+            if ( ! function_exists('tempAvg') )  {
+                function tempAvg(Array $arr) : Int {
+                    return (array_reduce($arr, function($first, $secondVal){
+                        return (intval($first)) + (intval($secondVal));
+                    }) / 1000) / count($arr);
                 }
             }
+
+            return $this->isJson($value) ? $value : tempAvg(explode(' ', $value));
+            
+        }
+
+
+
+
+        private function recoverType(Array $resultArray) : Array {
+            
             for ($i = 0, $key = array_keys($resultArray), $len = count($resultArray); $i < $len; $i++) {
-                $resultArray[$key[$i]] = is_numeric($resultArray[$key[$i]]) ? $resultArray[$key[$i]] + 0 : (! is_array( $resultArray[$key[$i]] )) && isJson( $resultArray[$key[$i]] ) ? json_decode( $resultArray[$key[$i]], TRUE) : $resultArray[$key[$i]];
+                $resultArray[$key[$i]] = is_numeric($resultArray[$key[$i]]) ? $resultArray[$key[$i]] + 0 : (! is_array( $resultArray[$key[$i]] )) && $this->isJson( $resultArray[$key[$i]] ) ? json_decode( $resultArray[$key[$i]], TRUE) : $resultArray[$key[$i]];
             }
             return $resultArray;
         }
+
+
+        
         
         private function getServerInfo() : Array {
+
             $setting = [
                 'depenDency' => [
                     // 'bc', 'mpstat', // im-sensors
@@ -86,14 +110,15 @@ if ( ! class_exists('GetStatus') ) {
                     'option' => [
                         // package name
                         // 'im-sensors','testPackage'
-                        'im-sensors', //'testPackage'
+                        'sensors', //'testPackage'
                     ]
                 ],
                 'commandList' => [
                     'option' => [
-                        'imSensors'   => '$(ls -a)',
+                        'cpuTemp'   => '$(cat /sys/devices/virtual/thermal/thermal_zone*/temp)',
                         // 'testPackage' => '$(asdfasdf df df)'
                     ],
+                    
                     'ipAddress'    => '$(ifconfig | head -2 | tail -1 | awk \'{print $2}\' | cut -f 2 -d ":")',
                     'diskPercent'  => "$(df -P | grep -v ^Filesystem | awk '{total += $2; used += $3} END {printf(\"%.2f\",used/total * 100.0)}')",
                     'ramPercent'   => "$(free | grep Mem | awk '{ printf(\"%.2f\",$3/$2 * 100.0) }')",
@@ -105,19 +130,20 @@ if ( ! class_exists('GetStatus') ) {
             
             $this->load->model('ExecCommand');
             $this->load->library('GenerateCommand', $setting);
-            if ( ! $this->session->firstInfoCommand ) {
-                $this->session->set_userdata('firstInfoCommand', $this->generatecommand->main());
-            }
             
-            $getCommandResult = $this->ExecCommand->execUserCommand($this->generatecommand->main());
+            $getCommandResult = $this->ExecCommand->execUserCommand( $this->generatecommand->main() );
                        
             if ( $getCommandResult['status'] ) {
                 $getCommandResult = json_decode( $getCommandResult['message'], TRUE);
                 if ( $getCommandResult['status'] ) {
+                    
+                    $getCommandResult['cpuTemp'] = $this->getCpuAvgTemp($getCommandResult['cpuTemp']);
+                    
                     $getCommandResult['diskInfo'] = $this->dfParser($getCommandResult['diskInfo']);
                     $getCommandResult = $this->recoverType($getCommandResult);
                 }
             }
+            
             return $getCommandResult;
         }
 
@@ -132,12 +158,12 @@ if ( ! class_exists('GetStatus') ) {
                     ],
                     'option' => [
                         // 'im-sensors','testPackage'
-                        'im-sensors', //'testPackage'
+                        'sensors', //'testPackage'
                     ]
                 ],
                 'commandList' => [
                     'option' => [
-                        'imSensors'   => '$(ls -a)',
+                        'cpuTemp'   => '$(cat /sys/devices/virtual/thermal/thermal_zone*/temp)',
                         // 'testPackage' => '$(asdfasdf df df)'
                     ],
                     
@@ -150,18 +176,19 @@ if ( ! class_exists('GetStatus') ) {
 
             $this->load->model('ExecCommand');
             $this->load->library('GenerateCommand', $setting);
-            if ( ! $this->session->intervalCommand ) {
-                $this->session->set_userdata('intervalCommand', $this->generatecommand->main());
-            }
-            $getCommandResult = $this->ExecCommand->execUserCommand($this->session->intervalCommand);
-                       
+            
+            $getCommandResult = $this->ExecCommand->execUserCommand( $this->generatecommand->main() );
+            
             if ( $getCommandResult['status'] ) {
                 $getCommandResult = json_decode( $getCommandResult['message'], TRUE);
                 if ( $getCommandResult['status'] ) {
+                    
+                    $getCommandResult['cpuTemp'] = $this->getCpuAvgTemp($getCommandResult['cpuTemp']);
                     $getCommandResult = $this->recoverType($getCommandResult);
+                
                 }
             }
-            // print_r($getCommandResult);
+            
             $this->json->echo($getCommandResult);
         }
         
@@ -182,6 +209,7 @@ if ( ! class_exists('GetStatus') ) {
             } else {
                 $retArray['message'] = $this->config->base_url();
             }
+            
             $this->json->echo($retArray);
         }
 

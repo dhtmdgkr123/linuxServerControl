@@ -5,6 +5,8 @@ class Gauge {
             this.body = null;
             this.placeholderName = placeholderName;
             this.configure(configuration);
+        } else {
+            console.error('set selector Name and config')
         }
     }
     configure(configuration) {
@@ -25,7 +27,8 @@ class Gauge {
 		this.config.redColor           = configuration.redColor || '#DC3912';
 		this.config.initValue          = configuration.initValue || 0;
         this.config.transitionDuration = configuration.transitionDuration || 500;
-        
+        this.config.isTemp             = configuration.isTemp;
+        this.fontSize                  = null;
         this.render();
     }
 
@@ -200,11 +203,10 @@ class Gauge {
                     .attr('transform', () => `translate(${this.config.cx},${this.config.cy}) rotate(270)`);
                     
     }
-
-
+    
     redraw(value, transitionDuration) {
         let pointerContainer = this.body.select('.pointerContainer');
-		pointerContainer.selectAll('text').text(`${value}%`);
+		pointerContainer.selectAll('text').text(`${value}${this.config.isTemp ? '℃' : '%'}`);
 		let pointer = pointerContainer.selectAll('path');
 		pointer.transition()
                .duration(transitionDuration ? transitionDuration : this.config.transitionDuration)

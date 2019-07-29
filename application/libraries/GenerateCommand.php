@@ -57,10 +57,11 @@ if ( ! class_exists('GenerateCommand') ) {
             
             $command = "packageExists(){ echo \"$(command -v \"$1\" > /dev/null; echo \$?)\"; };";
             for ( $i = 0, $requirement = $packageList['require'], $len = count($requirement); $i < $len; $i++) {
+                
                 if ( $i === 0 ) {
-                    $command .= "if [ \"$(packageExists {$requirement[$i]['packageName']})\" -eq 1 ]; then ";
+                    $command .= "if [ \"$(packageExists ".$requirement[$i]['packageName'].")\" -eq 1 ]; then ";
                 } else {
-                    $command .= "elif [ \"$(packageExists {$requirement[$i]['packageName']})\" -eq 1 ]; then ";
+                    $command .= "elif [ \"$(packageExists ".$requirement[$i]['packageName'].")\" -eq 1 ]; then ";
                 }
                 $command .= $this->bashJson($requirement[$i], TRUE);
             }

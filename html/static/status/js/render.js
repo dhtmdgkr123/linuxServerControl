@@ -5,12 +5,13 @@ class renderInterFace {
         }
         this.userLang = navigator.language || navigator.userLanguage;
         this.pageName = 'viewStatus';
+        this.useCpuTemp = false;
     }
-    renderUrl(urlObject = {}) {
+    renderUrl({className, methodName}) {
         let retVal = false;
-        if (urlObject.className && urlObject.methodName) {
+        if (className && methodName) {
             retVal = [
-                location.origin, urlObject.className, urlObject.methodName
+                location.origin, className, methodName
             ].join('/');
         }
         return retVal;
@@ -57,15 +58,16 @@ class renderServerInfo extends renderInterFace {
         }
     }
     
-    getConfig(name, value) {
+    getConfig({labelName, value, isTemprature}) {
         return {
-            label: name,
+            label: labelName,
             size: 120,
             min: 0,
             max: 100,
             initValue: value,
             minorTicks: 5,
             yellowZones: [{from: this.min}],
+            isTemp : isTemprature,
             
             range: null,
             get yellowZones () {
@@ -82,13 +84,27 @@ class renderServerInfo extends renderInterFace {
             }
         };
     }
-
+    
     renderGraph(info) {
-        const chart = {
-            'cpu': new Gauge('chartDiv1', this.getConfig('cpu', info.cpuUsage)),
-            'ram': new Gauge('chartDiv2', this.getConfig('ram', info.ramPercent)),
-            'disk': new Gauge('chartDiv3', this.getConfig('disk', info.diskPercent))
-        };
+        let chart = null;
+        
+        if (typeof(info.cpuTemp.status) === 'undefined') {
+            this.useCpuTemp = true;
+            chart = {
+                'cpu': new Gauge('chartDiv1', this.getConfig({labelName: 'cpu', value: info.cpuUsage, isTemprature: false})),
+                'ram': new Gauge('chartDiv2', this.getConfig({labelName: 'ram', value: info.ramPercent, isTemprature: false})),
+                'disk': new Gauge('chartDiv3', this.getConfig({labelName: 'ram', value: info.ramPercent, isTemprature: false})),
+                'cpuTemp' : new Gauge('chartDiv4', this.getConfig({labelName: 'Cpu Temp', value: info.cpuTemp, isTemprature: true}))
+            };
+            
+        } else {
+            chart = {
+                'cpu': new Gauge('chartDiv1', this.getConfig({labelName: 'cpu', value: info.cpuUsage, isTemprature: false})),
+                'ram': new Gauge('chartDiv2', this.getConfig({labelName: 'ram', value: info.ramPercent, isTemprature: false})),
+                'disk': new Gauge('chartDiv3', this.getConfig({labelName: 'ram', value: info.ramPercent, isTemprature: false})),
+                
+            }
+        }
         
         let isSend = true;
         const intervalUrl = this.renderUrl({
@@ -96,11 +112,6 @@ class renderServerInfo extends renderInterFace {
             methodName : 'interValServerInfo'
         });
         let json = null;
-        function getRandomInt(min, max) {
-            min = Math.ceil(min);
-            max = Math.floor(max);
-            return Math.floor(Math.random() * (max - min + 1)) + min;
-        }
         
         setInterval( async () => {
             if ( isSend ) {
@@ -110,10 +121,14 @@ class renderServerInfo extends renderInterFace {
                 });
                 if ( this.checkStatus(getServerInfo) ) {
                     json = await getServerInfo.json();
+                    
                     if ( json.status ) {
                         chart.cpu.redraw(json.cpuUsage);
                         chart.ram.redraw(json.ramPercent);
                         chart.disk.redraw(json.diskPercent);
+                        if ( this.useCpuTemp ) {
+                            chart.cpuTemp.redraw(json.cpuTemp);
+                        }
                     }
                     isSend = true;
                 }
