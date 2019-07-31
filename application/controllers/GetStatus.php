@@ -74,12 +74,12 @@ if ( ! class_exists('GetStatus') ) {
         private function getCpuAvgTemp(String $value) {
             if ( ! function_exists('tempAvg') )  {
                 function tempAvg(Array $arr) : Int {
-                    return (array_reduce($arr, function($first, $secondVal){
-                        return (intval($first)) + (intval($secondVal));
-                    }) / 1000) / count($arr);
+                    return array_reduce($arr, function($first, $secondVal){
+                        return (floatval($first)) + (floatval($secondVal));
+                    }) / count($arr);
                 }
             }
-
+            
             return $this->isJson($value) ? $value : tempAvg(explode(' ', $value));
             
         }
@@ -115,7 +115,8 @@ if ( ! class_exists('GetStatus') ) {
                 ],
                 'commandList' => [
                     'option' => [
-                        'cpuTemp'   => '$(cat /sys/devices/virtual/thermal/thermal_zone*/temp)',
+                        'cpuTemp' => "$(sensors | grep Core | awk '{print $3}' | sed \"s/+//\" | sed \"s/°C//\")"
+                        // 'cpuTemp'   => '$(cat /sys/devices/virtual/thermal/thermal_zone*/temp)',
                         // 'testPackage' => '$(asdfasdf df df)'
                     ],
                     
@@ -163,7 +164,7 @@ if ( ! class_exists('GetStatus') ) {
                 ],
                 'commandList' => [
                     'option' => [
-                        'cpuTemp'   => '$(cat /sys/devices/virtual/thermal/thermal_zone*/temp)',
+                        'cpuTemp'   => "$(sensors | grep Core | awk '{print $3}' | sed \"s/+//\" | sed \"s/°C//\")",
                         // 'testPackage' => '$(asdfasdf df df)'
                     ],
                     

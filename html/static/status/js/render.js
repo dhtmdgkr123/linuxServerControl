@@ -42,6 +42,7 @@ class renderServerInfo extends renderInterFace {
             const json = await req.json();
             
             if ( json.message.serverInfo.status ) {
+                
                 this.imgInput.insertAdjacentHTML('afterbegin', json.message.userTemplate);
                 document.getElementById('card_main').insertAdjacentHTML('afterbegin', json.message.serverInfo.diskInfo.map((i) => this.renderTemplate(i)).join(''))
                 
@@ -93,7 +94,7 @@ class renderServerInfo extends renderInterFace {
             chart = {
                 'cpu': new Gauge('chartDiv1', this.getConfig({labelName: 'cpu', value: info.cpuUsage, isTemprature: false})),
                 'ram': new Gauge('chartDiv2', this.getConfig({labelName: 'ram', value: info.ramPercent, isTemprature: false})),
-                'disk': new Gauge('chartDiv3', this.getConfig({labelName: 'ram', value: info.ramPercent, isTemprature: false})),
+                'disk': new Gauge('chartDiv3', this.getConfig({labelName: 'disk', value: info.diskPercent, isTemprature: false})),
                 'cpuTemp' : new Gauge('chartDiv4', this.getConfig({labelName: 'Cpu Temp', value: info.cpuTemp, isTemprature: true}))
             };
             
@@ -101,8 +102,7 @@ class renderServerInfo extends renderInterFace {
             chart = {
                 'cpu': new Gauge('chartDiv1', this.getConfig({labelName: 'cpu', value: info.cpuUsage, isTemprature: false})),
                 'ram': new Gauge('chartDiv2', this.getConfig({labelName: 'ram', value: info.ramPercent, isTemprature: false})),
-                'disk': new Gauge('chartDiv3', this.getConfig({labelName: 'ram', value: info.ramPercent, isTemprature: false})),
-                
+                'disk': new Gauge('chartDiv3', this.getConfig({labelName: 'disk', value: info.diskPercent, isTemprature: false})),
             }
         }
         
