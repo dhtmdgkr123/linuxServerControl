@@ -1,5 +1,6 @@
 Linux server control
 =
+[![StyleCI](https://github.styleci.io/repos/118418973/shield?branch=master)](https://github.styleci.io/repos/118418973)
 + Control MySqlServer
 + Control Apache2
 + Control NGINX
@@ -68,8 +69,9 @@ Usage
 TODO
 =
 - Add network Trafic Monitor
-- Add crontabl control
+- Add Crontab control
 - Add Hdd, Cpu Temperature Monitor
+- Add Ftp Service
 
 License
 -
