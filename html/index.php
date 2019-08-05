@@ -1,6 +1,6 @@
 <?php
 /**
- * CodeIgniter
+ * CodeIgniter.
  *
  * An open source application development framework for PHP
  *
@@ -26,11 +26,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
- * @package   CodeIgniter
  * @author   EllisLab Dev Team
  * @copyright   Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
  * @copyright   Copyright (c) 2014 - 2019, British Columbia Institute of Technology (https://bcit.ca/)
  * @license   https://opensource.org/licenses/MIT   MIT License
+ *
  * @link   https://codeigniter.com
  * @since   Version 1.0.0
  * @filesource
@@ -43,15 +43,15 @@
  *
  * if you want to have .env file in lower than document root level (/var/www/)
  * load composer library and load dotenv libray.
- * 
+ *
  * dotenvFile Locate: /var/www/.env
- * 
- * 
+ *
+ *
  * NOTE: If you don't want to load dot env remove below if block code
  */
-if ( file_exists(realpath('../.env')) ) {
-   require_once realpath('../vendor/autoload.php');
-   (Dotenv\Dotenv::create(realpath('../')))->load();
+if (file_exists(realpath('../.env'))) {
+    require_once realpath('../vendor/autoload.php');
+    (Dotenv\Dotenv::create(realpath('../')))->load();
 }
 
 /*
@@ -81,8 +81,7 @@ if ( file_exists(realpath('../.env')) ) {
  * Different environments will require different levels of error reporting.
  * By default development will show errors but testing and live will hide them.
  */
-switch (ENVIRONMENT)
-{
+switch (ENVIRONMENT) {
    case 'development':
       error_reporting(-1);
       ini_set('display_errors', 1);
@@ -91,18 +90,15 @@ switch (ENVIRONMENT)
    case 'testing':
    case 'production':
       ini_set('display_errors', 0);
-      if (version_compare(PHP_VERSION, '5.3', '>='))
-      {
-         error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT & ~E_USER_NOTICE & ~E_USER_DEPRECATED);
-      }
-      else
-      {
-         error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_USER_NOTICE);
+      if (version_compare(PHP_VERSION, '5.3', '>=')) {
+          error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT & ~E_USER_NOTICE & ~E_USER_DEPRECATED);
+      } else {
+          error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_USER_NOTICE);
       }
    break;
 
    default:
-      header('HTTP/1.1 503 Service Unavailable.', TRUE, 503);
+      header('HTTP/1.1 503 Service Unavailable.', true, 503);
       echo 'The application environment is not set correctly.';
       exit(1); // EXIT_ERROR
 }
@@ -149,7 +145,6 @@ switch (ENVIRONMENT)
  */
    $view_folder = '';
 
-
 /*
  * --------------------------------------------------------------------
  * DEFAULT CONTROLLER
@@ -179,7 +174,6 @@ switch (ENVIRONMENT)
    // The controller function you wish to be called.
    // $routing['function']   = '';
 
-
 /*
  * -------------------------------------------------------------------
  *  CUSTOM CONFIG VALUES
@@ -196,8 +190,6 @@ switch (ENVIRONMENT)
  */
    // $assign_to_config['name_of_config_item'] = 'value of config item';
 
-
-
 // --------------------------------------------------------------------
 // END OF USER CONFIGURABLE SETTINGS.  DO NOT EDIT BELOW THIS LINE
 // --------------------------------------------------------------------
@@ -209,19 +201,15 @@ switch (ENVIRONMENT)
  */
 
    // Set the current directory correctly for CLI requests
-   if (defined('STDIN'))
-   {
-      chdir(dirname(__FILE__));
+   if (defined('STDIN')) {
+       chdir(dirname(__FILE__));
    }
 
-   if (($_temp = realpath($system_path)) !== FALSE)
-   {
-      $system_path = $_temp.DIRECTORY_SEPARATOR;
-   }
-   else
-   {
-      // Ensure there's a trailing slash
-      $system_path = strtr(
+   if (($_temp = realpath($system_path)) !== false) {
+       $system_path = $_temp.DIRECTORY_SEPARATOR;
+   } else {
+       // Ensure there's a trailing slash
+       $system_path = strtr(
          rtrim($system_path, '/\\'),
          '/\\',
          DIRECTORY_SEPARATOR.DIRECTORY_SEPARATOR
@@ -229,11 +217,10 @@ switch (ENVIRONMENT)
    }
 
    // Is the system path correct?
-   if ( ! is_dir($system_path))
-   {
-      header('HTTP/1.1 503 Service Unavailable.', TRUE, 503);
-      echo 'Your system folder path does not appear to be set correctly. Please open the following file and correct this: '.pathinfo(__FILE__, PATHINFO_BASENAME);
-      exit(3); // EXIT_CONFIG
+   if (!is_dir($system_path)) {
+       header('HTTP/1.1 503 Service Unavailable.', true, 503);
+       echo 'Your system folder path does not appear to be set correctly. Please open the following file and correct this: '.pathinfo(__FILE__, PATHINFO_BASENAME);
+       exit(3); // EXIT_CONFIG
    }
 
 /*
@@ -254,71 +241,53 @@ switch (ENVIRONMENT)
    define('SYSDIR', basename(BASEPATH));
 
    // The path to the "application" directory
-   if (is_dir($application_folder))
-   {
-      if (($_temp = realpath($application_folder)) !== FALSE)
-      {
-         $application_folder = $_temp;
-      }
-      else
-      {
-         $application_folder = strtr(
+   if (is_dir($application_folder)) {
+       if (($_temp = realpath($application_folder)) !== false) {
+           $application_folder = $_temp;
+       } else {
+           $application_folder = strtr(
             rtrim($application_folder, '/\\'),
             '/\\',
             DIRECTORY_SEPARATOR.DIRECTORY_SEPARATOR
          );
-      }
-   }
-   elseif (is_dir(BASEPATH.$application_folder.DIRECTORY_SEPARATOR))
-   {
-      $application_folder = BASEPATH.strtr(
+       }
+   } elseif (is_dir(BASEPATH.$application_folder.DIRECTORY_SEPARATOR)) {
+       $application_folder = BASEPATH.strtr(
          trim($application_folder, '/\\'),
          '/\\',
          DIRECTORY_SEPARATOR.DIRECTORY_SEPARATOR
       );
-   }
-   else
-   {
-      header('HTTP/1.1 503 Service Unavailable.', TRUE, 503);
-      echo 'Your application folder path does not appear to be set correctly. Please open the following file and correct this: '.SELF;
-      exit(3); // EXIT_CONFIG
+   } else {
+       header('HTTP/1.1 503 Service Unavailable.', true, 503);
+       echo 'Your application folder path does not appear to be set correctly. Please open the following file and correct this: '.self;
+       exit(3); // EXIT_CONFIG
    }
 
    define('APPPATH', $application_folder.DIRECTORY_SEPARATOR);
 
    // The path to the "views" directory
-   if ( ! isset($view_folder[0]) && is_dir(APPPATH.'views'.DIRECTORY_SEPARATOR))
-   {
-      $view_folder = APPPATH.'views';
-   }
-   elseif (is_dir($view_folder))
-   {
-      if (($_temp = realpath($view_folder)) !== FALSE)
-      {
-         $view_folder = $_temp;
-      }
-      else
-      {
-         $view_folder = strtr(
+   if (!isset($view_folder[0]) && is_dir(APPPATH.'views'.DIRECTORY_SEPARATOR)) {
+       $view_folder = APPPATH.'views';
+   } elseif (is_dir($view_folder)) {
+       if (($_temp = realpath($view_folder)) !== false) {
+           $view_folder = $_temp;
+       } else {
+           $view_folder = strtr(
             rtrim($view_folder, '/\\'),
             '/\\',
             DIRECTORY_SEPARATOR.DIRECTORY_SEPARATOR
          );
-      }
-   }
-   elseif (is_dir(APPPATH.$view_folder.DIRECTORY_SEPARATOR))
-   {
-      $view_folder = APPPATH.strtr(
+       }
+   } elseif (is_dir(APPPATH.$view_folder.DIRECTORY_SEPARATOR)) {
+       $view_folder = APPPATH.strtr(
          trim($view_folder, '/\\'),
          '/\\',
          DIRECTORY_SEPARATOR.DIRECTORY_SEPARATOR
       );
-   }
-   else
-   {
-      header('HTTP/1.1 503 Service Unavailable.', TRUE, 503);
-      echo 'Your view folder path does not appear to be set correctly. Please open the following file and correct this: '.SELF;
-      exit(3); // EXIT_CONFIG
+   } else {
+       header('HTTP/1.1 503 Service Unavailable.', true, 503);
+       echo 'Your view folder path does not appear to be set correctly. Please open the following file and correct this: '.self;
+       exit(3); // EXIT_CONFIG
    }
 
    define('VIEWPATH', $view_folder.DIRECTORY_SEPARATOR);

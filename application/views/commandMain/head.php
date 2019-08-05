@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
+<?php defined('BASEPATH') or exit('No direct script access allowed'); ?>
 <html lang="ko">
 
 <head>
@@ -8,6 +8,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <?php foreach ($css as $value) : ?>
         <link rel="stylesheet" href="<?=$value?>">
-    <?php endforeach;?>
+    <?php endforeach; ?>
     <link href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet">
 </head>
