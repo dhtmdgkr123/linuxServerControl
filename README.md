@@ -17,6 +17,10 @@ $ apt-get -y install php-redis    # require
 $ apt-get -y install bc           # require
 $ apt-get -y install sysstat      # require
 $ systemctl restart php7.X-fpm    # after install php-redis
+# if ubuntu version == 14 and php version == 5
+$ apt-get -y install libssh2-php
+# else if ubuntu version > 17 and php version>7
+$ apt-get -y install php-ssh2
 ```
 <h1 >Warning</h1>
 If you want to use this package <br>
