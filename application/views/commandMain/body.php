@@ -48,10 +48,10 @@
                         
                         <!-- tab 2 : Admin -->
                         <section id="content1" class="article-wrap">
-                            <?php $iconClassName = 0; $title = 1; foreach($data['admin'] as $key => $value): ?>
+                            <?php $iconClassName = 0; $title = 1; foreach ($data['admin'] as $key => $value): ?>
                             <div class="container">
                                 <p class="menu-title"><?=$key?></p>
-                                <?php foreach($value as $v):?>
+                                <?php foreach ($value as $v):?>
                                 <div id="<?=preg_replace('/\s+/', '', $v[$title])?>" class="flat-btn">
                                     <i class="<?=$v[$iconClassName]?>"></i>
                                     <h3 class="flat-btn-title"><?=$v[$title]?></h3>

@@ -29,7 +29,7 @@
                     <div class="side_content fontColor">
                         <ul class="category_list">
                             <h3 class="side_item_title"><?=$title?></h3>
-                            <?php foreach($actionList as $action): ?>
+                            <?php foreach ($actionList as $action): ?>
                                 <li id="<?=preg_replace('/\s+/', '', $action)?>"><?=$action?></li>
                             <?php endforeach;?>
                         </ul>
@@ -43,7 +43,7 @@
 
         <div class="content_wrap flex_02">
             <div class="top-card">
-                <?php for ($i = 1; $i <= 3; $i++ ): ?>
+                <?php for ($i = 1; $i <= 3; $i++): ?>
                     <span class="gauge_chart" id="chartDiv<?=$i?>"></span>
                 <?php endfor; ?>
             </div>

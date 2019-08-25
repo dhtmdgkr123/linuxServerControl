@@ -1,16 +1,17 @@
 <?php
-if ( ! class_exists('Main') ) {
-    defined('BASEPATH') OR exit('No direct script access allowed');
+if (! class_exists('Main')) {
+    defined('BASEPATH') or exit('No direct script access allowed');
     
-    class Main extends CI_Controller {
-    
-        private $appPath = NULL;
-        private $staticPath = NULL;
-        private $commonBasePath = NULL;
-        private $jsFilePath = NULL;
-        private $cssFilePath = NULL;
+    class Main extends CI_Controller
+    {
+        private $appPath = null;
+        private $staticPath = null;
+        private $commonBasePath = null;
+        private $jsFilePath = null;
+        private $cssFilePath = null;
 
-        function __construct() {
+        public function __construct()
+        {
             parent::__construct();
             
             $this->load->library('session');
@@ -24,10 +25,10 @@ if ( ! class_exists('Main') ) {
             
             $this->jsFilePath = $this->staticPath.'main/js/';
             $this->cssFilePath = $this->staticPath.'main/css/';
-
         }
         
-        private function allArrayKeyExists(Array $dataArr): bool {
+        private function allArrayKeyExists(array $dataArr): bool
+        {
             $arrKeys = [
                 'serverAddress',
                 'serverPort',
@@ -37,15 +38,16 @@ if ( ! class_exists('Main') ) {
             return ! (bool)count(array_diff($arrKeys, $dataArr));
         }
         
-        private function setSessionArray(Array $reqData) {
+        private function setSessionArray(array $reqData)
+        {
             $this->session->set_userdata(array_merge([
-                'isLogin' => TRUE,
-                'pwd' => FALSE,
+                'isLogin' => true,
+                'pwd' => false,
             ], $reqData));
         }
         
-        public function index() {
-            
+        public function index()
+        {
             $mainPath = $this->appPath.'main/';
             $headPath = $mainPath.'head.php';
             $bodyPath = $mainPath.'body.php';
@@ -80,7 +82,7 @@ if ( ! class_exists('Main') ) {
                     'js' => [
                         'jQuery' => $baseStaticPath.'jQuery.js?ver=3.3.1&'.getModifyTime($commonAbosolutePath, 'jQuery.js'),
                         'jConfirm' => $baseStaticPath.'jConfirm/confirm.js?ver=3.3.0&'.getModifyTime($commonAbosolutePath, 'jConfirm/confirm.js'),
-                        'res' => $baseStaticPath.'res.js?ver=1.0.0&'.getModifyTime($commonAbosolutePath,'res.js'),
+                        'res' => $baseStaticPath.'res.js?ver=1.0.0&'.getModifyTime($commonAbosolutePath, 'res.js'),
                         'methods' => $mainStaticPath.'js/userData.js?ver=1.0.0&'.getModifyTime($this->jsFilePath, 'userData.js'),
                         'main' => $mainStaticPath.'js/main.js?ver=1.0.0&'.getModifyTime($this->jsFilePath, 'main.js'),
                     ]
@@ -88,21 +90,20 @@ if ( ! class_exists('Main') ) {
             ];
             
             if (file_exists($headPath) && file_exists($bodyPath) && file_exists($footPath)) {
-
-                if ( $this->session->isLogin ) {
-                    gotoPage( $this->config->site_url('Command/index') );
+                if ($this->session->isLogin) {
+                    gotoPage($this->config->site_url('Command/index'));
                     return;
                 }
                 $this->load->view('main/head', $staticFile['head']);
                 $this->load->view('main/body', $staticFile['body']);
                 $this->load->view('main/foot', $staticFile['foot']);
-
             } else {
                 show_404();
             }
         }
 
-        private function getUserData(): Array {
+        private function getUserData(): array
+        {
             $dataArr = [
                 'serverAddress' => '',
                 'serverPort' => '',
@@ -116,16 +117,18 @@ if ( ! class_exists('Main') ) {
         }
 
 
-        private function valueIsEmpty(Array $arr) {
+        private function valueIsEmpty(array $arr)
+        {
             foreach ($arr as $value) {
-                if ( ! $value ) {
-                    return FALSE;
+                if (! $value) {
+                    return false;
                 }
             }
-            return TRUE;
+            return true;
         }
         
-        private function cryptPassword(String $userPassword) : String {
+        private function cryptPassword(String $userPassword) : String
+        {
             $retPassword = '';
             $envList = [
                 'method' => getenv('method'),
@@ -133,31 +136,31 @@ if ( ! class_exists('Main') ) {
                 'vector' => getenv('iv')
             ];
 
-            if ( $this->valueIsEmpty($envList) ) {
-                $retPassword = openssl_encrypt($userPassword, getenv('method'), getenv('key'), TRUE, getenv('iv'));
+            if ($this->valueIsEmpty($envList)) {
+                $retPassword = openssl_encrypt($userPassword, getenv('method'), getenv('key'), true, getenv('iv'));
             }
             
             return $retPassword;
         }
         
-        public function authUserData() {
-
-            if ( chkPostMtd($this->input->server('REQUEST_METHOD')) ) {
+        public function authUserData()
+        {
+            if (chkPostMtd($this->input->server('REQUEST_METHOD'))) {
                 $this->json->header();
                 $this->load->model('ServerAuth');
                 $retArr = [
-                    'status' => FALSE,
+                    'status' => false,
                     'code' => -3,
                     'page' => 'indexError'
                 ];
                 
                 $dataArr = $this->getUserData();
     
-                if ( $this->allArrayKeyExists( array_keys($dataArr) ) ) {
+                if ($this->allArrayKeyExists(array_keys($dataArr))) {
                     $cryptPassword = $this->cryptPassword($dataArr['userPassword']);
-                    if ( $cryptPassword ) {
+                    if ($cryptPassword) {
                         $retArr = $this->ServerAuth->mainMethod($dataArr);
-                        if ( $retArr['status'] ) {
+                        if ($retArr['status']) {
                             $dataArr['userPassword'] = $cryptPassword;
                             $this->setSessionArray($dataArr);
                         }
@@ -172,4 +175,3 @@ if ( ! class_exists('Main') ) {
         }
     }
 }
-?>

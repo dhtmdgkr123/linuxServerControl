@@ -1,20 +1,24 @@
 <?php
-if ( ! class_exists('ServerStatus') ) {
-    class ServerStatus extends CI_Controller {
-        function __construct(Type $var = null) {
+if (! class_exists('ServerStatus')) {
+    defined('BASEPATH') or exit('No direct script access allowed');
+    class ServerStatus extends CI_Controller
+    {
+        public function __construct(Type $var = null)
+        {
             parent::__construct();
             $this->load->library('session');
         }
         
-        private function checkFileExists(string $head, string $body, string $foot) : bool {
+        private function checkFileExists(string $head, string $body, string $foot) : bool
+        {
             $ext = '.php';
             return file_exists(VIEWPATH.$head.$ext) && file_exists(VIEWPATH.$body.$ext) && file_exists(VIEWPATH.$foot.$ext);
         }
         
-        private function renderUI($saveValue) : Array {
-            $retArr = NULL;
-
-            if ( $saveValue ) {
+        private function renderUI($saveValue) : array
+        {
+            $retArr = null;
+            if ($saveValue) {
                 $retArr = $saveValue;
             } else {
                 $serviceList = [
@@ -24,18 +28,18 @@ if ( ! class_exists('ServerStatus') ) {
                 $action = [
                     'Start', 'Restart', 'Off', 'Status'
                 ];
-                $flag = TRUE;
-                for ($i = 0, $passStatus = NULL, $serviceKey = array_keys($serviceList) , $actionLen = count($action) , $serviceLen = count($serviceList); $i < $serviceLen; $i++) {
+                $flag = true;
+                for ($i = 0, $passStatus = null, $serviceKey = array_keys($serviceList) , $actionLen = count($action) , $serviceLen = count($serviceList); $i < $serviceLen; $i++) {
                     for ($j = 0; $j < $actionLen; $j++) {
                         $passStatus = $serviceKey[$i] === $serviceKey[0] && $action[$j] === $action[$actionLen - 1];
                         $passStart = $serviceKey[$i] === $serviceKey[0] && $action[$j] === $action[0];
-                        if ( $passStatus || $passStart ) {
+                        if ($passStatus || $passStart) {
                             continue;
                         } else {
-                            if ( $serviceKey[$i] === $serviceKey[0] ) {
-                                if ( $flag ) {
+                            if ($serviceKey[$i] === $serviceKey[0]) {
+                                if ($flag) {
                                     array_push($serviceList[$serviceKey[$i]], 'Web Shell');
-                                    $flag = FALSE;
+                                    $flag = false;
                                 }
                             }
                             array_push($serviceList[$serviceKey[$i]], $serviceKey[$i].$action[$j]);
@@ -49,15 +53,14 @@ if ( ! class_exists('ServerStatus') ) {
             return $retArr;
         }
         
-        public function index() {
-
-            
-            if ( $this->checkFileExists('status/head', 'status/body', 'status/footer') ) {
+        public function index()
+        {
+            if ($this->checkFileExists('status/head', 'status/body', 'status/footer')) {
                 $load = $this->load;
                 $staticPath = realpath('../html/static').'/';
                 $basePath = $staticPath.'base/';
                 $load->helper('file');
-                if ( $this->session->isLogin ) {
+                if ($this->session->isLogin) {
                     $cfg = $this->config;
                     $staticFile = [
                         'head' => [
@@ -91,7 +94,6 @@ if ( ! class_exists('ServerStatus') ) {
                     $load->view('status/head', $staticFile['head']);
                     $load->view('status/body', $staticFile['body']);
                     $load->view('status/footer', $staticFile['footer']);
-
                 } else {
                     $load->helper('url');
                     redirect('/', 'refresh');
@@ -100,8 +102,5 @@ if ( ! class_exists('ServerStatus') ) {
                 show_404();
             }
         }
-        
     }
-    
 }
-?>

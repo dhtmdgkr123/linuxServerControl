@@ -1,5 +1,5 @@
 
-<?php foreach($js as $val): ?>
+<?php foreach ($js as $val): ?>
 <script src="<?=$val?>"></script>
 <?php endforeach; ?>
 

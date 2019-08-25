@@ -1,17 +1,18 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
-if ( ! class_exists('Command') ) {
-    class Command extends CI_Controller {
-        private $appPath = NULL;
-        private $mainJsPath = NULL;
-        private $commonStaticPath = NULL;
-        private $returnCode = NULL;
-        private $returnArray = NULL;
-        private $statusArray = NULL;
+if (! class_exists('Command')) {
+    defined('BASEPATH') or exit('No direct script access allowed');
+    class Command extends CI_Controller
+    {
+        private $appPath = null;
+        private $mainJsPath = null;
+        private $commonStaticPath = null;
+        private $returnCode = null;
+        private $returnArray = null;
+        private $statusArray = null;
         
-        function __construct() {
+        public function __construct()
+        {
             parent::__construct();
-    
             $this->load->library('session');
             $this->load->library('json');
             $this->load->helper('ajax');
@@ -24,24 +25,27 @@ if ( ! class_exists('Command') ) {
             $this->statusArray = ['blocked', 'success'];
             $this->returnValue = [ $this->statusArray[0] => -1 ];
             $this->returnArray = [
-                'status' => FALSE,
-                'ok' => TRUE,
+                'status' => false,
+                'ok' => true,
                 'code' => 0
             ];
         }
         
-        private function chkStatus(): bool {
+        private function chkStatus(): bool
+        {
             return $this->session->isLogin && chkPostMtd($this->input->server('REQUEST_METHOD'));
         }
     
-        private function isNotLogin(): bool {
+        private function isNotLogin(): bool
+        {
             return ! $this->session->isLogin;
         }
         
-        private function renderServiceCommand($saveValue) : Array {
-            $retArr = NULL;
+        private function renderServiceCommand($saveValue) : array
+        {
+            $retArr = null;
             
-            if ( $saveValue ) {
+            if ($saveValue) {
                 $retArr = $saveValue;
             } else {
                 $categoryList = ['Server' => [], 'MySQL' => [], 'APACHE' => [], 'NGINX' => [] ];
@@ -69,7 +73,8 @@ if ( ! class_exists('Command') ) {
             return $retArr;
         }
         
-        public function logout() : void {
+        public function logout() : void
+        {
             $userData = $this->session->all_userdata();
             foreach ($userData as $key => $value) {
                 if ($key !== 'session_id' && $key !== 'ip_address' && $key !== 'user_agent' && $key !== 'last_activity') {
@@ -80,8 +85,8 @@ if ( ! class_exists('Command') ) {
             gotoPage('/');
         }
         
-        public function index() : void {
-            
+        public function index() : void
+        {
             $mainPath = VIEWPATH.'commandMain/';
             $headPath = $mainPath.'head.php';
             $bodyPath = $mainPath.'body.php';
@@ -122,8 +127,7 @@ if ( ! class_exists('Command') ) {
             ];
             
             if (file_exists($headPath) && file_exists($bodyPath) && file_exists($footPath)) {
-                
-                if ( $this->isNotLogin() ) {
+                if ($this->isNotLogin()) {
                     gotoPage('/');
                     return;
                 }
@@ -131,25 +135,25 @@ if ( ! class_exists('Command') ) {
                 $this->load->view('commandMain/head', $staticFile['head']);
                 $this->load->view('commandMain/body', $staticFile['body']);
                 $this->load->view('commandMain/foot', $staticFile['foot']);
-                
             } else {
                 show_404();
             }
-            
         }
         
-        public function getPwd() : void {
+        public function getPwd() : void
+        {
             $this->load->model('ExecCommand');
             $this->json->header();
-            $this->json->echo( $this->ExecCommand->printWorkingDir($this->session->pwd) );
+            $this->json->echo($this->ExecCommand->printWorkingDir($this->session->pwd));
         }
         
-        public function commandMainProcess() : void {
-            if ( $this->chkStatus() ) {
+        public function commandMainProcess() : void
+        {
+            if ($this->chkStatus()) {
                 $this->json->header();
                 $data = $this->getUserCommand();
-                $retArr = NULL;
-                if ( ( !($data)) && $this->filterCommand($data) ) {
+                $retArr = null;
+                if ((!($data)) && $this->filterCommand($data)) {
                     $this->returnArray['code'] = $this->returnValue[$this->statusArray[0]];
                     $retArr = $this->returnArray;
                 } else {
@@ -157,22 +161,21 @@ if ( ! class_exists('Command') ) {
                     $retArr = $this->ExecCommand->execUserCommand($data);
                 }
                 $this->json->echo($retArr);
-    
             } else {
                 show_404();
             }
         }
         
-        private function filterCommand(String $data): bool {
+        private function filterCommand(String $data): bool
+        {
             $this->load->helper('command');
             return (new commandFilter($data))->filterMain();
         }
         
-        private function getUserCommand() : String {
+        private function getUserCommand() : String
+        {
             $postDataTmp = trimPost('command');
             return $postDataTmp ? $postDataTmp : '';
         }
     }
-
 }
-?>
