@@ -1,6 +1,6 @@
 <?php
 /**
- * CodeIgniter
+ * CodeIgniter.
  *
  * An open source application development framework for PHP
  *
@@ -26,11 +26,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
- * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
  * @copyright	Copyright (c) 2014 - 2018, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
+ *
  * @link	https://codeigniter.com
  * @since	Version 3.0.0
  * @filesource
@@ -38,69 +38,69 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
- * PDO ODBC Database Adapter Class
+ * PDO ODBC Database Adapter Class.
  *
  * Note: _DB is an extender class that the app controller
  * creates dynamically based on whether the query builder
  * class is being used or not.
  *
- * @package		CodeIgniter
- * @subpackage	Drivers
  * @category	Database
+ *
  * @author		EllisLab Dev Team
+ *
  * @link		https://codeigniter.com/user_guide/database/
  */
 class CI_DB_pdo_odbc_driver extends CI_DB_pdo_driver
 {
-
     /**
-     * Sub-driver
+     * Sub-driver.
      *
-     * @var	string
+     * @var string
      */
     public $subdriver = 'odbc';
 
     /**
-     * Database schema
+     * Database schema.
      *
-     * @var	string
+     * @var string
      */
     public $schema = 'public';
 
     // --------------------------------------------------------------------
 
     /**
-     * Identifier escape character
+     * Identifier escape character.
      *
      * Must be empty for ODBC.
      *
-     * @var	string
+     * @var string
      */
     protected $_escape_char = '';
 
     /**
-     * ESCAPE statement string
+     * ESCAPE statement string.
      *
-     * @var	string
+     * @var string
      */
     protected $_like_escape_str = " {escape '%s'} ";
 
     /**
-     * ORDER BY random keyword
+     * ORDER BY random keyword.
      *
-     * @var	array
+     * @var array
      */
-    protected $_random_keyword = array('RND()', 'RND(%d)');
+    protected $_random_keyword = ['RND()', 'RND(%d)'];
 
     // --------------------------------------------------------------------
 
     /**
-     * Class constructor
+     * Class constructor.
      *
      * Builds the DSN if not already set.
      *
-     * @param	array	$params
-     * @return	void
+     * @param array $params
+     *
+     * @return void
      */
     public function __construct($params)
     {
@@ -113,7 +113,7 @@ class CI_DB_pdo_odbc_driver extends CI_DB_pdo_driver
             if (empty($this->hostname) && empty($this->HOSTNAME) && empty($this->port) && empty($this->PORT)) {
                 if (isset($this->DSN)) {
                     $this->dsn .= 'DSN='.$this->DSN;
-                } elseif (! empty($this->database)) {
+                } elseif (!empty($this->database)) {
                     $this->dsn .= 'DSN='.$this->database;
                 }
 
@@ -125,7 +125,7 @@ class CI_DB_pdo_odbc_driver extends CI_DB_pdo_driver
 
             if (isset($this->DATABASE)) {
                 $this->dsn .= 'DATABASE='.$this->DATABASE.';';
-            } elseif (! empty($this->database)) {
+            } elseif (!empty($this->database)) {
                 $this->dsn .= 'DATABASE='.$this->database.';';
             }
 
@@ -137,7 +137,7 @@ class CI_DB_pdo_odbc_driver extends CI_DB_pdo_driver
 
             if (isset($this->PORT)) {
                 $this->dsn .= 'PORT='.$this->port.';';
-            } elseif (! empty($this->port)) {
+            } elseif (!empty($this->port)) {
                 $this->dsn .= ';PORT='.$this->port.';';
             }
 
@@ -148,10 +148,11 @@ class CI_DB_pdo_odbc_driver extends CI_DB_pdo_driver
     // --------------------------------------------------------------------
 
     /**
-     * Platform-dependent string escape
+     * Platform-dependent string escape.
      *
      * @param	string
-     * @return	string
+     *
+     * @return string
      */
     protected function _escape_str($str)
     {
@@ -164,7 +165,8 @@ class CI_DB_pdo_odbc_driver extends CI_DB_pdo_driver
      * Determines if a query is a "write" type.
      *
      * @param	string	An SQL query string
-     * @return	bool
+     *
+     * @return bool
      */
     public function is_write_type($sql)
     {
@@ -178,12 +180,13 @@ class CI_DB_pdo_odbc_driver extends CI_DB_pdo_driver
     // --------------------------------------------------------------------
 
     /**
-     * Show table query
+     * Show table query.
      *
      * Generates a platform-specific query string so that the table names can be fetched
      *
-     * @param	bool	$prefix_limit
-     * @return	string
+     * @param bool $prefix_limit
+     *
+     * @return string
      */
     protected function _list_tables($prefix_limit = false)
     {
@@ -200,12 +203,13 @@ class CI_DB_pdo_odbc_driver extends CI_DB_pdo_driver
     // --------------------------------------------------------------------
 
     /**
-     * Show column query
+     * Show column query.
      *
      * Generates a platform-specific query string so that the column names can be fetched
      *
-     * @param	string	$table
-     * @return	string
+     * @param string $table
+     *
+     * @return string
      */
     protected function _list_columns($table = '')
     {

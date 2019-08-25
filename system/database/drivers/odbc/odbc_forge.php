@@ -1,6 +1,6 @@
 <?php
 /**
- * CodeIgniter
+ * CodeIgniter.
  *
  * An open source application development framework for PHP
  *
@@ -26,11 +26,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
- * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
  * @copyright	Copyright (c) 2014 - 2018, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
+ *
  * @link	https://codeigniter.com
  * @since	Version 1.3.0
  * @filesource
@@ -38,46 +38,46 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
- * ODBC Forge Class
+ * ODBC Forge Class.
  *
- * @package		CodeIgniter
- * @subpackage	Drivers
  * @category	Database
+ *
  * @author		EllisLab Dev Team
+ *
  * @link		https://codeigniter.com/database/
  */
 class CI_DB_odbc_forge extends CI_DB_forge
 {
+    /**
+     * CREATE TABLE IF statement.
+     *
+     * @var string
+     */
+    protected $_create_table_if = false;
 
     /**
-     * CREATE TABLE IF statement
+     * DROP TABLE IF statement.
      *
-     * @var	string
+     * @var string
      */
-    protected $_create_table_if	= false;
+    protected $_drop_table_if = false;
 
     /**
-     * DROP TABLE IF statement
+     * UNSIGNED support.
      *
-     * @var	string
+     * @var bool|array
      */
-    protected $_drop_table_if	= false;
-
-    /**
-     * UNSIGNED support
-     *
-     * @var	bool|array
-     */
-    protected $_unsigned		= false;
+    protected $_unsigned = false;
 
     // --------------------------------------------------------------------
 
     /**
-     * Field attribute AUTO_INCREMENT
+     * Field attribute AUTO_INCREMENT.
      *
-     * @param	array	&$attributes
-     * @param	array	&$field
-     * @return	void
+     * @param array &$attributes
+     * @param array &$field
+     *
+     * @return void
      */
     protected function _attr_auto_increment(&$attributes, &$field)
     {

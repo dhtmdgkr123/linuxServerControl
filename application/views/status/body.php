@@ -17,7 +17,7 @@
                 <!-- side sub menu -->
                 <div class="side_menu boxColor">
                     <div class="side_sub_menu flex">
-                        <a href="<?=$this->config->site_url('Command/logout');?>">
+                        <a href="<?=$this->config->site_url('Command/logout'); ?>">
                             <div id="log_out" class="sub_menu_item flex_00">
                                 <div class="menu_txt flex_align"><i class="ion-locked"></i></div>
                             </div>
@@ -31,10 +31,10 @@
                             <h3 class="side_item_title"><?=$title?></h3>
                             <?php foreach ($actionList as $action): ?>
                                 <li id="<?=preg_replace('/\s+/', '', $action)?>"><?=$action?></li>
-                            <?php endforeach;?>
+                            <?php endforeach; ?>
                         </ul>
                     </div>
-                    <?php endforeach;?>
+                    <?php endforeach; ?>
 
                 </div>
                 <!-- side content -->

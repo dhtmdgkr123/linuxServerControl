@@ -1,6 +1,6 @@
 <?php
 /**
- * CodeIgniter
+ * CodeIgniter.
  *
  * An open source application development framework for PHP
  *
@@ -26,11 +26,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
- * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
  * @copyright	Copyright (c) 2014 - 2018, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
+ *
  * @link	https://codeigniter.com
  * @since	Version 3.0.0
  * @filesource
@@ -38,40 +38,39 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
- * CodeIgniter Session Redis Driver
+ * CodeIgniter Session Redis Driver.
  *
- * @package	CodeIgniter
- * @subpackage	Libraries
  * @category	Sessions
+ *
  * @author	Andrey Andreev
+ *
  * @link	https://codeigniter.com/user_guide/libraries/sessions.html
  */
 class CI_Session_redis_driver extends CI_Session_driver implements SessionHandlerInterface
 {
-
     /**
-     * phpRedis instance
+     * phpRedis instance.
      *
-     * @var	Redis
+     * @var Redis
      */
     protected $_redis;
 
     /**
-     * Key prefix
+     * Key prefix.
      *
-     * @var	string
+     * @var string
      */
     protected $_key_prefix = 'ci_session:';
 
     /**
-     * Lock key
+     * Lock key.
      *
-     * @var	string
+     * @var string
      */
     protected $_lock_key;
 
     /**
-     * Key exists flag
+     * Key exists flag.
      *
      * @var bool
      */
@@ -80,10 +79,11 @@ class CI_Session_redis_driver extends CI_Session_driver implements SessionHandle
     // ------------------------------------------------------------------------
 
     /**
-     * Class constructor
+     * Class constructor.
      *
-     * @param	array	$params	Configuration parameters
-     * @return	void
+     * @param array $params Configuration parameters
+     *
+     * @return void
      */
     public function __construct(&$params)
     {
@@ -93,13 +93,13 @@ class CI_Session_redis_driver extends CI_Session_driver implements SessionHandle
             log_message('error', 'Session: No Redis save path configured.');
         } elseif (preg_match('#(?:tcp://)?([^:?]+)(?:\:(\d+))?(\?.+)?#', $this->_config['save_path'], $matches)) {
             isset($matches[3]) or $matches[3] = ''; // Just to avoid undefined index notices below
-            $this->_config['save_path'] = array(
-                'host' => $matches[1],
-                'port' => empty($matches[2]) ? null : $matches[2],
+            $this->_config['save_path'] = [
+                'host'     => $matches[1],
+                'port'     => empty($matches[2]) ? null : $matches[2],
                 'password' => preg_match('#auth=([^\s&]+)#', $matches[3], $match) ? $match[1] : null,
                 'database' => preg_match('#database=(\d+)#', $matches[3], $match) ? (int) $match[1] : null,
-                'timeout' => preg_match('#timeout=(\d+\.\d+)#', $matches[3], $match) ? (float) $match[1] : null
-            );
+                'timeout'  => preg_match('#timeout=(\d+\.\d+)#', $matches[3], $match) ? (float) $match[1] : null,
+            ];
 
             preg_match('#prefix=([^\s&]+)#', $matches[3], $match) && $this->_key_prefix = $match[1];
         } else {
@@ -114,13 +114,14 @@ class CI_Session_redis_driver extends CI_Session_driver implements SessionHandle
     // ------------------------------------------------------------------------
 
     /**
-     * Open
+     * Open.
      *
      * Sanitizes save_path and initializes connection.
      *
-     * @param	string	$save_path	Server path
-     * @param	string	$name		Session cookie name, unused
-     * @return	bool
+     * @param string $save_path Server path
+     * @param string $name      Session cookie name, unused
+     *
+     * @return bool
      */
     public function open($save_path, $name)
     {
@@ -129,14 +130,15 @@ class CI_Session_redis_driver extends CI_Session_driver implements SessionHandle
         }
 
         $redis = new Redis();
-        if (! $redis->connect($this->_config['save_path']['host'], $this->_config['save_path']['port'], $this->_config['save_path']['timeout'])) {
+        if (!$redis->connect($this->_config['save_path']['host'], $this->_config['save_path']['port'], $this->_config['save_path']['timeout'])) {
             log_message('error', 'Session: Unable to connect to Redis with the configured settings.');
-        } elseif (isset($this->_config['save_path']['password']) && ! $redis->auth($this->_config['save_path']['password'])) {
+        } elseif (isset($this->_config['save_path']['password']) && !$redis->auth($this->_config['save_path']['password'])) {
             log_message('error', 'Session: Unable to authenticate to Redis instance.');
-        } elseif (isset($this->_config['save_path']['database']) && ! $redis->select($this->_config['save_path']['database'])) {
+        } elseif (isset($this->_config['save_path']['database']) && !$redis->select($this->_config['save_path']['database'])) {
             log_message('error', 'Session: Unable to select Redis database with index '.$this->_config['save_path']['database']);
         } else {
             $this->_redis = $redis;
+
             return $this->_success;
         }
 
@@ -148,12 +150,13 @@ class CI_Session_redis_driver extends CI_Session_driver implements SessionHandle
     // ------------------------------------------------------------------------
 
     /**
-     * Read
+     * Read.
      *
      * Reads session data and acquires a lock
      *
-     * @param	string	$session_id	Session ID
-     * @return	string	Serialized session data
+     * @param string $session_id Session ID
+     *
+     * @return string Serialized session data
      */
     public function read($session_id)
     {
@@ -168,6 +171,7 @@ class CI_Session_redis_driver extends CI_Session_driver implements SessionHandle
                 : $session_data = '';
 
             $this->_fingerprint = md5($session_data);
+
             return $session_data;
         }
 
@@ -177,22 +181,23 @@ class CI_Session_redis_driver extends CI_Session_driver implements SessionHandle
     // ------------------------------------------------------------------------
 
     /**
-     * Write
+     * Write.
      *
      * Writes (create / update) session data
      *
-     * @param	string	$session_id	Session ID
-     * @param	string	$session_data	Serialized session data
-     * @return	bool
+     * @param string $session_id   Session ID
+     * @param string $session_data Serialized session data
+     *
+     * @return bool
      */
     public function write($session_id, $session_data)
     {
-        if (! isset($this->_redis, $this->_lock_key)) {
+        if (!isset($this->_redis, $this->_lock_key)) {
             return $this->_fail();
         }
         // Was the ID regenerated?
         elseif ($session_id !== $this->_session_id) {
-            if (! $this->_release_lock() or ! $this->_get_lock($session_id)) {
+            if (!$this->_release_lock() or !$this->_get_lock($session_id)) {
                 return $this->_fail();
             }
 
@@ -205,6 +210,7 @@ class CI_Session_redis_driver extends CI_Session_driver implements SessionHandle
             if ($this->_redis->set($this->_key_prefix.$session_id, $session_data, $this->_config['expiration'])) {
                 $this->_fingerprint = $fingerprint;
                 $this->_key_exists = true;
+
                 return $this->_success;
             }
 
@@ -219,11 +225,11 @@ class CI_Session_redis_driver extends CI_Session_driver implements SessionHandle
     // ------------------------------------------------------------------------
 
     /**
-     * Close
+     * Close.
      *
      * Releases locks and closes connection.
      *
-     * @return	bool
+     * @return bool
      */
     public function close()
     {
@@ -240,6 +246,7 @@ class CI_Session_redis_driver extends CI_Session_driver implements SessionHandle
             }
 
             $this->_redis = null;
+
             return $this->_success;
         }
 
@@ -249,12 +256,13 @@ class CI_Session_redis_driver extends CI_Session_driver implements SessionHandle
     // ------------------------------------------------------------------------
 
     /**
-     * Destroy
+     * Destroy.
      *
      * Destroys the current session.
      *
-     * @param	string	$session_id	Session ID
-     * @return	bool
+     * @param string $session_id Session ID
+     *
+     * @return bool
      */
     public function destroy($session_id)
     {
@@ -264,6 +272,7 @@ class CI_Session_redis_driver extends CI_Session_driver implements SessionHandle
             }
 
             $this->_cookie_destroy();
+
             return $this->_success;
         }
 
@@ -273,12 +282,13 @@ class CI_Session_redis_driver extends CI_Session_driver implements SessionHandle
     // ------------------------------------------------------------------------
 
     /**
-     * Garbage Collector
+     * Garbage Collector.
      *
      * Deletes expired sessions
      *
-     * @param	int 	$maxlifetime	Maximum lifetime of sessions
-     * @return	bool
+     * @param int $maxlifetime Maximum lifetime of sessions
+     *
+     * @return bool
      */
     public function gc($maxlifetime)
     {
@@ -289,13 +299,14 @@ class CI_Session_redis_driver extends CI_Session_driver implements SessionHandle
     // --------------------------------------------------------------------
 
     /**
-     * Validate ID
+     * Validate ID.
      *
      * Checks whether a session ID record exists server-side,
      * to enforce session.use_strict_mode.
      *
-     * @param	string	$id
-     * @return	bool
+     * @param string $id
+     *
+     * @return bool
      */
     public function validateId($id)
     {
@@ -305,12 +316,13 @@ class CI_Session_redis_driver extends CI_Session_driver implements SessionHandle
     // ------------------------------------------------------------------------
 
     /**
-     * Get lock
+     * Get lock.
      *
      * Acquires an (emulated) lock.
      *
-     * @param	string	$session_id	Session ID
-     * @return	bool
+     * @param string $session_id Session ID
+     *
+     * @return bool
      */
     protected function _get_lock($session_id)
     {
@@ -331,11 +343,12 @@ class CI_Session_redis_driver extends CI_Session_driver implements SessionHandle
             }
 
             $result = ($ttl === -2)
-                ? $this->_redis->set($lock_key, time(), array('nx', 'ex' => 300))
+                ? $this->_redis->set($lock_key, time(), ['nx', 'ex' => 300])
                 : $this->_redis->setex($lock_key, 300, time());
 
-            if (! $result) {
+            if (!$result) {
                 log_message('error', 'Session: Error while trying to obtain lock for '.$this->_key_prefix.$session_id);
+
                 return false;
             }
 
@@ -345,29 +358,32 @@ class CI_Session_redis_driver extends CI_Session_driver implements SessionHandle
 
         if ($attempt === 30) {
             log_message('error', 'Session: Unable to obtain lock for '.$this->_key_prefix.$session_id.' after 30 attempts, aborting.');
+
             return false;
         } elseif ($ttl === -1) {
             log_message('debug', 'Session: Lock for '.$this->_key_prefix.$session_id.' had no TTL, overriding.');
         }
 
         $this->_lock = true;
+
         return true;
     }
 
     // ------------------------------------------------------------------------
 
     /**
-     * Release lock
+     * Release lock.
      *
      * Releases a previously acquired lock
      *
-     * @return	bool
+     * @return bool
      */
     protected function _release_lock()
     {
         if (isset($this->_redis, $this->_lock_key) && $this->_lock) {
-            if (! $this->_redis->delete($this->_lock_key)) {
+            if (!$this->_redis->delete($this->_lock_key)) {
                 log_message('error', 'Session: Error while trying to free lock for '.$this->_lock_key);
+
                 return false;
             }
 

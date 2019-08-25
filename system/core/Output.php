@@ -1,6 +1,6 @@
 <?php
 /**
- * CodeIgniter
+ * CodeIgniter.
  *
  * An open source application development framework for PHP
  *
@@ -26,11 +26,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
- * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
  * @copyright	Copyright (c) 2014 - 2018, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
+ *
  * @link	https://codeigniter.com
  * @since	Version 1.0.0
  * @filesource
@@ -38,104 +38,103 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
- * Output Class
+ * Output Class.
  *
  * Responsible for sending final output to the browser.
  *
- * @package		CodeIgniter
- * @subpackage	Libraries
  * @category	Output
+ *
  * @author		EllisLab Dev Team
+ *
  * @link		https://codeigniter.com/user_guide/libraries/output.html
  */
 class CI_Output
 {
-
     /**
-     * Final output string
+     * Final output string.
      *
-     * @var	string
+     * @var string
      */
     public $final_output;
 
     /**
-     * Cache expiration time
+     * Cache expiration time.
      *
-     * @var	int
+     * @var int
      */
     public $cache_expiration = 0;
 
     /**
-     * List of server headers
+     * List of server headers.
      *
-     * @var	array
+     * @var array
      */
-    public $headers = array();
+    public $headers = [];
 
     /**
-     * List of mime types
+     * List of mime types.
      *
-     * @var	array
+     * @var array
      */
-    public $mimes =	array();
+    public $mimes = [];
 
     /**
-     * Mime-type for the current page
+     * Mime-type for the current page.
      *
-     * @var	string
+     * @var string
      */
     protected $mime_type = 'text/html';
 
     /**
-     * Enable Profiler flag
+     * Enable Profiler flag.
      *
-     * @var	bool
+     * @var bool
      */
     public $enable_profiler = false;
 
     /**
-     * php.ini zlib.output_compression flag
+     * php.ini zlib.output_compression flag.
      *
-     * @var	bool
+     * @var bool
      */
     protected $_zlib_oc = false;
 
     /**
-     * CI output compression flag
+     * CI output compression flag.
      *
-     * @var	bool
+     * @var bool
      */
     protected $_compress_output = false;
 
     /**
-     * List of profiler sections
+     * List of profiler sections.
      *
-     * @var	array
+     * @var array
      */
-    protected $_profiler_sections =	array();
+    protected $_profiler_sections = [];
 
     /**
-     * Parse markers flag
+     * Parse markers flag.
      *
      * Whether or not to parse variables like {elapsed_time} and {memory_usage}.
      *
-     * @var	bool
+     * @var bool
      */
     public $parse_exec_vars = true;
 
     /**
-     * mbstring.func_overload flag
+     * mbstring.func_overload flag.
      *
-     * @var	bool
+     * @var bool
      */
     protected static $func_overload;
 
     /**
-     * Class constructor
+     * Class constructor.
      *
      * Determines whether zLib output compression will be used.
      *
-     * @return	void
+     * @return void
      */
     public function __construct()
     {
@@ -149,7 +148,7 @@ class CI_Output
         isset(self::$func_overload) or self::$func_overload = (extension_loaded('mbstring') && ini_get('mbstring.func_overload'));
 
         // Get mime types for later
-        $this->mimes =& get_mimes();
+        $this->mimes = &get_mimes();
 
         log_message('info', 'Output Class Initialized');
     }
@@ -157,11 +156,11 @@ class CI_Output
     // --------------------------------------------------------------------
 
     /**
-     * Get Output
+     * Get Output.
      *
      * Returns the current output string.
      *
-     * @return	string
+     * @return string
      */
     public function get_output()
     {
@@ -171,48 +170,54 @@ class CI_Output
     // --------------------------------------------------------------------
 
     /**
-     * Set Output
+     * Set Output.
      *
      * Sets the output string.
      *
-     * @param	string	$output	Output data
-     * @return	CI_Output
+     * @param string $output Output data
+     *
+     * @return CI_Output
      */
     public function set_output($output)
     {
         $this->final_output = $output;
+
         return $this;
     }
 
     // --------------------------------------------------------------------
 
     /**
-     * Append Output
+     * Append Output.
      *
      * Appends data onto the output string.
      *
-     * @param	string	$output	Data to append
-     * @return	CI_Output
+     * @param string $output Data to append
+     *
+     * @return CI_Output
      */
     public function append_output($output)
     {
         $this->final_output .= $output;
+
         return $this;
     }
 
     // --------------------------------------------------------------------
 
     /**
-     * Set Header
+     * Set Header.
      *
      * Lets you set a server header which will be sent with the final output.
      *
      * Note: If a file is cached, headers will not be sent.
+     *
      * @todo	We need to figure out how to permit headers to be cached.
      *
-     * @param	string	$header		Header
-     * @param	bool	$replace	Whether to replace the old header value, if already set
-     * @return	CI_Output
+     * @param string $header  Header
+     * @param bool   $replace Whether to replace the old header value, if already set
+     *
+     * @return CI_Output
      */
     public function set_header($header, $replace = true)
     {
@@ -224,18 +229,20 @@ class CI_Output
             return $this;
         }
 
-        $this->headers[] = array($header, $replace);
+        $this->headers[] = [$header, $replace];
+
         return $this;
     }
 
     // --------------------------------------------------------------------
 
     /**
-     * Set Content-Type Header
+     * Set Content-Type Header.
      *
-     * @param	string	$mime_type	Extension of the file we're outputting
-     * @param	string	$charset	Character set (default: NULL)
-     * @return	CI_Output
+     * @param string $mime_type Extension of the file we're outputting
+     * @param string $charset   Character set (default: NULL)
+     *
+     * @return CI_Output
      */
     public function set_content_type($mime_type, $charset = null)
     {
@@ -244,7 +251,7 @@ class CI_Output
 
             // Is this extension supported?
             if (isset($this->mimes[$extension])) {
-                $mime_type =& $this->mimes[$extension];
+                $mime_type = &$this->mimes[$extension];
 
                 if (is_array($mime_type)) {
                     $mime_type = current($mime_type);
@@ -261,16 +268,17 @@ class CI_Output
         $header = 'Content-Type: '.$mime_type
             .(empty($charset) ? '' : '; charset='.$charset);
 
-        $this->headers[] = array($header, true);
+        $this->headers[] = [$header, true];
+
         return $this;
     }
 
     // --------------------------------------------------------------------
 
     /**
-     * Get Current Content-Type Header
+     * Get Current Content-Type Header.
      *
-     * @return	string	'text/html', if not already set
+     * @return string 'text/html', if not already set
      */
     public function get_content_type()
     {
@@ -286,10 +294,11 @@ class CI_Output
     // --------------------------------------------------------------------
 
     /**
-     * Get Header
+     * Get Header.
      *
-     * @param	string	$header
-     * @return	string
+     * @param string $header
+     *
+     * @return string
      */
     public function get_header($header)
     {
@@ -301,61 +310,64 @@ class CI_Output
         );
 
         if (empty($headers) or empty($header)) {
-            return null;
+            return;
         }
 
         // Count backwards, in order to get the last matching header
         for ($c = count($headers) - 1; $c > -1; $c--) {
             if (strncasecmp($header, $headers[$c], $l = self::strlen($header)) === 0) {
-                return trim(self::substr($headers[$c], $l+1));
+                return trim(self::substr($headers[$c], $l + 1));
             }
         }
-
-        return null;
     }
 
     // --------------------------------------------------------------------
 
     /**
-     * Set HTTP Status Header
+     * Set HTTP Status Header.
      *
      * As of version 1.7.2, this is an alias for common function
      * set_status_header().
      *
-     * @param	int	$code	Status code (default: 200)
-     * @param	string	$text	Optional message
-     * @return	CI_Output
+     * @param int    $code Status code (default: 200)
+     * @param string $text Optional message
+     *
+     * @return CI_Output
      */
     public function set_status_header($code = 200, $text = '')
     {
         set_status_header($code, $text);
+
         return $this;
     }
 
     // --------------------------------------------------------------------
 
     /**
-     * Enable/disable Profiler
+     * Enable/disable Profiler.
      *
-     * @param	bool	$val	TRUE to enable or FALSE to disable
-     * @return	CI_Output
+     * @param bool $val TRUE to enable or FALSE to disable
+     *
+     * @return CI_Output
      */
     public function enable_profiler($val = true)
     {
         $this->enable_profiler = is_bool($val) ? $val : true;
+
         return $this;
     }
 
     // --------------------------------------------------------------------
 
     /**
-     * Set Profiler Sections
+     * Set Profiler Sections.
      *
      * Allows override of default/config settings for
      * Profiler section display.
      *
-     * @param	array	$sections	Profiler sections
-     * @return	CI_Output
+     * @param array $sections Profiler sections
+     *
+     * @return CI_Output
      */
     public function set_profiler_sections($sections)
     {
@@ -374,21 +386,23 @@ class CI_Output
     // --------------------------------------------------------------------
 
     /**
-     * Set Cache
+     * Set Cache.
      *
-     * @param	int	$time	Cache expiration time in minutes
-     * @return	CI_Output
+     * @param int $time Cache expiration time in minutes
+     *
+     * @return CI_Output
      */
     public function cache($time)
     {
         $this->cache_expiration = is_numeric($time) ? $time : 0;
+
         return $this;
     }
 
     // --------------------------------------------------------------------
 
     /**
-     * Display Output
+     * Display Output.
      *
      * Processes and sends finalized output data to the browser along
      * with any server headers and profile data. It also stops benchmark
@@ -398,27 +412,29 @@ class CI_Output
      *	 by controller class.
      *
      * @uses	CI_Output::$final_output
-     * @param	string	$output	Output data override
-     * @return	void
+     *
+     * @param string $output Output data override
+     *
+     * @return void
      */
     public function _display($output = '')
     {
         // Note:  We use load_class() because we can't use $CI =& get_instance()
         // since this function is sometimes called by the caching mechanism,
         // which happens before the CI super object is available.
-        $BM =& load_class('Benchmark', 'core');
-        $CFG =& load_class('Config', 'core');
+        $BM = &load_class('Benchmark', 'core');
+        $CFG = &load_class('Config', 'core');
 
         // Grab the super object if we can.
         if (class_exists('CI_Controller', false)) {
-            $CI =& get_instance();
+            $CI = &get_instance();
         }
 
         // --------------------------------------------------------------------
 
         // Set the output data
         if ($output === '') {
-            $output =& $this->final_output;
+            $output = &$this->final_output;
         }
 
         // --------------------------------------------------------------------
@@ -426,7 +442,7 @@ class CI_Output
         // Do we need to write a cache file? Only if the controller does not have its
         // own _output() method and we are not dealing with a cache file, which we
         // can determine by the existence of the $CI object above
-        if ($this->cache_expiration > 0 && isset($CI) && ! method_exists($CI, '_output')) {
+        if ($this->cache_expiration > 0 && isset($CI) && !method_exists($CI, '_output')) {
             $this->_write_cache($output);
         }
 
@@ -438,8 +454,8 @@ class CI_Output
         $elapsed = $BM->elapsed_time('total_execution_time_start', 'total_execution_time_end');
 
         if ($this->parse_exec_vars === true) {
-            $memory	= round(memory_get_usage() / 1024 / 1024, 2).'MB';
-            $output = str_replace(array('{elapsed_time}', '{memory_usage}'), array($elapsed, $memory), $output);
+            $memory = round(memory_get_usage() / 1024 / 1024, 2).'MB';
+            $output = str_replace(['{elapsed_time}', '{memory_usage}'], [$elapsed, $memory], $output);
         }
 
         // --------------------------------------------------------------------
@@ -465,7 +481,7 @@ class CI_Output
         // Does the $CI object exist?
         // If not we know we are dealing with a cache file so we'll
         // simply echo out the data and exit.
-        if (! isset($CI)) {
+        if (!isset($CI)) {
             if ($this->_compress_output === true) {
                 if (isset($_SERVER['HTTP_ACCEPT_ENCODING']) && strpos($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') !== false) {
                     header('Content-Encoding: gzip');
@@ -480,6 +496,7 @@ class CI_Output
             echo $output;
             log_message('info', 'Final output sent to browser');
             log_message('debug', 'Total execution time: '.$elapsed);
+
             return;
         }
 
@@ -489,7 +506,7 @@ class CI_Output
         // If so, load the Profile class and run it.
         if ($this->enable_profiler === true) {
             $CI->load->library('profiler');
-            if (! empty($this->_profiler_sections)) {
+            if (!empty($this->_profiler_sections)) {
                 $CI->profiler->set_sections($this->_profiler_sections);
             }
 
@@ -516,19 +533,21 @@ class CI_Output
     // --------------------------------------------------------------------
 
     /**
-     * Write Cache
+     * Write Cache.
      *
-     * @param	string	$output	Output data to cache
-     * @return	void
+     * @param string $output Output data to cache
+     *
+     * @return void
      */
     public function _write_cache($output)
     {
-        $CI =& get_instance();
+        $CI = &get_instance();
         $path = $CI->config->item('cache_path');
         $cache_path = ($path === '') ? APPPATH.'cache/' : $path;
 
-        if (! is_dir($cache_path) or ! is_really_writable($cache_path)) {
+        if (!is_dir($cache_path) or !is_really_writable($cache_path)) {
             log_message('error', 'Unable to write cache file: '.$cache_path);
+
             return;
         }
 
@@ -536,7 +555,7 @@ class CI_Output
             .$CI->config->item('index_page')
             .$CI->uri->uri_string();
 
-        if (($cache_query_string = $CI->config->item('cache_query_string')) && ! empty($_SERVER['QUERY_STRING'])) {
+        if (($cache_query_string = $CI->config->item('cache_query_string')) && !empty($_SERVER['QUERY_STRING'])) {
             if (is_array($cache_query_string)) {
                 $uri .= '?'.http_build_query(array_intersect_key($_GET, array_flip($cache_query_string)));
             } else {
@@ -546,14 +565,16 @@ class CI_Output
 
         $cache_path .= md5($uri);
 
-        if (! $fp = @fopen($cache_path, 'w+b')) {
+        if (!$fp = @fopen($cache_path, 'w+b')) {
             log_message('error', 'Unable to write cache file: '.$cache_path);
+
             return;
         }
 
-        if (! flock($fp, LOCK_EX)) {
+        if (!flock($fp, LOCK_EX)) {
             log_message('error', 'Unable to secure a file lock for file at: '.$cache_path);
             fclose($fp);
+
             return;
         }
 
@@ -571,10 +592,10 @@ class CI_Output
         $expire = time() + ($this->cache_expiration * 60);
 
         // Put together our serialized info.
-        $cache_info = serialize(array(
-            'expire'	=> $expire,
-            'headers'	=> $this->headers
-        ));
+        $cache_info = serialize([
+            'expire'	 => $expire,
+            'headers'	=> $this->headers,
+        ]);
 
         $output = $cache_info.'ENDCI--->'.$output;
 
@@ -587,9 +608,10 @@ class CI_Output
         flock($fp, LOCK_UN);
         fclose($fp);
 
-        if (! is_int($result)) {
+        if (!is_int($result)) {
             @unlink($cache_path);
             log_message('error', 'Unable to write the complete cache content at: '.$cache_path);
+
             return;
         }
 
@@ -603,14 +625,15 @@ class CI_Output
     // --------------------------------------------------------------------
 
     /**
-     * Update/serve cached output
+     * Update/serve cached output.
      *
      * @uses	CI_Config
      * @uses	CI_URI
      *
-     * @param	object	&$CFG	CI_Config class instance
-     * @param	object	&$URI	CI_URI class instance
-     * @return	bool	TRUE on success or FALSE on failure
+     * @param object &$CFG CI_Config class instance
+     * @param object &$URI CI_URI class instance
+     *
+     * @return bool TRUE on success or FALSE on failure
      */
     public function _display_cache(&$CFG, &$URI)
     {
@@ -619,7 +642,7 @@ class CI_Output
         // Build the file path. The file name is an MD5 hash of the full URI
         $uri = $CFG->item('base_url').$CFG->item('index_page').$URI->uri_string;
 
-        if (($cache_query_string = $CFG->item('cache_query_string')) && ! empty($_SERVER['QUERY_STRING'])) {
+        if (($cache_query_string = $CFG->item('cache_query_string')) && !empty($_SERVER['QUERY_STRING'])) {
             if (is_array($cache_query_string)) {
                 $uri .= '?'.http_build_query(array_intersect_key($_GET, array_flip($cache_query_string)));
             } else {
@@ -629,7 +652,7 @@ class CI_Output
 
         $filepath = $cache_path.md5($uri);
 
-        if (! file_exists($filepath) or ! $fp = @fopen($filepath, 'rb')) {
+        if (!file_exists($filepath) or !$fp = @fopen($filepath, 'rb')) {
             return false;
         }
 
@@ -641,7 +664,7 @@ class CI_Output
         fclose($fp);
 
         // Look for embedded serialized file info.
-        if (! preg_match('/^(.*)ENDCI--->/', $cache, $match)) {
+        if (!preg_match('/^(.*)ENDCI--->/', $cache, $match)) {
             return false;
         }
 
@@ -655,6 +678,7 @@ class CI_Output
             // If so we'll delete it.
             @unlink($filepath);
             log_message('debug', 'Cache file has expired. File deleted.');
+
             return false;
         }
 
@@ -669,34 +693,37 @@ class CI_Output
         // Display the cache
         $this->_display(self::substr($cache, self::strlen($match[0])));
         log_message('debug', 'Cache file is current. Sending it to browser.');
+
         return true;
     }
 
     // --------------------------------------------------------------------
 
     /**
-     * Delete cache
+     * Delete cache.
      *
-     * @param	string	$uri	URI string
-     * @return	bool
+     * @param string $uri URI string
+     *
+     * @return bool
      */
     public function delete_cache($uri = '')
     {
-        $CI =& get_instance();
+        $CI = &get_instance();
         $cache_path = $CI->config->item('cache_path');
         if ($cache_path === '') {
             $cache_path = APPPATH.'cache/';
         }
 
-        if (! is_dir($cache_path)) {
+        if (!is_dir($cache_path)) {
             log_message('error', 'Unable to find cache path: '.$cache_path);
+
             return false;
         }
 
         if (empty($uri)) {
             $uri = $CI->uri->uri_string();
 
-            if (($cache_query_string = $CI->config->item('cache_query_string')) && ! empty($_SERVER['QUERY_STRING'])) {
+            if (($cache_query_string = $CI->config->item('cache_query_string')) && !empty($_SERVER['QUERY_STRING'])) {
                 if (is_array($cache_query_string)) {
                     $uri .= '?'.http_build_query(array_intersect_key($_GET, array_flip($cache_query_string)));
                 } else {
@@ -707,8 +734,9 @@ class CI_Output
 
         $cache_path .= md5($CI->config->item('base_url').$CI->config->item('index_page').ltrim($uri, '/'));
 
-        if (! @unlink($cache_path)) {
+        if (!@unlink($cache_path)) {
             log_message('error', 'Unable to delete cache file for '.$uri);
+
             return false;
         }
 
@@ -718,14 +746,15 @@ class CI_Output
     // --------------------------------------------------------------------
 
     /**
-     * Set Cache Header
+     * Set Cache Header.
      *
      * Set the HTTP headers to match the server-side file cache settings
      * in order to reduce bandwidth.
      *
-     * @param	int	$last_modified	Timestamp of when the page was last modified
-     * @param	int	$expiration	Timestamp of when should the requested page expire from cache
-     * @return	void
+     * @param int $last_modified Timestamp of when the page was last modified
+     * @param int $expiration    Timestamp of when should the requested page expire from cache
+     *
+     * @return void
      */
     public function set_cache_header($last_modified, $expiration)
     {
@@ -745,10 +774,11 @@ class CI_Output
     // --------------------------------------------------------------------
 
     /**
-     * Byte-safe strlen()
+     * Byte-safe strlen().
      *
-     * @param	string	$str
-     * @return	int
+     * @param string $str
+     *
+     * @return int
      */
     protected static function strlen($str)
     {
@@ -760,12 +790,13 @@ class CI_Output
     // --------------------------------------------------------------------
 
     /**
-     * Byte-safe substr()
+     * Byte-safe substr().
      *
-     * @param	string	$str
-     * @param	int	$start
-     * @param	int	$length
-     * @return	string
+     * @param string $str
+     * @param int    $start
+     * @param int    $length
+     *
+     * @return string
      */
     protected static function substr($str, $start, $length = null)
     {
@@ -773,6 +804,7 @@ class CI_Output
             // mb_substr($str, $start, null, '8bit') returns an empty
             // string on PHP 5.3
             isset($length) or $length = ($start >= 0 ? self::strlen($str) - $start : -$start);
+
             return mb_substr($str, $start, $length, '8bit');
         }
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * CodeIgniter
+ * CodeIgniter.
  *
  * An open source application development framework for PHP
  *
@@ -26,18 +26,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
- * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
  * @copyright	Copyright (c) 2014 - 2018, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
+ *
  * @link	https://codeigniter.com
  * @since	Version 3.0.0
  * @filesource
  */
 defined('BASEPATH') or exit('No direct script access allowed');
 
-/**
+/*
  * PHP ext/hash compatibility package
  *
  * @package		CodeIgniter
@@ -56,22 +56,26 @@ if (is_php('5.6')) {
 
 // ------------------------------------------------------------------------
 
-if (! function_exists('hash_equals')) {
+if (!function_exists('hash_equals')) {
     /**
-     * hash_equals()
+     * hash_equals().
      *
      * @link	http://php.net/hash_equals
-     * @param	string	$known_string
-     * @param	string	$user_string
-     * @return	bool
+     *
+     * @param string $known_string
+     * @param string $user_string
+     *
+     * @return bool
      */
     function hash_equals($known_string, $user_string)
     {
-        if (! is_string($known_string)) {
+        if (!is_string($known_string)) {
             trigger_error('hash_equals(): Expected known_string to be a string, '.strtolower(gettype($known_string)).' given', E_USER_WARNING);
+
             return false;
-        } elseif (! is_string($user_string)) {
+        } elseif (!is_string($user_string)) {
             trigger_error('hash_equals(): Expected user_string to be a string, '.strtolower(gettype($user_string)).' given', E_USER_WARNING);
+
             return false;
         } elseif (($length = strlen($known_string)) !== strlen($user_string)) {
             return false;
@@ -82,7 +86,7 @@ if (! function_exists('hash_equals')) {
             $diff |= ord($known_string[$i]) ^ ord($user_string[$i]);
         }
 
-        return ($diff === 0);
+        return $diff === 0;
     }
 }
 
@@ -94,23 +98,26 @@ if (is_php('5.5')) {
 
 // ------------------------------------------------------------------------
 
-if (! function_exists('hash_pbkdf2')) {
+if (!function_exists('hash_pbkdf2')) {
     /**
-     * hash_pbkdf2()
+     * hash_pbkdf2().
      *
      * @link	http://php.net/hash_pbkdf2
-     * @param	string	$algo
-     * @param	string	$password
-     * @param	string	$salt
-     * @param	int	$iterations
-     * @param	int	$length
-     * @param	bool	$raw_output
-     * @return	string
+     *
+     * @param string $algo
+     * @param string $password
+     * @param string $salt
+     * @param int    $iterations
+     * @param int    $length
+     * @param bool   $raw_output
+     *
+     * @return string
      */
     function hash_pbkdf2($algo, $password, $salt, $iterations, $length = 0, $raw_output = false)
     {
-        if (! in_array(strtolower($algo), hash_algos(), true)) {
+        if (!in_array(strtolower($algo), hash_algos(), true)) {
             trigger_error('hash_pbkdf2(): Unknown hashing algorithm: '.$algo, E_USER_WARNING);
+
             return false;
         }
 
@@ -123,12 +130,14 @@ if (! function_exists('hash_pbkdf2')) {
                 $iterations = (int) $iterations;
             } else {
                 trigger_error('hash_pbkdf2() expects parameter 4 to be long, '.$type.' given', E_USER_WARNING);
-                return null;
+
+                return;
             }
         }
 
         if ($iterations < 1) {
             trigger_error('hash_pbkdf2(): Iterations must be a positive integer: '.$iterations, E_USER_WARNING);
+
             return false;
         }
 
@@ -141,12 +150,14 @@ if (! function_exists('hash_pbkdf2')) {
                 $length = (int) $length;
             } else {
                 trigger_error('hash_pbkdf2() expects parameter 5 to be long, '.$type.' given', E_USER_WARNING);
-                return null;
+
+                return;
             }
         }
 
         if ($length < 0) {
             trigger_error('hash_pbkdf2(): Length must be greater than or equal to 0: '.$length, E_USER_WARNING);
+
             return false;
         }
 
@@ -158,8 +169,8 @@ if (! function_exists('hash_pbkdf2')) {
         // Pre-hash password inputs longer than the algorithm's block size
         // (i.e. prepare HMAC key) to mitigate potential DoS attacks.
         static $block_sizes;
-        empty($block_sizes) && $block_sizes = array(
-            'gost' => 32,
+        empty($block_sizes) && $block_sizes = [
+            'gost'       => 32,
             'haval128,3' => 128,
             'haval160,3' => 128,
             'haval192,3' => 128,
@@ -175,30 +186,30 @@ if (! function_exists('hash_pbkdf2')) {
             'haval192,5' => 128,
             'haval224,5' => 128,
             'haval256,5' => 128,
-            'md2' => 16,
-            'md4' => 64,
-            'md5' => 64,
-            'ripemd128' => 64,
-            'ripemd160' => 64,
-            'ripemd256' => 64,
-            'ripemd320' => 64,
-            'salsa10' => 64,
-            'salsa20' => 64,
-            'sha1' => 64,
-            'sha224' => 64,
-            'sha256' => 64,
-            'sha384' => 128,
-            'sha512' => 128,
-            'snefru' => 32,
-            'snefru256' => 32,
+            'md2'        => 16,
+            'md4'        => 64,
+            'md5'        => 64,
+            'ripemd128'  => 64,
+            'ripemd160'  => 64,
+            'ripemd256'  => 64,
+            'ripemd320'  => 64,
+            'salsa10'    => 64,
+            'salsa20'    => 64,
+            'sha1'       => 64,
+            'sha224'     => 64,
+            'sha256'     => 64,
+            'sha384'     => 128,
+            'sha512'     => 128,
+            'snefru'     => 32,
+            'snefru256'  => 32,
             'tiger128,3' => 64,
             'tiger160,3' => 64,
             'tiger192,3' => 64,
             'tiger128,4' => 64,
             'tiger160,4' => 64,
             'tiger192,4' => 64,
-            'whirlpool' => 64
-        );
+            'whirlpool'  => 64,
+        ];
 
         if (isset($block_sizes[$algo], $password[$block_sizes[$algo]])) {
             $password = hash($algo, $password, true);
@@ -216,7 +227,7 @@ if (! function_exists('hash_pbkdf2')) {
         }
 
         // This is not RFC-compatible, but we're aiming for natural PHP compatibility
-        if (! $raw_output) {
+        if (!$raw_output) {
             $hash = bin2hex($hash);
         }
 

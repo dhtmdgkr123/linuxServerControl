@@ -1,9 +1,11 @@
 <?php
-if (! class_exists('ServicePipe')) {
+
+if (!class_exists('ServicePipe')) {
     defined('BASEPATH') or exit('No direct script access allowed');
     class ServicePipe extends CI_Controller
     {
         private $returnArray = null;
+
         public function __construct()
         {
             parent::__construct();
@@ -15,20 +17,20 @@ if (! class_exists('ServicePipe')) {
             $this->load->library('json');
 
             $this->returnMessage = [
-                'onlyRoot', 'canNotUsedCommand'
+                'onlyRoot', 'canNotUsedCommand',
             ];
         }
-        
+
         private function checkStatus(): bool
         {
             return $this->session->isLogin && chkPostMtd($_SERVER['REQUEST_METHOD']);
         }
 
-        private function isServerHandled(String $service) : bool
+        private function isServerHandled(string $service) : bool
         {
             return $service === 'ServerRestart' || $service === 'ServerOff';
         }
-        
+
         public function getServiceName()
         {
             // setJsonHeader();
@@ -37,21 +39,18 @@ if (! class_exists('ServicePipe')) {
             $service = trimPost('pipeCommand');
 
             $filterObject = new serviceFilter($service);
-            
+
             $returnMessage = [
-                'status' => false,
-                'code' => false,
+                'status'  => false,
+                'code'    => false,
                 'message' => null,
-                'isUrl' => false
+                'isUrl'   => false,
             ];
-            
-            
+
             if ($filterObject->filterMain()) {
                 $this->load->model('ExecCommand');
                 $command = $filterObject->generateCommand();
 
-
-                
                 if (isStatus($service) || isShell($service)) {
                     if (filter_var($command, FILTER_VALIDATE_URL)) {
                         $returnMessage['message'] = $command;

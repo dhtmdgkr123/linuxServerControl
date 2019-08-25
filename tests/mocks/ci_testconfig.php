@@ -2,9 +2,9 @@
 
 class CI_TestConfig extends CI_Config
 {
-    public $config = array();
-    public $_config_paths = array(APPPATH);
-    public $loaded = array();
+    public $config = [];
+    public $_config_paths = [APPPATH];
+    public $loaded = [];
 
     public function item($key, $index = '')
     {
@@ -14,6 +14,7 @@ class CI_TestConfig extends CI_Config
     public function load($file = '', $use_sections = false, $fail_gracefully = false)
     {
         $this->loaded[] = $file;
+
         return true;
     }
 }

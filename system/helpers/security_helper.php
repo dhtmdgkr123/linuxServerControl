@@ -1,6 +1,6 @@
 <?php
 /**
- * CodeIgniter
+ * CodeIgniter.
  *
  * An open source application development framework for PHP
  *
@@ -26,18 +26,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
- * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
  * @copyright	Copyright (c) 2014 - 2018, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
+ *
  * @link	https://codeigniter.com
  * @since	Version 1.0.0
  * @filesource
  */
 defined('BASEPATH') or exit('No direct script access allowed');
 
-/**
+/*
  * CodeIgniter Security Helpers
  *
  * @package		CodeIgniter
@@ -49,13 +49,14 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 // ------------------------------------------------------------------------
 
-if (! function_exists('xss_clean')) {
+if (!function_exists('xss_clean')) {
     /**
-     * XSS Filtering
+     * XSS Filtering.
      *
      * @param	string
      * @param	bool	whether or not the content is an image file
-     * @return	string
+     *
+     * @return string
      */
     function xss_clean($str, $is_image = false)
     {
@@ -65,12 +66,13 @@ if (! function_exists('xss_clean')) {
 
 // ------------------------------------------------------------------------
 
-if (! function_exists('sanitize_filename')) {
+if (!function_exists('sanitize_filename')) {
     /**
-     * Sanitize Filename
+     * Sanitize Filename.
      *
      * @param	string
-     * @return	string
+     *
+     * @return string
      */
     function sanitize_filename($filename)
     {
@@ -80,19 +82,22 @@ if (! function_exists('sanitize_filename')) {
 
 // --------------------------------------------------------------------
 
-if (! function_exists('do_hash')) {
+if (!function_exists('do_hash')) {
     /**
-     * Hash encode a string
+     * Hash encode a string.
      *
      * @todo	Remove in version 3.1+.
+     *
      * @deprecated	3.0.0	Use PHP's native hash() instead.
-     * @param	string	$str
-     * @param	string	$type = 'sha1'
-     * @return	string
+     *
+     * @param string $str
+     * @param string $type = 'sha1'
+     *
+     * @return string
      */
     function do_hash($str, $type = 'sha1')
     {
-        if (! in_array(strtolower($type), hash_algos())) {
+        if (!in_array(strtolower($type), hash_algos())) {
             $type = 'md5';
         }
 
@@ -102,12 +107,13 @@ if (! function_exists('do_hash')) {
 
 // ------------------------------------------------------------------------
 
-if (! function_exists('strip_image_tags')) {
+if (!function_exists('strip_image_tags')) {
     /**
-     * Strip Image Tags
+     * Strip Image Tags.
      *
      * @param	string
-     * @return	string
+     *
+     * @return string
      */
     function strip_image_tags($str)
     {
@@ -117,15 +123,16 @@ if (! function_exists('strip_image_tags')) {
 
 // ------------------------------------------------------------------------
 
-if (! function_exists('encode_php_tags')) {
+if (!function_exists('encode_php_tags')) {
     /**
-     * Convert PHP tags to entities
+     * Convert PHP tags to entities.
      *
      * @param	string
-     * @return	string
+     *
+     * @return string
      */
     function encode_php_tags($str)
     {
-        return str_replace(array('<?', '?>'), array('&lt;?', '?&gt;'), $str);
+        return str_replace(['<?', '?>'], ['&lt;?', '?&gt;'], $str);
     }
 }

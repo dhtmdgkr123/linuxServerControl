@@ -1,6 +1,6 @@
 <?php
 /**
- * CodeIgniter
+ * CodeIgniter.
  *
  * An open source application development framework for PHP
  *
@@ -26,18 +26,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
- * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
  * @copyright	Copyright (c) 2014 - 2018, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
+ *
  * @link	https://codeigniter.com
  * @since	Version 1.0.0
  * @filesource
  */
 defined('BASEPATH') or exit('No direct script access allowed');
 
-/**
+/*
  * CodeIgniter Directory Helpers
  *
  * @package		CodeIgniter
@@ -49,26 +49,27 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 // ------------------------------------------------------------------------
 
-if (! function_exists('directory_map')) {
+if (!function_exists('directory_map')) {
     /**
-     * Create a Directory Map
+     * Create a Directory Map.
      *
      * Reads the specified directory and builds an array
      * representation of it. Sub-folders contained with the
      * directory will be mapped as well.
      *
-     * @param	string	$source_dir		Path to source
-     * @param	int	$directory_depth	Depth of directories to traverse
-     *						(0 = fully recursive, 1 = current dir, etc)
-     * @param	bool	$hidden			Whether to show hidden files
-     * @return	array
+     * @param string $source_dir      Path to source
+     * @param int    $directory_depth Depth of directories to traverse
+     *                                (0 = fully recursive, 1 = current dir, etc)
+     * @param bool   $hidden          Whether to show hidden files
+     *
+     * @return array
      */
     function directory_map($source_dir, $directory_depth = 0, $hidden = false)
     {
         if ($fp = @opendir($source_dir)) {
-            $filedata	= array();
-            $new_depth	= $directory_depth - 1;
-            $source_dir	= rtrim($source_dir, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
+            $filedata = [];
+            $new_depth = $directory_depth - 1;
+            $source_dir = rtrim($source_dir, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
 
             while (false !== ($file = readdir($fp))) {
                 // Remove '.', '..', and hidden files [optional]
@@ -86,6 +87,7 @@ if (! function_exists('directory_map')) {
             }
 
             closedir($fp);
+
             return $filedata;
         }
 

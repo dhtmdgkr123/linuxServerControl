@@ -1,6 +1,6 @@
 <?php
 /**
- * CodeIgniter
+ * CodeIgniter.
  *
  * An open source application development framework for PHP
  *
@@ -26,11 +26,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
- * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
  * @copyright	Copyright (c) 2014 - 2018, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
+ *
  * @link	https://codeigniter.com
  * @since	Version 3.0.0
  * @filesource
@@ -38,44 +38,44 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
- * PDO 4D Database Adapter Class
+ * PDO 4D Database Adapter Class.
  *
  * Note: _DB is an extender class that the app controller
  * creates dynamically based on whether the query builder
  * class is being used or not.
  *
- * @package		CodeIgniter
- * @subpackage	Drivers
  * @category	Database
+ *
  * @author		EllisLab Dev Team
+ *
  * @link		https://codeigniter.com/user_guide/database/
  */
 class CI_DB_pdo_4d_driver extends CI_DB_pdo_driver
 {
-
     /**
-     * Sub-driver
+     * Sub-driver.
      *
-     * @var	string
+     * @var string
      */
     public $subdriver = '4d';
 
     /**
-     * Identifier escape character
+     * Identifier escape character.
      *
-     * @var	string[]
+     * @var string[]
      */
-    protected $_escape_char = array('[', ']');
+    protected $_escape_char = ['[', ']'];
 
     // --------------------------------------------------------------------
 
     /**
-     * Class constructor
+     * Class constructor.
      *
      * Builds the DSN if not already set.
      *
-     * @param	array	$params
-     * @return	void
+     * @param array $params
+     *
+     * @return void
      */
     public function __construct($params)
     {
@@ -87,7 +87,7 @@ class CI_DB_pdo_4d_driver extends CI_DB_pdo_driver
             empty($this->port) or $this->dsn .= ';port='.$this->port;
             empty($this->database) or $this->dsn .= ';dbname='.$this->database;
             empty($this->char_set) or $this->dsn .= ';charset='.$this->char_set;
-        } elseif (! empty($this->char_set) && strpos($this->dsn, 'charset=', 3) === false) {
+        } elseif (!empty($this->char_set) && strpos($this->dsn, 'charset=', 3) === false) {
             $this->dsn .= ';charset='.$this->char_set;
         }
     }
@@ -95,12 +95,13 @@ class CI_DB_pdo_4d_driver extends CI_DB_pdo_driver
     // --------------------------------------------------------------------
 
     /**
-     * Show table query
+     * Show table query.
      *
      * Generates a platform-specific query string so that the table names can be fetched
      *
-     * @param	bool	$prefix_limit
-     * @return	string
+     * @param bool $prefix_limit
+     *
+     * @return string
      */
     protected function _list_tables($prefix_limit = false)
     {
@@ -117,12 +118,13 @@ class CI_DB_pdo_4d_driver extends CI_DB_pdo_driver
     // --------------------------------------------------------------------
 
     /**
-     * Show column query
+     * Show column query.
      *
      * Generates a platform-specific query string so that the column names can be fetched
      *
-     * @param	string	$table
-     * @return	string
+     * @param string $table
+     *
+     * @return string
      */
     protected function _list_columns($table = '')
     {
@@ -133,12 +135,13 @@ class CI_DB_pdo_4d_driver extends CI_DB_pdo_driver
     // --------------------------------------------------------------------
 
     /**
-     * Field data query
+     * Field data query.
      *
      * Generates a platform-specific query so that the column data can be retrieved
      *
-     * @param	string	$table
-     * @return	string
+     * @param string $table
+     *
+     * @return string
      */
     protected function _field_data($table)
     {
@@ -148,46 +151,51 @@ class CI_DB_pdo_4d_driver extends CI_DB_pdo_driver
     // --------------------------------------------------------------------
 
     /**
-     * Update statement
+     * Update statement.
      *
      * Generates a platform-specific update string from the supplied data
      *
-     * @param	string	$table
-     * @param	array	$values
-     * @return	string
+     * @param string $table
+     * @param array  $values
+     *
+     * @return string
      */
     protected function _update($table, $values)
     {
         $this->qb_limit = false;
-        $this->qb_orderby = array();
+        $this->qb_orderby = [];
+
         return parent::_update($table, $values);
     }
 
     // --------------------------------------------------------------------
 
     /**
-     * Delete statement
+     * Delete statement.
      *
      * Generates a platform-specific delete string from the supplied data
      *
-     * @param	string	$table
-     * @return	string
+     * @param string $table
+     *
+     * @return string
      */
     protected function _delete($table)
     {
         $this->qb_limit = false;
+
         return parent::_delete($table);
     }
 
     // --------------------------------------------------------------------
 
     /**
-     * LIMIT
+     * LIMIT.
      *
      * Generates a platform-specific LIMIT clause
      *
-     * @param	string	$sql	SQL Query
-     * @return	string
+     * @param string $sql SQL Query
+     *
+     * @return string
      */
     protected function _limit($sql)
     {

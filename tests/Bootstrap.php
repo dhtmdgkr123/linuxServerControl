@@ -1,4 +1,5 @@
 <?php
+
 // Errors on full!
 ini_set('display_errors', 1);
 error_reporting(E_ALL | E_STRICT);
@@ -17,7 +18,7 @@ foreach (explode(PATH_SEPARATOR, get_include_path()) as $path) {
     }
 }
 
-if (! class_exists('vfsStream') && file_exists(PROJECT_BASE.'vendor/autoload.php')) {
+if (!class_exists('vfsStream') && file_exists(PROJECT_BASE.'vendor/autoload.php')) {
     include_once PROJECT_BASE.'vendor/autoload.php';
     class_alias('org\bovigo\vfs\vfsStream', 'vfsStream');
     class_alias('org\bovigo\vfs\vfsStreamDirectory', 'vfsStreamDirectory');

@@ -1,6 +1,6 @@
 <?php
 /**
- * CodeIgniter
+ * CodeIgniter.
  *
  * An open source application development framework for PHP
  *
@@ -26,11 +26,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
- * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
  * @copyright	Copyright (c) 2014 - 2018, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
+ *
  * @link	https://codeigniter.com
  * @since	Version 1.0.0
  * @filesource
@@ -38,301 +38,302 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
- * Pagination Class
+ * Pagination Class.
  *
- * @package		CodeIgniter
- * @subpackage	Libraries
  * @category	Pagination
+ *
  * @author		EllisLab Dev Team
+ *
  * @link		https://codeigniter.com/user_guide/libraries/pagination.html
  */
 class CI_Pagination
 {
-
     /**
-     * Base URL
+     * Base URL.
      *
      * The page that we're linking to
      *
-     * @var	string
+     * @var string
      */
-    protected $base_url		= '';
+    protected $base_url = '';
 
     /**
-     * Prefix
+     * Prefix.
      *
-     * @var	string
+     * @var string
      */
     protected $prefix = '';
 
     /**
-     * Suffix
+     * Suffix.
      *
-     * @var	string
+     * @var string
      */
     protected $suffix = '';
 
     /**
-     * Total number of items
+     * Total number of items.
      *
-     * @var	int
+     * @var int
      */
     protected $total_rows = 0;
 
     /**
-     * Number of links to show
+     * Number of links to show.
      *
      * Relates to "digit" type links shown before/after
      * the currently viewed page.
      *
-     * @var	int
+     * @var int
      */
     protected $num_links = 2;
 
     /**
-     * Items per page
+     * Items per page.
      *
-     * @var	int
+     * @var int
      */
     public $per_page = 10;
 
     /**
-     * Current page
+     * Current page.
      *
-     * @var	int
+     * @var int
      */
     public $cur_page = 0;
 
     /**
-     * Use page numbers flag
+     * Use page numbers flag.
      *
      * Whether to use actual page numbers instead of an offset
      *
-     * @var	bool
+     * @var bool
      */
     protected $use_page_numbers = false;
 
     /**
-     * First link
+     * First link.
      *
-     * @var	string
+     * @var string
      */
     protected $first_link = '&lsaquo; First';
 
     /**
-     * Next link
+     * Next link.
      *
-     * @var	string
+     * @var string
      */
     protected $next_link = '&gt;';
 
     /**
-     * Previous link
+     * Previous link.
      *
-     * @var	string
+     * @var string
      */
     protected $prev_link = '&lt;';
 
     /**
-     * Last link
+     * Last link.
      *
-     * @var	string
+     * @var string
      */
     protected $last_link = 'Last &rsaquo;';
 
     /**
-     * URI Segment
+     * URI Segment.
      *
-     * @var	int
+     * @var int
      */
     protected $uri_segment = 0;
 
     /**
-     * Full tag open
+     * Full tag open.
      *
-     * @var	string
+     * @var string
      */
     protected $full_tag_open = '';
 
     /**
-     * Full tag close
+     * Full tag close.
      *
-     * @var	string
+     * @var string
      */
     protected $full_tag_close = '';
 
     /**
-     * First tag open
+     * First tag open.
      *
-     * @var	string
+     * @var string
      */
     protected $first_tag_open = '';
 
     /**
-     * First tag close
+     * First tag close.
      *
-     * @var	string
+     * @var string
      */
     protected $first_tag_close = '';
 
     /**
-     * Last tag open
+     * Last tag open.
      *
-     * @var	string
+     * @var string
      */
     protected $last_tag_open = '';
 
     /**
-     * Last tag close
+     * Last tag close.
      *
-     * @var	string
+     * @var string
      */
     protected $last_tag_close = '';
 
     /**
-     * First URL
+     * First URL.
      *
      * An alternative URL for the first page
      *
-     * @var	string
+     * @var string
      */
     protected $first_url = '';
 
     /**
-     * Current tag open
+     * Current tag open.
      *
-     * @var	string
+     * @var string
      */
     protected $cur_tag_open = '<strong>';
 
     /**
-     * Current tag close
+     * Current tag close.
      *
-     * @var	string
+     * @var string
      */
     protected $cur_tag_close = '</strong>';
 
     /**
-     * Next tag open
+     * Next tag open.
      *
-     * @var	string
+     * @var string
      */
     protected $next_tag_open = '';
 
     /**
-     * Next tag close
+     * Next tag close.
      *
-     * @var	string
+     * @var string
      */
     protected $next_tag_close = '';
 
     /**
-     * Previous tag open
+     * Previous tag open.
      *
-     * @var	string
+     * @var string
      */
     protected $prev_tag_open = '';
 
     /**
-     * Previous tag close
+     * Previous tag close.
      *
-     * @var	string
+     * @var string
      */
     protected $prev_tag_close = '';
 
     /**
-     * Number tag open
+     * Number tag open.
      *
-     * @var	string
+     * @var string
      */
     protected $num_tag_open = '';
 
     /**
-     * Number tag close
+     * Number tag close.
      *
-     * @var	string
+     * @var string
      */
     protected $num_tag_close = '';
 
     /**
-     * Page query string flag
+     * Page query string flag.
      *
-     * @var	bool
+     * @var bool
      */
     protected $page_query_string = false;
 
     /**
-     * Query string segment
+     * Query string segment.
      *
-     * @var	string
+     * @var string
      */
     protected $query_string_segment = 'per_page';
 
     /**
-     * Display pages flag
+     * Display pages flag.
      *
-     * @var	bool
+     * @var bool
      */
     protected $display_pages = true;
 
     /**
-     * Attributes
+     * Attributes.
      *
-     * @var	string
+     * @var string
      */
     protected $_attributes = '';
 
     /**
-     * Link types
+     * Link types.
      *
      * "rel" attribute
      *
      * @see	CI_Pagination::_attr_rel()
-     * @var	array
+     *
+     * @var array
      */
-    protected $_link_types = array();
+    protected $_link_types = [];
 
     /**
-     * Reuse query string flag
+     * Reuse query string flag.
      *
-     * @var	bool
+     * @var bool
      */
     protected $reuse_query_string = false;
 
     /**
-     * Use global URL suffix flag
+     * Use global URL suffix flag.
      *
-     * @var	bool
+     * @var bool
      */
     protected $use_global_url_suffix = false;
 
     /**
-     * Data page attribute
+     * Data page attribute.
      *
-     * @var	string
+     * @var string
      */
     protected $data_page_attr = 'data-ci-pagination-page';
 
     /**
-     * CI Singleton
+     * CI Singleton.
      *
-     * @var	object
+     * @var object
      */
     protected $CI;
 
     // --------------------------------------------------------------------
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param	array	$params	Initialization parameters
-     * @return	void
+     * @param array $params Initialization parameters
+     *
+     * @return void
      */
-    public function __construct($params = array())
+    public function __construct($params = [])
     {
-        $this->CI =& get_instance();
+        $this->CI = &get_instance();
         $this->CI->load->language('pagination');
-        foreach (array('first_link', 'next_link', 'prev_link', 'last_link') as $key) {
+        foreach (['first_link', 'next_link', 'prev_link', 'last_link'] as $key) {
             if (($val = $this->CI->lang->line('pagination_'.$key)) !== false) {
                 $this->$key = $val;
             }
@@ -340,7 +341,7 @@ class CI_Pagination
 
         // _parse_attributes(), called by initialize(), needs to run at least once
         // in order to enable "rel" attributes, and this triggers it.
-        isset($params['attributes']) or $params['attributes'] = array();
+        isset($params['attributes']) or $params['attributes'] = [];
 
         $this->initialize($params);
         log_message('info', 'Pagination Class Initialized');
@@ -349,12 +350,13 @@ class CI_Pagination
     // --------------------------------------------------------------------
 
     /**
-     * Initialize Preferences
+     * Initialize Preferences.
      *
-     * @param	array	$params	Initialization parameters
-     * @return	CI_Pagination
+     * @param array $params Initialization parameters
+     *
+     * @return CI_Pagination
      */
-    public function initialize(array $params = array())
+    public function initialize(array $params = [])
     {
         if (isset($params['attributes']) && is_array($params['attributes'])) {
             $this->_parse_attributes($params['attributes']);
@@ -388,9 +390,9 @@ class CI_Pagination
     // --------------------------------------------------------------------
 
     /**
-     * Generate the pagination links
+     * Generate the pagination links.
      *
-     * @return	string
+     * @return string
      */
     public function create_links()
     {
@@ -423,7 +425,7 @@ class CI_Pagination
             // Unset the control, method, old-school routing options
             unset($get['c'], $get['m'], $get[$this->query_string_segment]);
         } else {
-            $get = array();
+            $get = [];
         }
 
         // Put together our base and first URLs.
@@ -442,18 +444,18 @@ class CI_Pagination
                 $first_url = $base_url;
 
                 // If we saved any GET items earlier, make sure they're appended.
-                if (! empty($get)) {
+                if (!empty($get)) {
                     $first_url .= $query_string_sep.http_build_query($get);
                 }
             }
 
             // Add the page segment to the end of the query string, where the
             // page number will be appended.
-            $base_url .= $query_string_sep.http_build_query(array_merge($get, array($this->query_string_segment => '')));
+            $base_url .= $query_string_sep.http_build_query(array_merge($get, [$this->query_string_segment => '']));
         } else {
             // Standard segment mode.
             // Generate our saved query string to append later after the page number.
-            if (! empty($get)) {
+            if (!empty($get)) {
                 $query_string = $query_string_sep.http_build_query($get);
                 $this->suffix .= $query_string;
             }
@@ -487,14 +489,14 @@ class CI_Pagination
 
             // Remove any specified prefix/suffix from the segment.
             if ($this->prefix !== '' or $this->suffix !== '') {
-                $this->cur_page = str_replace(array($this->prefix, $this->suffix), '', $this->cur_page);
+                $this->cur_page = str_replace([$this->prefix, $this->suffix], '', $this->cur_page);
             }
         } else {
             $this->cur_page = (string) $this->cur_page;
         }
 
         // If something isn't quite right, back to the default base page.
-        if (! ctype_digit($this->cur_page) or ($this->use_page_numbers && (int) $this->cur_page === 0)) {
+        if (!ctype_digit($this->cur_page) or ($this->use_page_numbers && (int) $this->cur_page === 0)) {
             $this->cur_page = $base_page;
         } else {
             // Make sure we're using integers for comparisons later.
@@ -515,20 +517,20 @@ class CI_Pagination
 
         // If we're using offset instead of page numbers, convert it
         // to a page number, so we can generate the surrounding number links.
-        if (! $this->use_page_numbers) {
-            $this->cur_page = (int) floor(($this->cur_page/$this->per_page) + 1);
+        if (!$this->use_page_numbers) {
+            $this->cur_page = (int) floor(($this->cur_page / $this->per_page) + 1);
         }
 
         // Calculate the start and end numbers. These determine
         // which number to start and end the digit links with.
-        $start	= (($this->cur_page - $this->num_links) > 0) ? $this->cur_page - ($this->num_links - 1) : 1;
-        $end	= (($this->cur_page + $this->num_links) < $num_pages) ? $this->cur_page + $this->num_links : $num_pages;
+        $start = (($this->cur_page - $this->num_links) > 0) ? $this->cur_page - ($this->num_links - 1) : 1;
+        $end = (($this->cur_page + $this->num_links) < $num_pages) ? $this->cur_page + $this->num_links : $num_pages;
 
         // And here we go...
         $output = '';
 
         // Render the "First" link.
-        if ($this->first_link !== false && $this->cur_page > ($this->num_links + 1 + ! $this->num_links)) {
+        if ($this->first_link !== false && $this->cur_page > ($this->num_links + 1 + !$this->num_links)) {
             // Take the general parameters, and squeeze this pagination-page attr in for JS frameworks.
             $attributes = sprintf('%s %s="%d"', $this->_attributes, $this->data_page_attr, 1);
 
@@ -589,7 +591,7 @@ class CI_Pagination
         }
 
         // Render the "Last" link
-        if ($this->last_link !== false && ($this->cur_page + $this->num_links + ! $this->num_links) < $num_pages) {
+        if ($this->last_link !== false && ($this->cur_page + $this->num_links + !$this->num_links) < $num_pages) {
             $i = ($this->use_page_numbers) ? $num_pages : ($num_pages * $this->per_page) - $this->per_page;
 
             $attributes = sprintf('%s %s="%d"', $this->_attributes, $this->data_page_attr, $num_pages);
@@ -609,17 +611,18 @@ class CI_Pagination
     // --------------------------------------------------------------------
 
     /**
-     * Parse attributes
+     * Parse attributes.
      *
-     * @param	array	$attributes
-     * @return	void
+     * @param array $attributes
+     *
+     * @return void
      */
     protected function _parse_attributes($attributes)
     {
         isset($attributes['rel']) or $attributes['rel'] = true;
         $this->_link_types = ($attributes['rel'])
-            ? array('start' => 'start', 'prev' => 'prev', 'next' => 'next')
-            : array();
+            ? ['start' => 'start', 'prev' => 'prev', 'next' => 'next']
+            : [];
         unset($attributes['rel']);
 
         $this->_attributes = '';
@@ -631,16 +634,19 @@ class CI_Pagination
     // --------------------------------------------------------------------
 
     /**
-     * Add "rel" attribute
+     * Add "rel" attribute.
      *
      * @link	http://www.w3.org/TR/html5/links.html#linkTypes
-     * @param	string	$type
-     * @return	string
+     *
+     * @param string $type
+     *
+     * @return string
      */
     protected function _attr_rel($type)
     {
         if (isset($this->_link_types[$type])) {
             unset($this->_link_types[$type]);
+
             return ' rel="'.$type.'"';
         }
 

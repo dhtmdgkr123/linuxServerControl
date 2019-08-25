@@ -2,7 +2,6 @@
 
 class Mock_Core_Input extends CI_Input
 {
-
     /**
      * Since we use GLOBAL to fetch Security and Utf8 classes,
      * we need to use inversion of control to mock up
@@ -12,9 +11,9 @@ class Mock_Core_Input extends CI_Input
      */
     public function __construct($security, $utf8)
     {
-        $this->_allow_get_array	= (config_item('allow_get_array') === true);
-        $this->_enable_xss	= (config_item('global_xss_filtering') === true);
-        $this->_enable_csrf	= (config_item('csrf_protection') === true);
+        $this->_allow_get_array = (config_item('allow_get_array') === true);
+        $this->_enable_xss = (config_item('global_xss_filtering') === true);
+        $this->_enable_csrf = (config_item('csrf_protection') === true);
 
         // Assign Security and Utf8 classes
         $this->security = $security;
@@ -30,7 +29,7 @@ class Mock_Core_Input extends CI_Input
     }
 
     /**
-     * Lie about being a CLI request
+     * Lie about being a CLI request.
      *
      * We take advantage of this in libraries/Session_test
      */

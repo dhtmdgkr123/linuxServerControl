@@ -1,6 +1,6 @@
 <?php
 /**
- * CodeIgniter
+ * CodeIgniter.
  *
  * An open source application development framework for PHP
  *
@@ -26,11 +26,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
- * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
  * @copyright	Copyright (c) 2014 - 2018, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
+ *
  * @link	https://codeigniter.com
  * @since	Version 3.0.0
  * @filesource
@@ -38,20 +38,22 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
- * Interbase/Firebird Utility Class
+ * Interbase/Firebird Utility Class.
  *
  * @category	Database
+ *
  * @author		EllisLab Dev Team
+ *
  * @link		https://codeigniter.com/user_guide/database/
  */
 class CI_DB_ibase_utility extends CI_DB_utility
 {
-
     /**
-     * Export
+     * Export.
      *
-     * @param	string	$filename
-     * @return	mixed
+     * @param string $filename
+     *
+     * @return mixed
      */
     protected function _backup($filename)
     {
@@ -60,6 +62,7 @@ class CI_DB_ibase_utility extends CI_DB_utility
 
             // Close the service connection
             ibase_service_detach($service);
+
             return $res;
         }
 

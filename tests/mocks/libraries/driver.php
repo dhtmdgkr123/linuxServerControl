@@ -1,12 +1,12 @@
 <?php
 
 /**
- * Mock library to subclass Driver for testing
+ * Mock library to subclass Driver for testing.
  */
 class Mock_Libraries_Driver extends CI_Driver_Library
 {
     /**
-     * Set valid drivers list
+     * Set valid drivers list.
      */
     public function driver_list($drivers = null)
     {
@@ -18,7 +18,7 @@ class Mock_Libraries_Driver extends CI_Driver_Library
     }
 
     /**
-     * Get library name
+     * Get library name.
      */
     public function get_name()
     {

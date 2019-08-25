@@ -1,6 +1,6 @@
 <?php
 /**
- * CodeIgniter
+ * CodeIgniter.
  *
  * An open source application development framework for PHP
  *
@@ -26,11 +26,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
- * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
  * @copyright	Copyright (c) 2014 - 2018, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
+ *
  * @link	https://codeigniter.com
  * @since	Version 2.1.0
  * @filesource
@@ -38,58 +38,58 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
- * CUBRID Database Adapter Class
+ * CUBRID Database Adapter Class.
  *
  * Note: _DB is an extender class that the app controller
  * creates dynamically based on whether the query builder
  * class is being used or not.
  *
- * @package		CodeIgniter
- * @subpackage	Drivers
  * @category	Database
+ *
  * @author		Esen Sagynov
+ *
  * @link		https://codeigniter.com/user_guide/database/
  */
 class CI_DB_cubrid_driver extends CI_DB
 {
-
     /**
-     * Database driver
+     * Database driver.
      *
-     * @var	string
+     * @var string
      */
     public $dbdriver = 'cubrid';
 
     /**
-     * Auto-commit flag
+     * Auto-commit flag.
      *
-     * @var	bool
+     * @var bool
      */
     public $auto_commit = true;
 
     // --------------------------------------------------------------------
 
     /**
-     * Identifier escape character
+     * Identifier escape character.
      *
-     * @var	string
+     * @var string
      */
     protected $_escape_char = '`';
 
     /**
-     * ORDER BY random keyword
+     * ORDER BY random keyword.
      *
-     * @var	array
+     * @var array
      */
-    protected $_random_keyword = array('RANDOM()', 'RANDOM(%d)');
+    protected $_random_keyword = ['RANDOM()', 'RANDOM(%d)'];
 
     // --------------------------------------------------------------------
 
     /**
-     * Class constructor
+     * Class constructor.
      *
-     * @param	array	$params
-     * @return	void
+     * @param array $params
+     *
+     * @return void
      */
     public function __construct($params)
     {
@@ -108,21 +108,24 @@ class CI_DB_cubrid_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Non-persistent database connection
+     * Non-persistent database connection.
      *
-     * @param	bool	$persistent
-     * @return	resource
+     * @param bool $persistent
+     *
+     * @return resource
      */
     public function db_connect($persistent = false)
     {
         if (preg_match('/^CUBRID:[^:]+(:[0-9][1-9]{0,4})?:[^:]+:([^:]*):([^:]*):(\?.+)?$/', $this->dsn, $matches)) {
             $func = ($persistent !== true) ? 'cubrid_connect_with_url' : 'cubrid_pconnect_with_url';
+
             return ($matches[2] === '' && $matches[3] === '' && $this->username !== '' && $this->password !== '')
                 ? $func($this->dsn, $this->username, $this->password)
                 : $func($this->dsn);
         }
 
         $func = ($persistent !== true) ? 'cubrid_connect' : 'cubrid_pconnect';
+
         return ($this->username !== '')
             ? $func($this->hostname, $this->port, $this->database, $this->username, $this->password)
             : $func($this->hostname, $this->port, $this->database);
@@ -131,12 +134,12 @@ class CI_DB_cubrid_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Reconnect
+     * Reconnect.
      *
      * Keep / reestablish the db connection if no queries have been
      * sent for a length of time exceeding the server's idle timeout
      *
-     * @return	void
+     * @return void
      */
     public function reconnect()
     {
@@ -148,9 +151,9 @@ class CI_DB_cubrid_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Database version number
+     * Database version number.
      *
-     * @return	string
+     * @return string
      */
     public function version()
     {
@@ -158,7 +161,7 @@ class CI_DB_cubrid_driver extends CI_DB
             return $this->data_cache['version'];
         }
 
-        return (! $this->conn_id or ($version = cubrid_get_server_info($this->conn_id)) === false)
+        return (!$this->conn_id or ($version = cubrid_get_server_info($this->conn_id)) === false)
             ? false
             : $this->data_cache['version'] = $version;
     }
@@ -166,10 +169,11 @@ class CI_DB_cubrid_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Execute the query
+     * Execute the query.
      *
-     * @param	string	$sql	an SQL query
-     * @return	resource
+     * @param string $sql an SQL query
+     *
+     * @return resource
      */
     protected function _execute($sql)
     {
@@ -179,9 +183,9 @@ class CI_DB_cubrid_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Begin Transaction
+     * Begin Transaction.
      *
-     * @return	bool
+     * @return bool
      */
     protected function _trans_begin()
     {
@@ -197,17 +201,17 @@ class CI_DB_cubrid_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Commit Transaction
+     * Commit Transaction.
      *
-     * @return	bool
+     * @return bool
      */
     protected function _trans_commit()
     {
-        if (! cubrid_commit($this->conn_id)) {
+        if (!cubrid_commit($this->conn_id)) {
             return false;
         }
 
-        if ($this->auto_commit && ! cubrid_get_autocommit($this->conn_id)) {
+        if ($this->auto_commit && !cubrid_get_autocommit($this->conn_id)) {
             return cubrid_set_autocommit($this->conn_id, CUBRID_AUTOCOMMIT_TRUE);
         }
 
@@ -217,17 +221,17 @@ class CI_DB_cubrid_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Rollback Transaction
+     * Rollback Transaction.
      *
-     * @return	bool
+     * @return bool
      */
     protected function _trans_rollback()
     {
-        if (! cubrid_rollback($this->conn_id)) {
+        if (!cubrid_rollback($this->conn_id)) {
             return false;
         }
 
-        if ($this->auto_commit && ! cubrid_get_autocommit($this->conn_id)) {
+        if ($this->auto_commit && !cubrid_get_autocommit($this->conn_id)) {
             cubrid_set_autocommit($this->conn_id, CUBRID_AUTOCOMMIT_TRUE);
         }
 
@@ -237,10 +241,11 @@ class CI_DB_cubrid_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Platform-dependent string escape
+     * Platform-dependent string escape.
      *
      * @param	string
-     * @return	string
+     *
+     * @return string
      */
     protected function _escape_str($str)
     {
@@ -250,9 +255,9 @@ class CI_DB_cubrid_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Affected Rows
+     * Affected Rows.
      *
-     * @return	int
+     * @return int
      */
     public function affected_rows()
     {
@@ -262,9 +267,9 @@ class CI_DB_cubrid_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Insert ID
+     * Insert ID.
      *
-     * @return	int
+     * @return int
      */
     public function insert_id()
     {
@@ -274,12 +279,13 @@ class CI_DB_cubrid_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * List table query
+     * List table query.
      *
      * Generates a platform-specific query string so that the table names can be fetched
      *
-     * @param	bool	$prefix_limit
-     * @return	string
+     * @param bool $prefix_limit
+     *
+     * @return string
      */
     protected function _list_tables($prefix_limit = false)
     {
@@ -295,12 +301,13 @@ class CI_DB_cubrid_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Show column query
+     * Show column query.
      *
      * Generates a platform-specific query string so that the column names can be fetched
      *
-     * @param	string	$table
-     * @return	string
+     * @param string $table
+     *
+     * @return string
      */
     protected function _list_columns($table = '')
     {
@@ -310,10 +317,11 @@ class CI_DB_cubrid_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Returns an object with field data
+     * Returns an object with field data.
      *
-     * @param	string	$table
-     * @return	array
+     * @param string $table
+     *
+     * @return array
      */
     public function field_data($table)
     {
@@ -322,10 +330,10 @@ class CI_DB_cubrid_driver extends CI_DB
         }
         $query = $query->result_object();
 
-        $retval = array();
+        $retval = [];
         for ($i = 0, $c = count($query); $i < $c; $i++) {
-            $retval[$i]			= new stdClass();
-            $retval[$i]->name		= $query[$i]->Field;
+            $retval[$i] = new stdClass();
+            $retval[$i]->name = $query[$i]->Field;
 
             sscanf(
                 $query[$i]->Type,
@@ -334,8 +342,8 @@ class CI_DB_cubrid_driver extends CI_DB
                 $retval[$i]->max_length
             );
 
-            $retval[$i]->default		= $query[$i]->Default;
-            $retval[$i]->primary_key	= (int) ($query[$i]->Key === 'PRI');
+            $retval[$i]->default = $query[$i]->Default;
+            $retval[$i]->primary_key = (int) ($query[$i]->Key === 'PRI');
         }
 
         return $retval;
@@ -344,31 +352,31 @@ class CI_DB_cubrid_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Error
+     * Error.
      *
      * Returns an array containing code and message of the last
      * database error that has occurred.
      *
-     * @return	array
+     * @return array
      */
     public function error()
     {
-        return array('code' => cubrid_errno($this->conn_id), 'message' => cubrid_error($this->conn_id));
+        return ['code' => cubrid_errno($this->conn_id), 'message' => cubrid_error($this->conn_id)];
     }
 
     // --------------------------------------------------------------------
 
     /**
-     * FROM tables
+     * FROM tables.
      *
      * Groups tables in FROM clauses if needed, so there is no confusion
      * about operator precedence.
      *
-     * @return	string
+     * @return string
      */
     protected function _from_tables()
     {
-        if (! empty($this->qb_join) && count($this->qb_from) > 1) {
+        if (!empty($this->qb_join) && count($this->qb_from) > 1) {
             return '('.implode(', ', $this->qb_from).')';
         }
 
@@ -378,9 +386,9 @@ class CI_DB_cubrid_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Close DB Connection
+     * Close DB Connection.
      *
-     * @return	void
+     * @return void
      */
     protected function _close()
     {

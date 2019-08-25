@@ -1,34 +1,34 @@
 <?php
 
-return array(
+return [
 
     // Typical Database configuration
-    'mysqli' => array(
-        'dsn' => '',
+    'mysqli' => [
+        'dsn'      => '',
         'hostname' => 'localhost',
         'username' => 'travis',
         'password' => '',
         'database' => 'ci_test',
-        'dbdriver' => 'mysqli'
-    ),
+        'dbdriver' => 'mysqli',
+    ],
 
     // Database configuration with failover
-    'mysqli_failover' => array(
-        'dsn' => '',
+    'mysqli_failover' => [
+        'dsn'      => '',
         'hostname' => 'localhost',
         'username' => 'not_travis',
         'password' => 'wrong password',
         'database' => 'not_ci_test',
         'dbdriver' => 'mysqli',
-        'failover' => array(
-            array(
-                'dsn' => '',
+        'failover' => [
+            [
+                'dsn'      => '',
                 'hostname' => 'localhost',
                 'username' => 'travis',
                 'password' => '',
                 'database' => 'ci_test',
                 'dbdriver' => 'mysqli',
-            )
-        )
-    )
-);
+            ],
+        ],
+    ],
+];

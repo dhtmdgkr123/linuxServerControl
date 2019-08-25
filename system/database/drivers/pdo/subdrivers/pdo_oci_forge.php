@@ -1,6 +1,6 @@
 <?php
 /**
- * CodeIgniter
+ * CodeIgniter.
  *
  * An open source application development framework for PHP
  *
@@ -26,11 +26,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
- * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
  * @copyright	Copyright (c) 2014 - 2018, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
+ *
  * @link	https://codeigniter.com
  * @since	Version 3.0.0
  * @filesource
@@ -38,52 +38,54 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
- * PDO Oracle Forge Class
+ * PDO Oracle Forge Class.
  *
  * @category	Database
+ *
  * @author		EllisLab Dev Team
+ *
  * @link		https://codeigniter.com/user_guide/database/
  */
 class CI_DB_pdo_oci_forge extends CI_DB_pdo_forge
 {
+    /**
+     * CREATE DATABASE statement.
+     *
+     * @var string
+     */
+    protected $_create_database = false;
 
     /**
-     * CREATE DATABASE statement
+     * CREATE TABLE IF statement.
      *
-     * @var	string
+     * @var string
      */
-    protected $_create_database	= false;
+    protected $_create_table_if = false;
 
     /**
-     * CREATE TABLE IF statement
+     * DROP DATABASE statement.
      *
-     * @var	string
+     * @var string
      */
-    protected $_create_table_if	= false;
+    protected $_drop_database = false;
 
     /**
-     * DROP DATABASE statement
+     * UNSIGNED support.
      *
-     * @var	string
+     * @var bool|array
      */
-    protected $_drop_database	= false;
-
-    /**
-     * UNSIGNED support
-     *
-     * @var	bool|array
-     */
-    protected $_unsigned		= false;
+    protected $_unsigned = false;
 
     // --------------------------------------------------------------------
 
     /**
-     * ALTER TABLE
+     * ALTER TABLE.
      *
-     * @param	string	$alter_type	ALTER type
-     * @param	string	$table		Table name
-     * @param	mixed	$field		Column definition
-     * @return	string|string[]
+     * @param string $alter_type ALTER type
+     * @param string $table      Table name
+     * @param mixed  $field      Column definition
+     *
+     * @return string|string[]
      */
     protected function _alter_table($alter_type, $table, $field)
     {
@@ -94,20 +96,20 @@ class CI_DB_pdo_oci_forge extends CI_DB_pdo_forge
         }
 
         $sql = 'ALTER TABLE '.$this->db->escape_identifiers($table);
-        $sqls = array();
+        $sqls = [];
         for ($i = 0, $c = count($field); $i < $c; $i++) {
             if ($field[$i]['_literal'] !== false) {
                 $field[$i] = "\n\t".$field[$i]['_literal'];
             } else {
                 $field[$i]['_literal'] = "\n\t".$this->_process_column($field[$i]);
 
-                if (! empty($field[$i]['comment'])) {
+                if (!empty($field[$i]['comment'])) {
                     $sqls[] = 'COMMENT ON COLUMN '
                         .$this->db->escape_identifiers($table).'.'.$this->db->escape_identifiers($field[$i]['name'])
                         .' IS '.$field[$i]['comment'];
                 }
 
-                if ($alter_type === 'MODIFY' && ! empty($field[$i]['new_name'])) {
+                if ($alter_type === 'MODIFY' && !empty($field[$i]['new_name'])) {
                     $sqls[] = $sql.' RENAME COLUMN '.$this->db->escape_identifiers($field[$i]['name'])
                         .' TO '.$this->db->escape_identifiers($field[$i]['new_name']);
                 }
@@ -121,17 +123,19 @@ class CI_DB_pdo_oci_forge extends CI_DB_pdo_forge
 
         // RENAME COLUMN must be executed after MODIFY
         array_unshift($sqls, $sql);
+
         return $sql;
     }
 
     // --------------------------------------------------------------------
 
     /**
-     * Field attribute AUTO_INCREMENT
+     * Field attribute AUTO_INCREMENT.
      *
-     * @param	array	&$attributes
-     * @param	array	&$field
-     * @return	void
+     * @param array &$attributes
+     * @param array &$field
+     *
+     * @return void
      */
     protected function _attr_auto_increment(&$attributes, &$field)
     {
@@ -139,27 +143,32 @@ class CI_DB_pdo_oci_forge extends CI_DB_pdo_forge
     }
 
     /**
-     * Field attribute TYPE
+     * Field attribute TYPE.
      *
      * Performs a data type mapping between different databases.
      *
-     * @param	array	&$attributes
-     * @return	void
+     * @param array &$attributes
+     *
+     * @return void
      */
     protected function _attr_type(&$attributes)
     {
         switch (strtoupper($attributes['TYPE'])) {
             case 'TINYINT':
                 $attributes['TYPE'] = 'NUMBER';
+
                 return;
             case 'MEDIUMINT':
                 $attributes['TYPE'] = 'NUMBER';
+
                 return;
             case 'INT':
                 $attributes['TYPE'] = 'NUMBER';
+
                 return;
             case 'BIGINT':
                 $attributes['TYPE'] = 'NUMBER';
+
                 return;
             default: return;
         }

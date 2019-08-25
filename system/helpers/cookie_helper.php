@@ -1,6 +1,6 @@
 <?php
 /**
- * CodeIgniter
+ * CodeIgniter.
  *
  * An open source application development framework for PHP
  *
@@ -26,18 +26,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
- * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
  * @copyright	Copyright (c) 2014 - 2018, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
+ *
  * @link	https://codeigniter.com
  * @since	Version 1.0.0
  * @filesource
  */
 defined('BASEPATH') or exit('No direct script access allowed');
 
-/**
+/*
  * CodeIgniter Cookie Helpers
  *
  * @package		CodeIgniter
@@ -49,9 +49,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 // ------------------------------------------------------------------------
 
-if (! function_exists('set_cookie')) {
+if (!function_exists('set_cookie')) {
     /**
-     * Set cookie
+     * Set cookie.
      *
      * Accepts seven parameters, or you can submit an associative
      * array in the first parameter containing all the values.
@@ -64,7 +64,8 @@ if (! function_exists('set_cookie')) {
      * @param	string	the cookie prefix
      * @param	bool	true makes the cookie secure
      * @param	bool	true makes the cookie accessible via http(s) only (no javascript)
-     * @return	void
+     *
+     * @return void
      */
     function set_cookie($name, $value = '', $expire = '', $domain = '', $path = '/', $prefix = '', $secure = null, $httponly = null)
     {
@@ -75,33 +76,36 @@ if (! function_exists('set_cookie')) {
 
 // --------------------------------------------------------------------
 
-if (! function_exists('get_cookie')) {
+if (!function_exists('get_cookie')) {
     /**
-     * Fetch an item from the COOKIE array
+     * Fetch an item from the COOKIE array.
      *
      * @param	string
      * @param	bool
-     * @return	mixed
+     *
+     * @return mixed
      */
     function get_cookie($index, $xss_clean = null)
     {
         is_bool($xss_clean) or $xss_clean = (config_item('global_xss_filtering') === true);
         $prefix = isset($_COOKIE[$index]) ? '' : config_item('cookie_prefix');
+
         return get_instance()->input->cookie($prefix.$index, $xss_clean);
     }
 }
 
 // --------------------------------------------------------------------
 
-if (! function_exists('delete_cookie')) {
+if (!function_exists('delete_cookie')) {
     /**
-     * Delete a COOKIE
+     * Delete a COOKIE.
      *
      * @param	mixed
      * @param	string	the cookie domain. Usually: .yourdomain.com
      * @param	string	the cookie path
      * @param	string	the cookie prefix
-     * @return	void
+     *
+     * @return void
      */
     function delete_cookie($name, $domain = '', $path = '/', $prefix = '')
     {

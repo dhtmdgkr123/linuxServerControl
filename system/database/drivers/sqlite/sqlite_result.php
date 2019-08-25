@@ -1,6 +1,6 @@
 <?php
 /**
- * CodeIgniter
+ * CodeIgniter.
  *
  * An open source application development framework for PHP
  *
@@ -26,11 +26,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
- * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
  * @copyright	Copyright (c) 2014 - 2018, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
+ *
  * @link	https://codeigniter.com
  * @since	Version 1.3.0
  * @filesource
@@ -38,21 +38,22 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
- * SQLite Result Class
+ * SQLite Result Class.
  *
  * This class extends the parent result class: CI_DB_result
  *
  * @category	Database
+ *
  * @author		EllisLab Dev Team
+ *
  * @link		https://codeigniter.com/user_guide/database/
  */
 class CI_DB_sqlite_result extends CI_DB_result
 {
-
     /**
-     * Number of rows in the result set
+     * Number of rows in the result set.
      *
-     * @return	int
+     * @return int
      */
     public function num_rows()
     {
@@ -64,9 +65,9 @@ class CI_DB_sqlite_result extends CI_DB_result
     // --------------------------------------------------------------------
 
     /**
-     * Number of fields in the result set
+     * Number of fields in the result set.
      *
-     * @return	int
+     * @return int
      */
     public function num_fields()
     {
@@ -76,15 +77,15 @@ class CI_DB_sqlite_result extends CI_DB_result
     // --------------------------------------------------------------------
 
     /**
-     * Fetch Field Names
+     * Fetch Field Names.
      *
      * Generates an array of column names
      *
-     * @return	array
+     * @return array
      */
     public function list_fields()
     {
-        $field_names = array();
+        $field_names = [];
         for ($i = 0, $c = $this->num_fields(); $i < $c; $i++) {
             $field_names[$i] = sqlite_field_name($this->result_id, $i);
         }
@@ -95,20 +96,20 @@ class CI_DB_sqlite_result extends CI_DB_result
     // --------------------------------------------------------------------
 
     /**
-     * Field data
+     * Field data.
      *
      * Generates an array of objects containing field meta-data
      *
-     * @return	array
+     * @return array
      */
     public function field_data()
     {
-        $retval = array();
+        $retval = [];
         for ($i = 0, $c = $this->num_fields(); $i < $c; $i++) {
-            $retval[$i]			= new stdClass();
-            $retval[$i]->name		= sqlite_field_name($this->result_id, $i);
-            $retval[$i]->type		= null;
-            $retval[$i]->max_length		= null;
+            $retval[$i] = new stdClass();
+            $retval[$i]->name = sqlite_field_name($this->result_id, $i);
+            $retval[$i]->type = null;
+            $retval[$i]->max_length = null;
         }
 
         return $retval;
@@ -117,14 +118,15 @@ class CI_DB_sqlite_result extends CI_DB_result
     // --------------------------------------------------------------------
 
     /**
-     * Data Seek
+     * Data Seek.
      *
      * Moves the internal pointer to the desired offset. We call
      * this internally before fetching results to make sure the
      * result set starts at zero.
      *
-     * @param	int	$n
-     * @return	bool
+     * @param int $n
+     *
+     * @return bool
      */
     public function data_seek($n = 0)
     {
@@ -134,11 +136,11 @@ class CI_DB_sqlite_result extends CI_DB_result
     // --------------------------------------------------------------------
 
     /**
-     * Result - associative array
+     * Result - associative array.
      *
      * Returns the result set as an array
      *
-     * @return	array
+     * @return array
      */
     protected function _fetch_assoc()
     {
@@ -148,12 +150,13 @@ class CI_DB_sqlite_result extends CI_DB_result
     // --------------------------------------------------------------------
 
     /**
-     * Result - object
+     * Result - object.
      *
      * Returns the result set as an object
      *
-     * @param	string	$class_name
-     * @return	object
+     * @param string $class_name
+     *
+     * @return object
      */
     protected function _fetch_object($class_name = 'stdClass')
     {

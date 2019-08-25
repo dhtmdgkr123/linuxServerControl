@@ -1,6 +1,6 @@
 <?php
 /**
- * CodeIgniter
+ * CodeIgniter.
  *
  * An open source application development framework for PHP
  *
@@ -26,11 +26,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
- * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
  * @copyright	Copyright (c) 2014 - 2018, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
+ *
  * @link	https://codeigniter.com
  * @since	Version 1.3.0
  * @filesource
@@ -38,43 +38,45 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
- * SQLite Forge Class
+ * SQLite Forge Class.
  *
  * @category	Database
+ *
  * @author		EllisLab Dev Team
+ *
  * @link		https://codeigniter.com/user_guide/database/
  */
 class CI_DB_sqlite_forge extends CI_DB_forge
 {
+    /**
+     * CREATE TABLE IF statement.
+     *
+     * @var string
+     */
+    protected $_create_table_if = false;
 
     /**
-     * CREATE TABLE IF statement
+     * UNSIGNED support.
      *
-     * @var	string
+     * @var bool|array
      */
-    protected $_create_table_if	= false;
+    protected $_unsigned = false;
 
     /**
-     * UNSIGNED support
+     * NULL value representation in CREATE/ALTER TABLE statements.
      *
-     * @var	bool|array
+     * @var string
      */
-    protected $_unsigned		= false;
-
-    /**
-     * NULL value representation in CREATE/ALTER TABLE statements
-     *
-     * @var	string
-     */
-    protected $_null		= 'NULL';
+    protected $_null = 'NULL';
 
     // --------------------------------------------------------------------
 
     /**
-     * Create database
+     * Create database.
      *
-     * @param	string	$db_name	(ignored)
-     * @return	bool
+     * @param string $db_name (ignored)
+     *
+     * @return bool
      */
     public function create_database($db_name)
     {
@@ -86,16 +88,17 @@ class CI_DB_sqlite_forge extends CI_DB_forge
     // --------------------------------------------------------------------
 
     /**
-     * Drop database
+     * Drop database.
      *
-     * @param	string	$db_name	(ignored)
-     * @return	bool
+     * @param string $db_name (ignored)
+     *
+     * @return bool
      */
     public function drop_database($db_name)
     {
-        if (! file_exists($this->db->database) or ! @unlink($this->db->database)) {
+        if (!file_exists($this->db->database) or !@unlink($this->db->database)) {
             return ($this->db->db_debug) ? $this->db->display_error('db_unable_to_drop') : false;
-        } elseif (! empty($this->db->data_cache['db_names'])) {
+        } elseif (!empty($this->db->data_cache['db_names'])) {
             $key = array_search(strtolower($this->db->database), array_map('strtolower', $this->db->data_cache['db_names']), true);
             if ($key !== false) {
                 unset($this->db->data_cache['db_names'][$key]);
@@ -108,13 +111,15 @@ class CI_DB_sqlite_forge extends CI_DB_forge
     // --------------------------------------------------------------------
 
     /**
-     * ALTER TABLE
+     * ALTER TABLE.
      *
      * @todo	implement drop_column(), modify_column()
-     * @param	string	$alter_type	ALTER type
-     * @param	string	$table		Table name
-     * @param	mixed	$field		Column definition
-     * @return	string|string[]
+     *
+     * @param string $alter_type ALTER type
+     * @param string $table      Table name
+     * @param mixed  $field      Column definition
+     *
+     * @return string|string[]
      */
     protected function _alter_table($alter_type, $table, $field)
     {
@@ -138,10 +143,11 @@ class CI_DB_sqlite_forge extends CI_DB_forge
     // --------------------------------------------------------------------
 
     /**
-     * Process column
+     * Process column.
      *
-     * @param	array	$field
-     * @return	string
+     * @param array $field
+     *
+     * @return string
      */
     protected function _process_column($field)
     {
@@ -156,12 +162,13 @@ class CI_DB_sqlite_forge extends CI_DB_forge
     // --------------------------------------------------------------------
 
     /**
-     * Field attribute TYPE
+     * Field attribute TYPE.
      *
      * Performs a data type mapping between different databases.
      *
-     * @param	array	&$attributes
-     * @return	void
+     * @param array &$attributes
+     *
+     * @return void
      */
     protected function _attr_type(&$attributes)
     {
@@ -169,6 +176,7 @@ class CI_DB_sqlite_forge extends CI_DB_forge
             case 'ENUM':
             case 'SET':
                 $attributes['TYPE'] = 'TEXT';
+
                 return;
             default: return;
         }
@@ -177,22 +185,23 @@ class CI_DB_sqlite_forge extends CI_DB_forge
     // --------------------------------------------------------------------
 
     /**
-     * Field attribute AUTO_INCREMENT
+     * Field attribute AUTO_INCREMENT.
      *
-     * @param	array	&$attributes
-     * @param	array	&$field
-     * @return	void
+     * @param array &$attributes
+     * @param array &$field
+     *
+     * @return void
      */
     protected function _attr_auto_increment(&$attributes, &$field)
     {
-        if (! empty($attributes['AUTO_INCREMENT']) && $attributes['AUTO_INCREMENT'] === true && stripos($field['type'], 'int') !== false) {
+        if (!empty($attributes['AUTO_INCREMENT']) && $attributes['AUTO_INCREMENT'] === true && stripos($field['type'], 'int') !== false) {
             $field['type'] = 'INTEGER PRIMARY KEY';
             $field['default'] = '';
             $field['null'] = '';
             $field['unique'] = '';
             $field['auto_increment'] = ' AUTOINCREMENT';
 
-            $this->primary_keys = array();
+            $this->primary_keys = [];
         }
     }
 }
