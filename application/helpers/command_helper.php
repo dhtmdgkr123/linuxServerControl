@@ -1,45 +1,46 @@
 <?php
-if (! function_exists('checkAllKeys')) {
+
+if (!function_exists('checkAllKeys')) {
     function checkAllKeys(array $data, array $refArray): bool
     {
-        return ! ((bool) count(array_diff(array_keys($data), array_keys($refArray))));
+        return !((bool) count(array_diff(array_keys($data), array_keys($refArray))));
     }
 }
-if ((! function_exists('isCommand')) && (! function_exists('isStatus')) && (! function_exists('isOff')) && (! function_exists('isStart')) && (! function_exists('isRestart'))) {
-    function isStatus(String $str): bool
+if ((!function_exists('isCommand')) && (!function_exists('isStatus')) && (!function_exists('isOff')) && (!function_exists('isStart')) && (!function_exists('isRestart'))) {
+    function isStatus(string $str): bool
     {
         return strpos(strtolower($str), 'status') !== false;
     }
-    function isShell(String $str): bool
+    function isShell(string $str): bool
     {
         return strpos(strtolower($str), 'shell') !== false;
     }
-    function isOff(String $str): bool
+    function isOff(string $str): bool
     {
         return strpos(strtolower($str, 'off')) !== false;
     }
-    function isStart(String $str): bool
+    function isStart(string $str): bool
     {
         return strpos(strtolower($str, 'start')) !== false;
     }
-    function isRestart(String $str): bool
+    function isRestart(string $str): bool
     {
         return strpos(strtolower($str, 'restart')) !== false;
     }
 }
 
-if (! class_exists('filter')) {
+if (!class_exists('filter')) {
     class filter
     {
         // prote
-        protected function searchCommand(array $commandArray, String $target)
+        protected function searchCommand(array $commandArray, string $target)
         {
             $low = 0;
             $high = count($commandArray) - 1;
-    
+
             $cache = null;
             $mid = null;
-            
+
             while ($high >= $low) {
                 $mid = intval(floor(($high + $low) / 2));
                 $cache = $commandArray[$mid];
@@ -51,35 +52,36 @@ if (! class_exists('filter')) {
                     return true;
                 }
             }
+
             return false;
         }
-        
-        protected function inArrayIndexed(array $filteredArray, String $target): bool
+
+        protected function inArrayIndexed(array $filteredArray, string $target): bool
         {
-            return $target ? isset($filteredArray[$target]): false;
+            return $target ? isset($filteredArray[$target]) : false;
         }
     }
 }
 
-if (! class_exists('commandFilter')) {
+if (!class_exists('commandFilter')) {
     class commandFilter extends filter
     {
         private $inputCommand = null;
         private $filterCommandArray = null;
-        
-        public function __construct(String $command)
+
+        public function __construct(string $command)
         {
             $this->inputCommand = trim(strtolower(explode(' ', $command)[0]));
             $this->filterCommandArray = [
-                '[]' => true,
-                'apt' => true, 'apt-get' => true,
+                '[]'    => true,
+                'apt'   => true, 'apt-get' => true,
                 'clear' => true, 'git' => true,
-                'more' => true, 'nano' => true,
-                'top' => true, 'vi' => true,
-                'vim' => true, 'wget' => true,
+                'more'  => true, 'nano' => true,
+                'top'   => true, 'vi' => true,
+                'vim'   => true, 'wget' => true,
             ];
         }
-        
+
         public function filterMain(): bool
         {
             return $this->inArrayIndexed($this->filterCommandArray, $this->inputCommand);
@@ -87,39 +89,37 @@ if (! class_exists('commandFilter')) {
     }
 }
 
-
-if (! class_exists('serviceFilter')) {
+if (!class_exists('serviceFilter')) {
     class serviceFilter extends filter
     {
         private $service = null;
         public $serviceArray = null;
-        
-        public function __construct(String $service)
+
+        public function __construct(string $service)
         {
             $this->service = $service;
             $this->serviceArray = [
-                'MySQLStart' => '/etc/init.d/mysql start', 'MySQLRestart' => '/etc/init.d/mysql restart',
-                'MySQLOff' => '/etc/init.d/mysql stop', 'MySQLStatus' => '/etc/init.d/mysql status',
-                'APACHEStart' => 'httpd -k start', 'APACHERestart' => 'httpd -k restart', 'APACHEOff' => 'httpd -k stop', 'APACHEStatus' => 'httpd -k status',
-                'NGINXStart' => '/etc/init.d/nginx start', 'NGINXRestart' => '/etc/init.d/nginx restart',
-                'NGINXOff' => '/etc/init.d/nginx stop', 'NGINXStatus' => '/etc/init.d/nginx status',
+                'MySQLStart'    => '/etc/init.d/mysql start', 'MySQLRestart' => '/etc/init.d/mysql restart',
+                'MySQLOff'      => '/etc/init.d/mysql stop', 'MySQLStatus' => '/etc/init.d/mysql status',
+                'APACHEStart'   => 'httpd -k start', 'APACHERestart' => 'httpd -k restart', 'APACHEOff' => 'httpd -k stop', 'APACHEStatus' => 'httpd -k status',
+                'NGINXStart'    => '/etc/init.d/nginx start', 'NGINXRestart' => '/etc/init.d/nginx restart',
+                'NGINXOff'      => '/etc/init.d/nginx stop', 'NGINXStatus' => '/etc/init.d/nginx status',
                 'ServerRestart' => 'init 6;', 'ServerOff' => 'init 0;', 'ServerStatus' => $this->baseUrl('ServerStatus'),
-                'WebShell' => $this->baseUrl('Command')
+                'WebShell'      => $this->baseUrl('Command'),
             ];
         }
-        
-        private function baseUrl($controllerName = null): String
+
+        private function baseUrl($controllerName = null): string
         {
             return sprintf(
-                "%s://%s%s",
+                '%s://%s%s',
                 isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ? 'https' : 'http',
-                $_SERVER["SERVER_ADDR"],
+                $_SERVER['SERVER_ADDR'],
                 $_SERVER['SCRIPT_NAME'].$controllerName ? '/'.$controllerName : ''
             );
         }
 
-
-        private function generateJsonMessage(String $action, String $serviceName): array
+        private function generateJsonMessage(string $action, string $serviceName): array
         {
             /*
              * for 1 each : activeMessage
@@ -130,32 +130,30 @@ if (! class_exists('serviceFilter')) {
             for ($i = 1; $i <= 3; $i++) {
                 $message[] = json_encode([$i, $action, $serviceName]);
             }
+
             return $message;
         }
 
-        private function doubleQuotateAdder(String $str) : String
+        private function doubleQuotateAdder(string $str) : string
         {
             return '"'.$str.'"';
         }
 
-        
-
-        
-        public function generateCommand() : String
+        public function generateCommand() : string
         {
-            if (! function_exists('isHttpd') && ! function_exists('isInit')) {
-                function isHttpd(String $str): bool
+            if (!function_exists('isHttpd') && !function_exists('isInit')) {
+                function isHttpd(string $str): bool
                 {
                     return strpos($str, 'httpd') !== false;
                 }
-                function isServerCommand(String $str): bool
+                function isServerCommand(string $str): bool
                 {
                     return explode(' ', $str)[0] === 'init';
                 }
             }
-            
+
             $serviceCommand = $this->serviceArray[$this->service];
-            
+
             if (filter_var($serviceCommand, FILTER_VALIDATE_URL) || isServerCommand($serviceCommand)) {
                 return $serviceCommand;
             } elseif (isStatus($serviceCommand)) {
@@ -164,7 +162,7 @@ if (! class_exists('serviceFilter')) {
                 } else {
                     $serviceName = $this->doubleQuotateAdder(explode(' ', explode('/', trim($serviceCommand))[3])[0]);
                 }
-                
+
                 $message = $this->generateJsonMessage($this->doubleQuotateAdder('status'), $serviceName);
                 $serviceCommand = "returnMessage=$({$serviceCommand} | grep active | awk '{print $2}'); if [ \"\$returnMessage\" == \"active\" ]; then echo \"{$message[0]}\"; elif [ \"\$returnMessage\" == \"inactive\" ]; then echo \"{$message[1]}\"; else echo \"{$message[2]}\"; fi";
             } else {
@@ -177,15 +175,15 @@ if (! class_exists('serviceFilter')) {
                     $serviceName = $this->doubleQuotateAdder(explode(' ', explode('/', trim($serviceCommand))[3])[0]);
                     $serviceAction = $this->doubleQuotateAdder(explode(' ', $serviceCommand)[1]);
                 }
-                
+
                 $message = $this->generateJsonMessage($serviceAction, $serviceName);
                 $serviceCommand .= ' > /dev/null 2>&1;';
                 $serviceCommand = "{$serviceCommand} isSuccess=$(echo $?) && if [ \$isSuccess == 0 ]; then echo \"{$message[0]}\"; elif [ \"\$returnMessage\" == \"inactive\" ]; then echo \"{$message[1]}\"; else echo \"{$message[2]}\"; fi";
             }
-            
+
             return trim($serviceCommand);
         }
-        
+
         public function filterMain(): bool
         {
             return $this->inArrayIndexed($this->serviceArray, $this->service);

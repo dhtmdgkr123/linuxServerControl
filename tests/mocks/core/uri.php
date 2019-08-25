@@ -5,18 +5,18 @@ class Mock_Core_URI extends CI_URI
     public function __construct()
     {
         $test = CI_TestCase::instance();
-        $cls =& $test->ci_core_class('cfg');
+        $cls = &$test->ci_core_class('cfg');
 
         // set predictable config values
-        $test->ci_set_config(array(
-            'index_page'		=> 'index.php',
-            'base_url'		=> 'http://example.com/',
-            'subclass_prefix'	=> 'MY_',
+        $test->ci_set_config([
+            'index_page'		         => 'index.php',
+            'base_url'		           => 'http://example.com/',
+            'subclass_prefix'	     => 'MY_',
             'enable_query_strings'	=> false,
-            'permitted_uri_chars'	=> 'a-z 0-9~%.:_\-'
-        ));
+            'permitted_uri_chars'	 => 'a-z 0-9~%.:_\-',
+        ]);
 
-        $this->config = new $cls;
+        $this->config = new $cls();
 
         if ($this->config->item('enable_query_strings') !== true or is_cli()) {
             $this->_permitted_uri_chars = $this->config->item('permitted_uri_chars');

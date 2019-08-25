@@ -1,6 +1,6 @@
 <?php
 /**
- * CodeIgniter
+ * CodeIgniter.
  *
  * An open source application development framework for PHP
  *
@@ -26,11 +26,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
- * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
  * @copyright	Copyright (c) 2014 - 2018, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
+ *
  * @link	https://codeigniter.com
  * @since	Version 3.0.0
  * @filesource
@@ -38,49 +38,51 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
- * PDO IBM DB2 Forge Class
+ * PDO IBM DB2 Forge Class.
  *
  * @category	Database
+ *
  * @author		EllisLab Dev Team
+ *
  * @link		https://codeigniter.com/user_guide/database/
  */
 class CI_DB_pdo_ibm_forge extends CI_DB_pdo_forge
 {
+    /**
+     * RENAME TABLE IF statement.
+     *
+     * @var string
+     */
+    protected $_rename_table = 'RENAME TABLE %s TO %s';
 
     /**
-     * RENAME TABLE IF statement
+     * UNSIGNED support.
      *
-     * @var	string
+     * @var array
      */
-    protected $_rename_table	= 'RENAME TABLE %s TO %s';
-
-    /**
-     * UNSIGNED support
-     *
-     * @var	array
-     */
-    protected $_unsigned		= array(
+    protected $_unsigned = [
         'SMALLINT'	=> 'INTEGER',
-        'INT'		=> 'BIGINT',
-        'INTEGER'	=> 'BIGINT'
-    );
+        'INT'		    => 'BIGINT',
+        'INTEGER'	 => 'BIGINT',
+    ];
 
     /**
-     * DEFAULT value representation in CREATE/ALTER TABLE statements
+     * DEFAULT value representation in CREATE/ALTER TABLE statements.
      *
-     * @var	string
+     * @var string
      */
-    protected $_default		= false;
+    protected $_default = false;
 
     // --------------------------------------------------------------------
 
     /**
-     * ALTER TABLE
+     * ALTER TABLE.
      *
-     * @param	string	$alter_type	ALTER type
-     * @param	string	$table		Table name
-     * @param	mixed	$field		Column definition
-     * @return	string|string[]
+     * @param string $alter_type ALTER type
+     * @param string $table      Table name
+     * @param mixed  $field      Column definition
+     *
+     * @return string|string[]
      */
     protected function _alter_table($alter_type, $table, $field)
     {
@@ -94,12 +96,13 @@ class CI_DB_pdo_ibm_forge extends CI_DB_pdo_forge
     // --------------------------------------------------------------------
 
     /**
-     * Field attribute TYPE
+     * Field attribute TYPE.
      *
      * Performs a data type mapping between different databases.
      *
-     * @param	array	&$attributes
-     * @return	void
+     * @param array &$attributes
+     *
+     * @return void
      */
     protected function _attr_type(&$attributes)
     {
@@ -107,10 +110,12 @@ class CI_DB_pdo_ibm_forge extends CI_DB_pdo_forge
             case 'TINYINT':
                 $attributes['TYPE'] = 'SMALLINT';
                 $attributes['UNSIGNED'] = false;
+
                 return;
             case 'MEDIUMINT':
                 $attributes['TYPE'] = 'INTEGER';
                 $attributes['UNSIGNED'] = false;
+
                 return;
             default: return;
         }
@@ -119,15 +124,16 @@ class CI_DB_pdo_ibm_forge extends CI_DB_pdo_forge
     // --------------------------------------------------------------------
 
     /**
-     * Field attribute UNIQUE
+     * Field attribute UNIQUE.
      *
-     * @param	array	&$attributes
-     * @param	array	&$field
-     * @return	void
+     * @param array &$attributes
+     * @param array &$field
+     *
+     * @return void
      */
     protected function _attr_unique(&$attributes, &$field)
     {
-        if (! empty($attributes['UNIQUE']) && $attributes['UNIQUE'] === true) {
+        if (!empty($attributes['UNIQUE']) && $attributes['UNIQUE'] === true) {
             $field['unique'] = ' UNIQUE';
 
             // UNIQUE must be used with NOT NULL
@@ -138,11 +144,12 @@ class CI_DB_pdo_ibm_forge extends CI_DB_pdo_forge
     // --------------------------------------------------------------------
 
     /**
-     * Field attribute AUTO_INCREMENT
+     * Field attribute AUTO_INCREMENT.
      *
-     * @param	array	&$attributes
-     * @param	array	&$field
-     * @return	void
+     * @param array &$attributes
+     * @param array &$field
+     *
+     * @return void
      */
     protected function _attr_auto_increment(&$attributes, &$field)
     {

@@ -1,6 +1,6 @@
 <?php
 /**
- * CodeIgniter
+ * CodeIgniter.
  *
  * An open source application development framework for PHP
  *
@@ -26,11 +26,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
- * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
  * @copyright	Copyright (c) 2014 - 2018, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
+ *
  * @link	https://codeigniter.com
  * @since	Version 3.0.0
  * @filesource
@@ -38,62 +38,62 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
- * PDO MySQL Database Adapter Class
+ * PDO MySQL Database Adapter Class.
  *
  * Note: _DB is an extender class that the app controller
  * creates dynamically based on whether the query builder
  * class is being used or not.
  *
- * @package		CodeIgniter
- * @subpackage	Drivers
  * @category	Database
+ *
  * @author		EllisLab Dev Team
+ *
  * @link		https://codeigniter.com/user_guide/database/
  */
 class CI_DB_pdo_mysql_driver extends CI_DB_pdo_driver
 {
-
     /**
-     * Sub-driver
+     * Sub-driver.
      *
-     * @var	string
+     * @var string
      */
     public $subdriver = 'mysql';
 
     /**
-     * Compression flag
+     * Compression flag.
      *
-     * @var	bool
+     * @var bool
      */
     public $compress = false;
 
     /**
-     * Strict ON flag
+     * Strict ON flag.
      *
      * Whether we're running in strict SQL mode.
      *
-     * @var	bool
+     * @var bool
      */
     public $stricton;
 
     // --------------------------------------------------------------------
 
     /**
-     * Identifier escape character
+     * Identifier escape character.
      *
-     * @var	string
+     * @var string
      */
     protected $_escape_char = '`';
 
     // --------------------------------------------------------------------
 
     /**
-     * Class constructor
+     * Class constructor.
      *
      * Builds the DSN if not already set.
      *
-     * @param	array	$params
-     * @return	void
+     * @param array $params
+     *
+     * @return void
      */
     public function __construct($params)
     {
@@ -105,7 +105,7 @@ class CI_DB_pdo_mysql_driver extends CI_DB_pdo_driver
             empty($this->port) or $this->dsn .= ';port='.$this->port;
             empty($this->database) or $this->dsn .= ';dbname='.$this->database;
             empty($this->char_set) or $this->dsn .= ';charset='.$this->char_set;
-        } elseif (! empty($this->char_set) && strpos($this->dsn, 'charset=', 6) === false) {
+        } elseif (!empty($this->char_set) && strpos($this->dsn, 'charset=', 6) === false) {
             $this->dsn .= ';charset='.$this->char_set;
         }
     }
@@ -113,10 +113,11 @@ class CI_DB_pdo_mysql_driver extends CI_DB_pdo_driver
     // --------------------------------------------------------------------
 
     /**
-     * Database connection
+     * Database connection.
      *
-     * @param	bool	$persistent
-     * @return	object
+     * @param bool $persistent
+     *
+     * @return object
      */
     public function db_connect($persistent = false)
     {
@@ -134,7 +135,7 @@ class CI_DB_pdo_mysql_driver extends CI_DB_pdo_driver
                                         "STRICT_TRANS_TABLES", "")';
             }
 
-            if (! empty($sql)) {
+            if (!empty($sql)) {
                 if (empty($this->options[PDO::MYSQL_ATTR_INIT_COMMAND])) {
                     $this->options[PDO::MYSQL_ATTR_INIT_COMMAND] = 'SET SESSION sql_mode = '.$sql;
                 } else {
@@ -148,10 +149,10 @@ class CI_DB_pdo_mysql_driver extends CI_DB_pdo_driver
         }
 
         if (is_array($this->encrypt)) {
-            $ssl = array();
-            empty($this->encrypt['ssl_key'])    or $ssl[PDO::MYSQL_ATTR_SSL_KEY]    = $this->encrypt['ssl_key'];
-            empty($this->encrypt['ssl_cert'])   or $ssl[PDO::MYSQL_ATTR_SSL_CERT]   = $this->encrypt['ssl_cert'];
-            empty($this->encrypt['ssl_ca'])     or $ssl[PDO::MYSQL_ATTR_SSL_CA]     = $this->encrypt['ssl_ca'];
+            $ssl = [];
+            empty($this->encrypt['ssl_key']) or $ssl[PDO::MYSQL_ATTR_SSL_KEY] = $this->encrypt['ssl_key'];
+            empty($this->encrypt['ssl_cert']) or $ssl[PDO::MYSQL_ATTR_SSL_CERT] = $this->encrypt['ssl_cert'];
+            empty($this->encrypt['ssl_ca']) or $ssl[PDO::MYSQL_ATTR_SSL_CA] = $this->encrypt['ssl_ca'];
             empty($this->encrypt['ssl_capath']) or $ssl[PDO::MYSQL_ATTR_SSL_CAPATH] = $this->encrypt['ssl_capath'];
             empty($this->encrypt['ssl_cipher']) or $ssl[PDO::MYSQL_ATTR_SSL_CIPHER] = $this->encrypt['ssl_cipher'];
 
@@ -163,12 +164,13 @@ class CI_DB_pdo_mysql_driver extends CI_DB_pdo_driver
         // Prior to version 5.7.3, MySQL silently downgrades to an unencrypted connection if SSL setup fails
         if (
             ($pdo = parent::db_connect($persistent)) !== false
-            && ! empty($ssl)
+            && !empty($ssl)
             && version_compare($pdo->getAttribute(PDO::ATTR_CLIENT_VERSION), '5.7.3', '<=')
             && empty($pdo->query("SHOW STATUS LIKE 'ssl_cipher'")->fetchObject()->Value)
         ) {
             $message = 'PDO_MYSQL was configured for an SSL connection, but got an unencrypted connection instead!';
             log_message('error', $message);
+
             return ($this->db_debug) ? $this->display_error($message, '', true) : false;
         }
 
@@ -178,10 +180,11 @@ class CI_DB_pdo_mysql_driver extends CI_DB_pdo_driver
     // --------------------------------------------------------------------
 
     /**
-     * Select the database
+     * Select the database.
      *
-     * @param	string	$database
-     * @return	bool
+     * @param string $database
+     *
+     * @return bool
      */
     public function db_select($database = '')
     {
@@ -191,7 +194,8 @@ class CI_DB_pdo_mysql_driver extends CI_DB_pdo_driver
 
         if (false !== $this->simple_query('USE '.$this->escape_identifiers($database))) {
             $this->database = $database;
-            $this->data_cache = array();
+            $this->data_cache = [];
+
             return true;
         }
 
@@ -201,27 +205,29 @@ class CI_DB_pdo_mysql_driver extends CI_DB_pdo_driver
     // --------------------------------------------------------------------
 
     /**
-     * Begin Transaction
+     * Begin Transaction.
      *
-     * @return	bool
+     * @return bool
      */
     protected function _trans_begin()
     {
         $this->conn_id->setAttribute(PDO::ATTR_AUTOCOMMIT, false);
+
         return $this->conn_id->beginTransaction();
     }
 
     // --------------------------------------------------------------------
 
     /**
-     * Commit Transaction
+     * Commit Transaction.
      *
-     * @return	bool
+     * @return bool
      */
     protected function _trans_commit()
     {
         if ($this->conn_id->commit()) {
             $this->conn_id->setAttribute(PDO::ATTR_AUTOCOMMIT, true);
+
             return true;
         }
 
@@ -231,14 +237,15 @@ class CI_DB_pdo_mysql_driver extends CI_DB_pdo_driver
     // --------------------------------------------------------------------
 
     /**
-     * Rollback Transaction
+     * Rollback Transaction.
      *
-     * @return	bool
+     * @return bool
      */
     protected function _trans_rollback()
     {
         if ($this->conn_id->rollBack()) {
             $this->conn_id->setAttribute(PDO::ATTR_AUTOCOMMIT, true);
+
             return true;
         }
 
@@ -248,12 +255,13 @@ class CI_DB_pdo_mysql_driver extends CI_DB_pdo_driver
     // --------------------------------------------------------------------
 
     /**
-     * Show table query
+     * Show table query.
      *
      * Generates a platform-specific query string so that the table names can be fetched
      *
-     * @param	bool	$prefix_limit
-     * @return	string
+     * @param bool $prefix_limit
+     *
+     * @return string
      */
     protected function _list_tables($prefix_limit = false)
     {
@@ -269,12 +277,13 @@ class CI_DB_pdo_mysql_driver extends CI_DB_pdo_driver
     // --------------------------------------------------------------------
 
     /**
-     * Show column query
+     * Show column query.
      *
      * Generates a platform-specific query string so that the column names can be fetched
      *
-     * @param	string	$table
-     * @return	string
+     * @param string $table
+     *
+     * @return string
      */
     protected function _list_columns($table = '')
     {
@@ -284,10 +293,11 @@ class CI_DB_pdo_mysql_driver extends CI_DB_pdo_driver
     // --------------------------------------------------------------------
 
     /**
-     * Returns an object with field data
+     * Returns an object with field data.
      *
-     * @param	string	$table
-     * @return	array
+     * @param string $table
+     *
+     * @return array
      */
     public function field_data($table)
     {
@@ -296,10 +306,10 @@ class CI_DB_pdo_mysql_driver extends CI_DB_pdo_driver
         }
         $query = $query->result_object();
 
-        $retval = array();
+        $retval = [];
         for ($i = 0, $c = count($query); $i < $c; $i++) {
-            $retval[$i]			= new stdClass();
-            $retval[$i]->name		= $query[$i]->Field;
+            $retval[$i] = new stdClass();
+            $retval[$i]->name = $query[$i]->Field;
 
             sscanf(
                 $query[$i]->Type,
@@ -308,8 +318,8 @@ class CI_DB_pdo_mysql_driver extends CI_DB_pdo_driver
                 $retval[$i]->max_length
             );
 
-            $retval[$i]->default		= $query[$i]->Default;
-            $retval[$i]->primary_key	= (int) ($query[$i]->Key === 'PRI');
+            $retval[$i]->default = $query[$i]->Default;
+            $retval[$i]->primary_key = (int) ($query[$i]->Key === 'PRI');
         }
 
         return $retval;
@@ -318,15 +328,16 @@ class CI_DB_pdo_mysql_driver extends CI_DB_pdo_driver
     // --------------------------------------------------------------------
 
     /**
-     * Truncate statement
+     * Truncate statement.
      *
      * Generates a platform-specific truncate string from the supplied data
      *
      * If the database does not support the TRUNCATE statement,
      * then this method maps to 'DELETE FROM table'
      *
-     * @param	string	$table
-     * @return	string
+     * @param string $table
+     *
+     * @return string
      */
     protected function _truncate($table)
     {
@@ -336,16 +347,16 @@ class CI_DB_pdo_mysql_driver extends CI_DB_pdo_driver
     // --------------------------------------------------------------------
 
     /**
-     * FROM tables
+     * FROM tables.
      *
      * Groups tables in FROM clauses if needed, so there is no confusion
      * about operator precedence.
      *
-     * @return	string
+     * @return string
      */
     protected function _from_tables()
     {
-        if (! empty($this->qb_join) && count($this->qb_from) > 1) {
+        if (!empty($this->qb_join) && count($this->qb_from) > 1) {
             return '('.implode(', ', $this->qb_from).')';
         }
 

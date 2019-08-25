@@ -2,11 +2,10 @@
 
 class Mock_Database_DB
 {
-
     /**
      * @var array DB configuration
      */
-    private $config = array();
+    private $config = [];
 
     /**
      * @var string DB driver name
@@ -19,25 +18,27 @@ class Mock_Database_DB
     private static $subdriver = '';
 
     /**
-     * Prepare database configuration skeleton
+     * Prepare database configuration skeleton.
      *
      * @param  array 	DB configuration to set
+     *
      * @return void
      */
-    public function __construct($config = array())
+    public function __construct($config = [])
     {
         $this->config = $config;
     }
 
     /**
-     * Build DSN connection string for DB driver instantiate process
+     * Build DSN connection string for DB driver instantiate process.
      *
      * @param 	string 	Group name
-     * @return 	string 	DSN Connection string
+     *
+     * @return string DSN Connection string
      */
     public function set_dsn($group = 'default')
     {
-        if (! isset($this->config[$group])) {
+        if (!isset($this->config[$group])) {
             throw new InvalidArgumentException('Group '.$group.' not exists');
         }
 
@@ -46,7 +47,7 @@ class Mock_Database_DB
             self::$subdriver = $this->config[$group]['subdriver'];
         }
 
-        $params = array(
+        $params = [
             'dbprefix' => '',
             'pconnect' => false,
             'db_debug' => false,
@@ -55,12 +56,12 @@ class Mock_Database_DB
             'char_set' => 'utf8',
             'dbcollat' => 'utf8_general_ci',
             'swap_pre' => '',
-            'stricton' => false
-        );
+            'stricton' => false,
+        ];
 
         $config = array_merge($this->config[$group], $params);
         $dsnstring = empty($config['dsn']) ? false : $config['dsn'];
-        $subdriver = empty($config['subdriver']) ? false: $config['subdriver'];
+        $subdriver = empty($config['subdriver']) ? false : $config['subdriver'];
         $failover = empty($config['failover']) ? false : $config['failover'];
 
         $dsn = $config['dbdriver'].'://'.$config['username'].':'.$config['password']
@@ -82,24 +83,28 @@ class Mock_Database_DB
     }
 
     /**
-     * Return a database config array
+     * Return a database config array.
      *
      * @see 	./config
+     *
      * @param	string	Driver based configuration
-     * @return	array
+     *
+     * @return array
      */
     public static function config($driver)
     {
         $dir = realpath(dirname(__FILE__)).DIRECTORY_SEPARATOR;
-        return include($dir.'config'.DIRECTORY_SEPARATOR.$driver.'.php');
+
+        return include $dir.'config'.DIRECTORY_SEPARATOR.$driver.'.php';
     }
 
     /**
-     * Main DB method wrapper
+     * Main DB method wrapper.
      *
      * @param 	string	Group or DSN string
      * @param 	bool
-     * @return 	object
+     *
+     * @return object
      */
     public static function DB($group, $query_builder = false)
     {
@@ -108,27 +113,27 @@ class Mock_Database_DB
         $case = CI_TestCase::instance();
         $driver = self::$dbdriver;
         $subdriver = self::$subdriver;
-        $case->ci_vfs_create(array(
-            'DB_driver.php' => '',
-            'DB_result.php' => '',
-            'DB_forge.php' => '',
-            'DB_query_builder.php' => ''
-        ), '', $case->ci_base_root, 'database');
+        $case->ci_vfs_create([
+            'DB_driver.php'        => '',
+            'DB_result.php'        => '',
+            'DB_forge.php'         => '',
+            'DB_query_builder.php' => '',
+        ], '', $case->ci_base_root, 'database');
         if (file_exists(SYSTEM_PATH.'database/drivers/'.$driver.'/'.$driver.'_driver.php')) {
-            $case->ci_vfs_create(array(
+            $case->ci_vfs_create([
                 $driver.'_driver.php' => '',
                 $driver.'_result.php' => '',
-                $driver.'_forge.php' => ''
-            ), '', $case->ci_base_root, 'database/drivers/'.$driver);
+                $driver.'_forge.php'  => '',
+            ], '', $case->ci_base_root, 'database/drivers/'.$driver);
         }
         if ($subdriver) {
-            $case->ci_vfs_create(array(
+            $case->ci_vfs_create([
                 $driver.'_'.$subdriver.'_driver.php' => '',
-                $driver.'_'.$subdriver.'_forge.php' => ''
-            ), '', $case->ci_base_root, 'database/drivers/'.$driver.'/subdrivers');
+                $driver.'_'.$subdriver.'_forge.php'  => '',
+            ], '', $case->ci_base_root, 'database/drivers/'.$driver.'/subdrivers');
         }
 
-        include_once(SYSTEM_PATH.'database/DB.php');
+        include_once SYSTEM_PATH.'database/DB.php';
 
         try {
             $db = DB($group, $query_builder);

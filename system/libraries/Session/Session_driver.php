@@ -1,6 +1,6 @@
 <?php
 /**
- * CodeIgniter
+ * CodeIgniter.
  *
  * An open source application development framework for PHP
  *
@@ -26,11 +26,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
- * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
  * @copyright	Copyright (c) 2014 - 2018, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
+ *
  * @link	https://codeigniter.com
  * @since	Version 3.0.0
  * @filesource
@@ -38,12 +38,12 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
- * CodeIgniter Session Driver Class
+ * CodeIgniter Session Driver Class.
  *
- * @package	CodeIgniter
- * @subpackage	Libraries
  * @category	Sessions
+ *
  * @author	Andrey Andreev
+ *
  * @link	https://codeigniter.com/user_guide/libraries/sessions.html
  */
 abstract class CI_Session_driver implements SessionHandlerInterface
@@ -51,38 +51,39 @@ abstract class CI_Session_driver implements SessionHandlerInterface
     protected $_config;
 
     /**
-     * Data fingerprint
+     * Data fingerprint.
      *
-     * @var	bool
+     * @var bool
      */
     protected $_fingerprint;
 
     /**
-     * Lock placeholder
+     * Lock placeholder.
      *
-     * @var	mixed
+     * @var mixed
      */
     protected $_lock = false;
 
     /**
-     * Read session ID
+     * Read session ID.
      *
      * Used to detect session_regenerate_id() calls because PHP only calls
      * write() after regenerating the ID.
      *
-     * @var	string
+     * @var string
      */
     protected $_session_id;
 
     /**
-     * Success and failure return values
+     * Success and failure return values.
      *
      * Necessary due to a bug in all PHP 5 versions where return values
      * from userspace handlers are not handled properly. PHP 7 fixes the
      * bug, so we need to return different values depending on the version.
      *
      * @see	https://wiki.php.net/rfc/session.user.return-value
-     * @var	mixed
+     *
+     * @var mixed
      */
     protected $_success;
     protected $_failure;
@@ -90,14 +91,15 @@ abstract class CI_Session_driver implements SessionHandlerInterface
     // ------------------------------------------------------------------------
 
     /**
-     * Class constructor
+     * Class constructor.
      *
-     * @param	array	$params	Configuration parameters
-     * @return	void
+     * @param array $params Configuration parameters
+     *
+     * @return void
      */
     public function __construct(&$params)
     {
-        $this->_config =& $params;
+        $this->_config = &$params;
 
         if (is_php('7')) {
             $this->_success = true;
@@ -111,15 +113,15 @@ abstract class CI_Session_driver implements SessionHandlerInterface
     // ------------------------------------------------------------------------
 
     /**
-     * PHP 5.x validate ID
+     * PHP 5.x validate ID.
      *
      * Enforces session.use_strict_mode on PHP 5.x (7+ does it by itself)
      *
-     * @return	void
+     * @return void
      */
     public function php5_validate_id()
     {
-        if (PHP_VERSION_ID < 70000 && isset($_COOKIE[$this->_config['cookie_name']]) && ! $this->validateId($_COOKIE[$this->_config['cookie_name']])) {
+        if (PHP_VERSION_ID < 70000 && isset($_COOKIE[$this->_config['cookie_name']]) && !$this->validateId($_COOKIE[$this->_config['cookie_name']])) {
             unset($_COOKIE[$this->_config['cookie_name']]);
         }
     }
@@ -127,12 +129,12 @@ abstract class CI_Session_driver implements SessionHandlerInterface
     // ------------------------------------------------------------------------
 
     /**
-     * Cookie destroy
+     * Cookie destroy.
      *
      * Internal method to force removal of a cookie by the client
      * when session_destroy() is called.
      *
-     * @return	bool
+     * @return bool
      */
     protected function _cookie_destroy()
     {
@@ -150,27 +152,29 @@ abstract class CI_Session_driver implements SessionHandlerInterface
     // ------------------------------------------------------------------------
 
     /**
-     * Get lock
+     * Get lock.
      *
      * A dummy method allowing drivers with no locking functionality
      * (databases other than PostgreSQL and MySQL) to act as if they
      * do acquire a lock.
      *
-     * @param	string	$session_id
-     * @return	bool
+     * @param string $session_id
+     *
+     * @return bool
      */
     protected function _get_lock($session_id)
     {
         $this->_lock = true;
+
         return true;
     }
 
     // ------------------------------------------------------------------------
 
     /**
-     * Release lock
+     * Release lock.
      *
-     * @return	bool
+     * @return bool
      */
     protected function _release_lock()
     {
@@ -184,7 +188,7 @@ abstract class CI_Session_driver implements SessionHandlerInterface
     // ------------------------------------------------------------------------
 
     /**
-     * Fail
+     * Fail.
      *
      * Drivers other than the 'files' one don't (need to) use the
      * session.save_path INI setting, but that leads to confusing
@@ -194,11 +198,12 @@ abstract class CI_Session_driver implements SessionHandlerInterface
      * so that the INI is set just in time for the error message to
      * be properly generated.
      *
-     * @return	mixed
+     * @return mixed
      */
     protected function _fail()
     {
         ini_set('session.save_path', config_item('sess_save_path'));
+
         return $this->_failure;
     }
 }

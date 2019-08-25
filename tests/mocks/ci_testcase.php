@@ -8,23 +8,23 @@ class CI_TestCase extends PHPUnit_Framework_TestCase
     protected $ci_instance;
     protected static $ci_test_instance;
 
-    private $global_map = array(
+    private $global_map = [
         'benchmark'	=> 'bm',
-        'config'	=> 'cfg',
-        'hooks'		=> 'ext',
-        'utf8'		=> 'uni',
-        'router'	=> 'rtr',
-        'output'	=> 'out',
-        'security'	=> 'sec',
-        'input'		=> 'in',
-        'lang'		=> 'lang',
-        'loader'	=> 'load',
-        'model'		=> 'model'
-    );
+        'config'	   => 'cfg',
+        'hooks'		   => 'ext',
+        'utf8'		    => 'uni',
+        'router'	   => 'rtr',
+        'output'	   => 'out',
+        'security'	 => 'sec',
+        'input'		   => 'in',
+        'lang'		    => 'lang',
+        'loader'	   => 'load',
+        'model'		   => 'model',
+    ];
 
     // --------------------------------------------------------------------
 
-    public function __construct($name = null, array $data = array(), $dataName = '')
+    public function __construct($name = null, array $data = [], $dataName = '')
     {
         parent::__construct($name, $data, $dataName);
         $this->ci_instance = new stdClass();
@@ -66,7 +66,7 @@ class CI_TestCase extends PHPUnit_Framework_TestCase
     public function ci_set_config($key = '', $val = '')
     {
         // Add test config
-        if (! isset($this->ci_instance->config)) {
+        if (!isset($this->ci_instance->config)) {
             $this->ci_instance->config = new CI_TestConfig();
         }
 
@@ -86,14 +86,14 @@ class CI_TestCase extends PHPUnit_Framework_TestCase
 
     public function ci_get_config()
     {
-        return isset($this->ci_instance->config) ? $this->ci_instance->config->config : array();
+        return isset($this->ci_instance->config) ? $this->ci_instance->config->config : [];
     }
 
     // --------------------------------------------------------------------
 
     public function ci_instance($obj = false)
     {
-        if (! is_object($obj)) {
+        if (!is_object($obj)) {
             return $this->ci_instance;
         }
 
@@ -104,17 +104,17 @@ class CI_TestCase extends PHPUnit_Framework_TestCase
 
     public function ci_instance_var($name, $obj = false)
     {
-        if (! is_object($obj)) {
+        if (!is_object($obj)) {
             return $this->ci_instance->$name;
         }
 
-        $this->ci_instance->$name =& $obj;
+        $this->ci_instance->$name = &$obj;
     }
 
     // --------------------------------------------------------------------
 
     /**
-     * Grab a core class
+     * Grab a core class.
      *
      * Loads the correct core class without extensions
      * and returns a reference to the class name in the
@@ -136,11 +136,12 @@ class CI_TestCase extends PHPUnit_Framework_TestCase
             throw new Exception('Not a valid core class.');
         }
 
-        if (! class_exists('CI_'.$class_name)) {
+        if (!class_exists('CI_'.$class_name)) {
             require_once SYSTEM_PATH.'core/'.$class_name.'.php';
         }
 
         $GLOBALS[strtoupper($global_name)] = 'CI_'.$class_name;
+
         return $GLOBALS[strtoupper($global_name)];
     }
 
@@ -149,21 +150,22 @@ class CI_TestCase extends PHPUnit_Framework_TestCase
     // convenience function for global mocks
     public function ci_set_core_class($name, $obj)
     {
-        $orig =& $this->ci_core_class($name);
+        $orig = &$this->ci_core_class($name);
         $orig = $obj;
     }
 
     /**
-     * Create VFS directory
+     * Create VFS directory.
      *
      * @param	string	Directory name
      * @param	object	Optional root to create in
-     * @return	object	New directory object
+     *
+     * @return object New directory object
      */
     public function ci_vfs_mkdir($name, $root = null)
     {
         // Check for root
-        if (! $root) {
+        if (!$root) {
             $root = $this->ci_vfs_root;
         }
 
@@ -174,13 +176,14 @@ class CI_TestCase extends PHPUnit_Framework_TestCase
     // --------------------------------------------------------------------
 
     /**
-     * Create VFS content
+     * Create VFS content.
      *
      * @param	string	File name
      * @param	string	File content
      * @param	object	VFS directory object
      * @param	mixed	Optional subdirectory path or array of subs
-     * @return	void
+     *
+     * @return void
      */
     public function ci_vfs_create($file, $content = '', $root = null, $path = null)
     {
@@ -189,6 +192,7 @@ class CI_TestCase extends PHPUnit_Framework_TestCase
             foreach ($file as $name => $content) {
                 $this->ci_vfs_create($name, $content, $root, $path);
             }
+
             return;
         }
 
@@ -198,17 +202,17 @@ class CI_TestCase extends PHPUnit_Framework_TestCase
         }
 
         // Build content
-        $tree = array($file => $content);
+        $tree = [$file => $content];
 
         // Check for path
-        $subs = array();
+        $subs = [];
         if ($path) {
             // Explode if not array
             $subs = is_array($path) ? $path : explode('/', trim($path, '/'));
         }
 
         // Check for root
-        if (! $root) {
+        if (!$root) {
             // Use base VFS root
             $root = $this->ci_vfs_root;
         }
@@ -231,7 +235,7 @@ class CI_TestCase extends PHPUnit_Framework_TestCase
         if ($subs) {
             foreach (array_reverse($subs) as $dir) {
                 // Wrap content in subdirectory for creation
-                $tree = array($dir => $tree);
+                $tree = [$dir => $tree];
             }
         }
 
@@ -242,18 +246,20 @@ class CI_TestCase extends PHPUnit_Framework_TestCase
     // --------------------------------------------------------------------
 
     /**
-     * Clone a real file into VFS
+     * Clone a real file into VFS.
      *
      * @param	string	Path from base directory
-     * @return	bool	TRUE on success, otherwise FALSE
+     *
+     * @return bool TRUE on success, otherwise FALSE
      */
-    public function ci_vfs_clone($path, $dest='')
+    public function ci_vfs_clone($path, $dest = '')
     {
         // Check for array
         if (is_array($path)) {
             foreach ($path as $file) {
                 $this->ci_vfs_clone($file, $dest);
             }
+
             return;
         }
 
@@ -269,17 +275,19 @@ class CI_TestCase extends PHPUnit_Framework_TestCase
         }
 
         $this->ci_vfs_create(basename($path), $content, null, $dest);
+
         return true;
     }
 
     // --------------------------------------------------------------------
 
     /**
-     * Helper to get a VFS URL path
+     * Helper to get a VFS URL path.
      *
      * @param	string	Path
      * @param	string	Optional base path
-     * @return	string	Path URL
+     *
+     * @return string Path URL
      */
     public function ci_vfs_path($path, $base = '')
     {
@@ -304,7 +312,7 @@ class CI_TestCase extends PHPUnit_Framework_TestCase
     // --------------------------------------------------------------------
 
     /**
-     * Overwrite runBare
+     * Overwrite runBare.
      *
      * PHPUnit instantiates the test classes before
      * running them individually. So right before a test
@@ -322,14 +330,15 @@ class CI_TestCase extends PHPUnit_Framework_TestCase
 
     public function helper($name)
     {
-        require_once(SYSTEM_PATH.'helpers/'.$name.'_helper.php');
+        require_once SYSTEM_PATH.'helpers/'.$name.'_helper.php';
     }
 
     // --------------------------------------------------------------------
 
     public function lang($name)
     {
-        require(SYSTEM_PATH.'language/english/'.$name.'_lang.php');
+        require SYSTEM_PATH.'language/english/'.$name.'_lang.php';
+
         return $lang;
     }
 

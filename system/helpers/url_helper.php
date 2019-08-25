@@ -1,6 +1,6 @@
 <?php
 /**
- * CodeIgniter
+ * CodeIgniter.
  *
  * An open source application development framework for PHP
  *
@@ -26,18 +26,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
- * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
  * @copyright	Copyright (c) 2014 - 2018, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
+ *
  * @link	https://codeigniter.com
  * @since	Version 1.0.0
  * @filesource
  */
 defined('BASEPATH') or exit('No direct script access allowed');
 
-/**
+/*
  * CodeIgniter URL Helpers
  *
  * @package		CodeIgniter
@@ -49,16 +49,17 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 // ------------------------------------------------------------------------
 
-if (! function_exists('site_url')) {
+if (!function_exists('site_url')) {
     /**
-     * Site URL
+     * Site URL.
      *
      * Create a local URL based on your basepath. Segments can be passed via the
      * first parameter either as a string or an array.
      *
-     * @param	string	$uri
-     * @param	string	$protocol
-     * @return	string
+     * @param string $uri
+     * @param string $protocol
+     *
+     * @return string
      */
     function site_url($uri = '', $protocol = null)
     {
@@ -68,17 +69,18 @@ if (! function_exists('site_url')) {
 
 // ------------------------------------------------------------------------
 
-if (! function_exists('base_url')) {
+if (!function_exists('base_url')) {
     /**
-     * Base URL
+     * Base URL.
      *
      * Create a local URL based on your basepath.
      * Segments can be passed in as a string or an array, same as site_url
      * or a URL to a file can be passed in, e.g. to an image file.
      *
-     * @param	string	$uri
-     * @param	string	$protocol
-     * @return	string
+     * @param string $uri
+     * @param string $protocol
+     *
+     * @return string
      */
     function base_url($uri = '', $protocol = null)
     {
@@ -88,31 +90,32 @@ if (! function_exists('base_url')) {
 
 // ------------------------------------------------------------------------
 
-if (! function_exists('current_url')) {
+if (!function_exists('current_url')) {
     /**
-     * Current URL
+     * Current URL.
      *
      * Returns the full URL (including segments) of the page where this
      * function is placed
      *
-     * @return	string
+     * @return string
      */
     function current_url()
     {
-        $CI =& get_instance();
+        $CI = &get_instance();
+
         return $CI->config->site_url($CI->uri->uri_string());
     }
 }
 
 // ------------------------------------------------------------------------
 
-if (! function_exists('uri_string')) {
+if (!function_exists('uri_string')) {
     /**
-     * URL String
+     * URL String.
      *
      * Returns the URI segments.
      *
-     * @return	string
+     * @return string
      */
     function uri_string()
     {
@@ -122,13 +125,13 @@ if (! function_exists('uri_string')) {
 
 // ------------------------------------------------------------------------
 
-if (! function_exists('index_page')) {
+if (!function_exists('index_page')) {
     /**
-     * Index page
+     * Index page.
      *
      * Returns the "index_page" from your config file
      *
-     * @return	string
+     * @return string
      */
     function index_page()
     {
@@ -138,16 +141,17 @@ if (! function_exists('index_page')) {
 
 // ------------------------------------------------------------------------
 
-if (! function_exists('anchor')) {
+if (!function_exists('anchor')) {
     /**
-     * Anchor Link
+     * Anchor Link.
      *
      * Creates an anchor based on the local URL.
      *
      * @param	string	the URL
      * @param	string	the link title
      * @param	mixed	any attributes
-     * @return	string
+     *
+     * @return string
      */
     function anchor($uri = '', $title = '', $attributes = '')
     {
@@ -171,9 +175,9 @@ if (! function_exists('anchor')) {
 
 // ------------------------------------------------------------------------
 
-if (! function_exists('anchor_popup')) {
+if (!function_exists('anchor_popup')) {
     /**
-     * Anchor Link - Pop-up version
+     * Anchor Link - Pop-up version.
      *
      * Creates an anchor based on the local URL. The link
      * opens a new window based on the attributes specified.
@@ -181,7 +185,8 @@ if (! function_exists('anchor_popup')) {
      * @param	string	the URL
      * @param	string	the link title
      * @param	mixed	any attributes
-     * @return	string
+     *
+     * @return string
      */
     function anchor_popup($uri = '', $title = '', $attributes = false)
     {
@@ -196,19 +201,19 @@ if (! function_exists('anchor_popup')) {
             return '<a href="'.$site_url.'" onclick="window.open(\''.$site_url."', '_blank'); return false;\">".$title.'</a>';
         }
 
-        if (! is_array($attributes)) {
-            $attributes = array($attributes);
+        if (!is_array($attributes)) {
+            $attributes = [$attributes];
 
             // Ref: http://www.w3schools.com/jsref/met_win_open.asp
             $window_name = '_blank';
-        } elseif (! empty($attributes['window_name'])) {
+        } elseif (!empty($attributes['window_name'])) {
             $window_name = $attributes['window_name'];
             unset($attributes['window_name']);
         } else {
             $window_name = '_blank';
         }
 
-        foreach (array('width' => '800', 'height' => '600', 'scrollbars' => 'yes', 'menubar' => 'no', 'status' => 'yes', 'resizable' => 'yes', 'screenx' => '0', 'screeny' => '0') as $key => $val) {
+        foreach (['width' => '800', 'height' => '600', 'scrollbars' => 'yes', 'menubar' => 'no', 'status' => 'yes', 'resizable' => 'yes', 'screenx' => '0', 'screeny' => '0'] as $key => $val) {
             $atts[$key] = isset($attributes[$key]) ? $attributes[$key] : $val;
             unset($attributes[$key]);
         }
@@ -223,14 +228,15 @@ if (! function_exists('anchor_popup')) {
 
 // ------------------------------------------------------------------------
 
-if (! function_exists('mailto')) {
+if (!function_exists('mailto')) {
     /**
-     * Mailto Link
+     * Mailto Link.
      *
      * @param	string	the email address
      * @param	string	the link title
      * @param	mixed	any attributes
-     * @return	string
+     *
+     * @return string
      */
     function mailto($email, $title = '', $attributes = '')
     {
@@ -246,16 +252,17 @@ if (! function_exists('mailto')) {
 
 // ------------------------------------------------------------------------
 
-if (! function_exists('safe_mailto')) {
+if (!function_exists('safe_mailto')) {
     /**
-     * Encoded Mailto Link
+     * Encoded Mailto Link.
      *
      * Create a spam-protected mailto link written in Javascript
      *
      * @param	string	the email address
      * @param	string	the link title
      * @param	mixed	any attributes
-     * @return	string
+     *
+     * @return string
      */
     function safe_mailto($email, $title = '', $attributes = '')
     {
@@ -291,7 +298,7 @@ if (! function_exists('safe_mailto')) {
 
         $x[] = '>';
 
-        $temp = array();
+        $temp = [];
         for ($i = 0, $l = strlen($title); $i < $l; $i++) {
             $ordinal = ord($title[$i]);
 
@@ -309,7 +316,7 @@ if (! function_exists('safe_mailto')) {
                             : (($temp[0] % 32) * 64) + ($temp[1] % 64);
                     $x[] = '|'.$number;
                     $count = 1;
-                    $temp = array();
+                    $temp = [];
                 }
             }
         }
@@ -342,9 +349,9 @@ if (! function_exists('safe_mailto')) {
 
 // ------------------------------------------------------------------------
 
-if (! function_exists('auto_link')) {
+if (!function_exists('auto_link')) {
     /**
-     * Auto-linker
+     * Auto-linker.
      *
      * Automatically links URL and Email addresses.
      * Note: There's a bit of extra code here to deal with
@@ -354,7 +361,8 @@ if (! function_exists('auto_link')) {
      * @param	string	the string
      * @param	string	the type: email, url, or both
      * @param	bool	whether to create pop-up links
-     * @return	string
+     *
+     * @return string
      */
     function auto_link($str, $type = 'both', $popup = false)
     {
@@ -392,14 +400,15 @@ if (! function_exists('auto_link')) {
 
 // ------------------------------------------------------------------------
 
-if (! function_exists('prep_url')) {
+if (!function_exists('prep_url')) {
     /**
-     * Prep URL
+     * Prep URL.
      *
      * Simply adds the http:// part if no scheme is included
      *
      * @param	string	the URL
-     * @return	string
+     *
+     * @return string
      */
     function prep_url($str = '')
     {
@@ -409,7 +418,7 @@ if (! function_exists('prep_url')) {
 
         $url = parse_url($str);
 
-        if (! $url or ! isset($url['scheme'])) {
+        if (!$url or !isset($url['scheme'])) {
             return 'http://'.$str;
         }
 
@@ -419,20 +428,22 @@ if (! function_exists('prep_url')) {
 
 // ------------------------------------------------------------------------
 
-if (! function_exists('url_title')) {
+if (!function_exists('url_title')) {
     /**
-     * Create URL Title
+     * Create URL Title.
      *
      * Takes a "title" string as input and creates a
      * human-friendly URL string with a "separator" string
      * as the word separator.
      *
      * @todo	Remove old 'dash' and 'underscore' usage in 3.1+.
-     * @param	string	$str		Input string
-     * @param	string	$separator	Word separator
-     *			(usually '-' or '_')
-     * @param	bool	$lowercase	Whether to transform the output string to lowercase
-     * @return	string
+     *
+     * @param string $str       Input string
+     * @param string $separator Word separator
+     *                          (usually '-' or '_')
+     * @param bool   $lowercase Whether to transform the output string to lowercase
+     *
+     * @return string
      */
     function url_title($str, $separator = '-', $lowercase = false)
     {
@@ -444,12 +455,12 @@ if (! function_exists('url_title')) {
 
         $q_separator = preg_quote($separator, '#');
 
-        $trans = array(
-            '&.+?;'			=> '',
-            '[^\w\d _-]'		=> '',
-            '\s+'			=> $separator,
-            '('.$q_separator.')+'	=> $separator
-        );
+        $trans = [
+            '&.+?;'			            => '',
+            '[^\w\d _-]'		        => '',
+            '\s+'			              => $separator,
+            '('.$q_separator.')+'	=> $separator,
+        ];
 
         $str = strip_tags($str);
         foreach ($trans as $key => $val) {
@@ -466,30 +477,31 @@ if (! function_exists('url_title')) {
 
 // ------------------------------------------------------------------------
 
-if (! function_exists('redirect')) {
+if (!function_exists('redirect')) {
     /**
-     * Header Redirect
+     * Header Redirect.
      *
      * Header redirect in two flavors
      * For very fine grained control over headers, you could use the Output
      * Library's set_header() function.
      *
-     * @param	string	$uri	URL
-     * @param	string	$method	Redirect method
-     *			'auto', 'location' or 'refresh'
-     * @param	int	$code	HTTP Response status code
-     * @return	void
+     * @param string $uri    URL
+     * @param string $method Redirect method
+     *                       'auto', 'location' or 'refresh'
+     * @param int    $code   HTTP Response status code
+     *
+     * @return void
      */
     function redirect($uri = '', $method = 'auto', $code = null)
     {
-        if (! preg_match('#^(\w+:)?//#i', $uri)) {
+        if (!preg_match('#^(\w+:)?//#i', $uri)) {
             $uri = site_url($uri);
         }
 
         // IIS environment likely? Use 'refresh' for better compatibility
         if ($method === 'auto' && isset($_SERVER['SERVER_SOFTWARE']) && strpos($_SERVER['SERVER_SOFTWARE'], 'Microsoft-IIS') !== false) {
             $method = 'refresh';
-        } elseif ($method !== 'refresh' && (empty($code) or ! is_numeric($code))) {
+        } elseif ($method !== 'refresh' && (empty($code) or !is_numeric($code))) {
             if (isset($_SERVER['SERVER_PROTOCOL'], $_SERVER['REQUEST_METHOD']) && $_SERVER['SERVER_PROTOCOL'] === 'HTTP/1.1') {
                 $code = ($_SERVER['REQUEST_METHOD'] !== 'GET')
                     ? 303	// reference: http://en.wikipedia.org/wiki/Post/Redirect/Get

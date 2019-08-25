@@ -1,6 +1,6 @@
 <?php
 /**
- * CodeIgniter
+ * CodeIgniter.
  *
  * An open source application development framework for PHP
  *
@@ -26,11 +26,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
- * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
  * @copyright	Copyright (c) 2014 - 2018, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
+ *
  * @link	https://codeigniter.com
  * @since	Version 2.0
  * @filesource
@@ -38,32 +38,31 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
- * CodeIgniter File Caching Class
+ * CodeIgniter File Caching Class.
  *
- * @package		CodeIgniter
- * @subpackage	Libraries
  * @category	Core
+ *
  * @author		EllisLab Dev Team
+ *
  * @link
  */
 class CI_Cache_file extends CI_Driver
 {
-
     /**
-     * Directory in which to save cache files
+     * Directory in which to save cache files.
      *
      * @var string
      */
     protected $_cache_path;
 
     /**
-     * Initialize file-based cache
+     * Initialize file-based cache.
      *
-     * @return	void
+     * @return void
      */
     public function __construct()
     {
-        $CI =& get_instance();
+        $CI = &get_instance();
         $CI->load->helper('file');
         $path = $CI->config->item('cache_path');
         $this->_cache_path = ($path === '') ? APPPATH.'cache/' : $path;
@@ -72,38 +71,42 @@ class CI_Cache_file extends CI_Driver
     // ------------------------------------------------------------------------
 
     /**
-     * Fetch from cache
+     * Fetch from cache.
      *
-     * @param	string	$id	Cache ID
-     * @return	mixed	Data on success, FALSE on failure
+     * @param string $id Cache ID
+     *
+     * @return mixed Data on success, FALSE on failure
      */
     public function get($id)
     {
         $data = $this->_get($id);
+
         return is_array($data) ? $data['data'] : false;
     }
 
     // ------------------------------------------------------------------------
 
     /**
-     * Save into cache
+     * Save into cache.
      *
-     * @param	string	$id	Cache ID
-     * @param	mixed	$data	Data to store
-     * @param	int	$ttl	Time to live in seconds
-     * @param	bool	$raw	Whether to store the raw value (unused)
-     * @return	bool	TRUE on success, FALSE on failure
+     * @param string $id   Cache ID
+     * @param mixed  $data Data to store
+     * @param int    $ttl  Time to live in seconds
+     * @param bool   $raw  Whether to store the raw value (unused)
+     *
+     * @return bool TRUE on success, FALSE on failure
      */
     public function save($id, $data, $ttl = 60, $raw = false)
     {
-        $contents = array(
+        $contents = [
             'time'		=> time(),
-            'ttl'		=> $ttl,
-            'data'		=> $data
-        );
+            'ttl'		 => $ttl,
+            'data'		=> $data,
+        ];
 
         if (write_file($this->_cache_path.$id, serialize($contents))) {
             chmod($this->_cache_path.$id, 0640);
+
             return true;
         }
 
@@ -113,10 +116,11 @@ class CI_Cache_file extends CI_Driver
     // ------------------------------------------------------------------------
 
     /**
-     * Delete from Cache
+     * Delete from Cache.
      *
      * @param	mixed	unique identifier of item in cache
-     * @return	bool	true on success/false on failure
+     *
+     * @return bool true on success/false on failure
      */
     public function delete($id)
     {
@@ -126,23 +130,25 @@ class CI_Cache_file extends CI_Driver
     // ------------------------------------------------------------------------
 
     /**
-     * Increment a raw value
+     * Increment a raw value.
      *
-     * @param	string	$id	Cache ID
-     * @param	int	$offset	Step/value to add
-     * @return	New value on success, FALSE on failure
+     * @param string $id     Cache ID
+     * @param int    $offset Step/value to add
+     *
+     * @return New value on success, FALSE on failure
      */
     public function increment($id, $offset = 1)
     {
         $data = $this->_get($id);
 
         if ($data === false) {
-            $data = array('data' => 0, 'ttl' => 60);
-        } elseif (! is_int($data['data'])) {
+            $data = ['data' => 0, 'ttl' => 60];
+        } elseif (!is_int($data['data'])) {
             return false;
         }
 
         $new_value = $data['data'] + $offset;
+
         return $this->save($id, $new_value, $data['ttl'])
             ? $new_value
             : false;
@@ -151,23 +157,25 @@ class CI_Cache_file extends CI_Driver
     // ------------------------------------------------------------------------
 
     /**
-     * Decrement a raw value
+     * Decrement a raw value.
      *
-     * @param	string	$id	Cache ID
-     * @param	int	$offset	Step/value to reduce by
-     * @return	New value on success, FALSE on failure
+     * @param string $id     Cache ID
+     * @param int    $offset Step/value to reduce by
+     *
+     * @return New value on success, FALSE on failure
      */
     public function decrement($id, $offset = 1)
     {
         $data = $this->_get($id);
 
         if ($data === false) {
-            $data = array('data' => 0, 'ttl' => 60);
-        } elseif (! is_int($data['data'])) {
+            $data = ['data' => 0, 'ttl' => 60];
+        } elseif (!is_int($data['data'])) {
             return false;
         }
 
         $new_value = $data['data'] - $offset;
+
         return $this->save($id, $new_value, $data['ttl'])
             ? $new_value
             : false;
@@ -176,9 +184,9 @@ class CI_Cache_file extends CI_Driver
     // ------------------------------------------------------------------------
 
     /**
-     * Clean the Cache
+     * Clean the Cache.
      *
-     * @return	bool	false on failure/true on success
+     * @return bool false on failure/true on success
      */
     public function clean()
     {
@@ -188,12 +196,13 @@ class CI_Cache_file extends CI_Driver
     // ------------------------------------------------------------------------
 
     /**
-     * Cache Info
+     * Cache Info.
      *
      * Not supported by file-based caching
      *
      * @param	string	user/filehits
-     * @return	mixed	FALSE
+     *
+     * @return mixed FALSE
      */
     public function cache_info($type = null)
     {
@@ -203,14 +212,15 @@ class CI_Cache_file extends CI_Driver
     // ------------------------------------------------------------------------
 
     /**
-     * Get Cache Metadata
+     * Get Cache Metadata.
      *
      * @param	mixed	key to get cache metadata on
-     * @return	mixed	FALSE on failure, array on success.
+     *
+     * @return mixed FALSE on failure, array on success.
      */
     public function get_metadata($id)
     {
-        if (! is_file($this->_cache_path.$id)) {
+        if (!is_file($this->_cache_path.$id)) {
             return false;
         }
 
@@ -219,14 +229,14 @@ class CI_Cache_file extends CI_Driver
         if (is_array($data)) {
             $mtime = filemtime($this->_cache_path.$id);
 
-            if (! isset($data['ttl'], $data['time'])) {
+            if (!isset($data['ttl'], $data['time'])) {
                 return false;
             }
 
-            return array(
+            return [
                 'expire' => $data['time'] + $data['ttl'],
-                'mtime'	 => $mtime
-            );
+                'mtime'	 => $mtime,
+            ];
         }
 
         return false;
@@ -235,11 +245,11 @@ class CI_Cache_file extends CI_Driver
     // ------------------------------------------------------------------------
 
     /**
-     * Is supported
+     * Is supported.
      *
      * In the file driver, check to see that the cache directory is indeed writable
      *
-     * @return	bool
+     * @return bool
      */
     public function is_supported()
     {
@@ -249,16 +259,17 @@ class CI_Cache_file extends CI_Driver
     // ------------------------------------------------------------------------
 
     /**
-     * Get all data
+     * Get all data.
      *
      * Internal method to get all the relevant data about a cache item
      *
-     * @param	string	$id	Cache ID
-     * @return	mixed	Data array on success or FALSE on failure
+     * @param string $id Cache ID
+     *
+     * @return mixed Data array on success or FALSE on failure
      */
     protected function _get($id)
     {
-        if (! is_file($this->_cache_path.$id)) {
+        if (!is_file($this->_cache_path.$id)) {
             return false;
         }
 
@@ -266,6 +277,7 @@ class CI_Cache_file extends CI_Driver
 
         if ($data['ttl'] > 0 && time() > $data['time'] + $data['ttl']) {
             unlink($this->_cache_path.$id);
+
             return false;
         }
 

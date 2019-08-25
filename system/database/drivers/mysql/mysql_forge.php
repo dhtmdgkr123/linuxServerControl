@@ -1,6 +1,6 @@
 <?php
 /**
- * CodeIgniter
+ * CodeIgniter.
  *
  * An open source application development framework for PHP
  *
@@ -26,11 +26,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
- * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
  * @copyright	Copyright (c) 2014 - 2018, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
+ *
  * @link	https://codeigniter.com
  * @since	Version 1.0.0
  * @filesource
@@ -38,38 +38,39 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
- * MySQL Forge Class
+ * MySQL Forge Class.
  *
  * @category	Database
+ *
  * @author		EllisLab Dev Team
+ *
  * @link		https://codeigniter.com/user_guide/database/
  */
 class CI_DB_mysql_forge extends CI_DB_forge
 {
-
     /**
-     * CREATE DATABASE statement
+     * CREATE DATABASE statement.
      *
-     * @var	string
+     * @var string
      */
-    protected $_create_database	= 'CREATE DATABASE %s CHARACTER SET %s COLLATE %s';
+    protected $_create_database = 'CREATE DATABASE %s CHARACTER SET %s COLLATE %s';
 
     /**
-     * CREATE TABLE keys flag
+     * CREATE TABLE keys flag.
      *
      * Whether table keys are created from within the
      * CREATE TABLE statement.
      *
-     * @var	bool
+     * @var bool
      */
-    protected $_create_table_keys	= true;
+    protected $_create_table_keys = true;
 
     /**
-     * UNSIGNED support
+     * UNSIGNED support.
      *
-     * @var	array
+     * @var array
      */
-    protected $_unsigned		= array(
+    protected $_unsigned = [
         'TINYINT',
         'SMALLINT',
         'MEDIUMINT',
@@ -81,23 +82,24 @@ class CI_DB_mysql_forge extends CI_DB_forge
         'DOUBLE PRECISION',
         'FLOAT',
         'DECIMAL',
-        'NUMERIC'
-    );
+        'NUMERIC',
+    ];
 
     /**
-     * NULL value representation in CREATE/ALTER TABLE statements
+     * NULL value representation in CREATE/ALTER TABLE statements.
      *
-     * @var	string
+     * @var string
      */
     protected $_null = 'NULL';
 
     // --------------------------------------------------------------------
 
     /**
-     * CREATE TABLE attributes
+     * CREATE TABLE attributes.
      *
-     * @param	array	$attributes	Associative array of table attributes
-     * @return	string
+     * @param array $attributes Associative array of table attributes
+     *
+     * @return string
      */
     protected function _create_table_attr($attributes)
     {
@@ -109,11 +111,11 @@ class CI_DB_mysql_forge extends CI_DB_forge
             }
         }
 
-        if (! empty($this->db->char_set) && ! strpos($sql, 'CHARACTER SET') && ! strpos($sql, 'CHARSET')) {
+        if (!empty($this->db->char_set) && !strpos($sql, 'CHARACTER SET') && !strpos($sql, 'CHARSET')) {
             $sql .= ' DEFAULT CHARACTER SET = '.$this->db->char_set;
         }
 
-        if (! empty($this->db->dbcollat) && ! strpos($sql, 'COLLATE')) {
+        if (!empty($this->db->dbcollat) && !strpos($sql, 'COLLATE')) {
             $sql .= ' COLLATE = '.$this->db->dbcollat;
         }
 
@@ -123,12 +125,13 @@ class CI_DB_mysql_forge extends CI_DB_forge
     // --------------------------------------------------------------------
 
     /**
-     * ALTER TABLE
+     * ALTER TABLE.
      *
-     * @param	string	$alter_type	ALTER type
-     * @param	string	$table		Table name
-     * @param	mixed	$field		Column definition
-     * @return	string|string[]
+     * @param string $alter_type ALTER type
+     * @param string $table      Table name
+     * @param mixed  $field      Column definition
+     *
+     * @return string|string[]
      */
     protected function _alter_table($alter_type, $table, $field)
     {
@@ -153,16 +156,17 @@ class CI_DB_mysql_forge extends CI_DB_forge
             }
         }
 
-        return array($sql.implode(',', $field));
+        return [$sql.implode(',', $field)];
     }
 
     // --------------------------------------------------------------------
 
     /**
-     * Process column
+     * Process column.
      *
-     * @param	array	$field
-     * @return	string
+     * @param array $field
+     *
+     * @return string
      */
     protected function _process_column($field)
     {
@@ -172,7 +176,6 @@ class CI_DB_mysql_forge extends CI_DB_forge
         if (empty($extra_clause) && isset($field['first']) && $field['first'] === true) {
             $extra_clause = ' FIRST';
         }
-
 
         return $this->db->escape_identifiers($field['name'])
             .(empty($field['new_name']) ? '' : ' '.$this->db->escape_identifiers($field['new_name']))
@@ -189,10 +192,11 @@ class CI_DB_mysql_forge extends CI_DB_forge
     // --------------------------------------------------------------------
 
     /**
-     * Process indexes
+     * Process indexes.
      *
-     * @param	string	$table	(ignored)
-     * @return	string
+     * @param string $table (ignored)
+     *
+     * @return string
      */
     protected function _process_indexes($table)
     {
@@ -201,23 +205,23 @@ class CI_DB_mysql_forge extends CI_DB_forge
         for ($i = 0, $c = count($this->keys); $i < $c; $i++) {
             if (is_array($this->keys[$i])) {
                 for ($i2 = 0, $c2 = count($this->keys[$i]); $i2 < $c2; $i2++) {
-                    if (! isset($this->fields[$this->keys[$i][$i2]])) {
+                    if (!isset($this->fields[$this->keys[$i][$i2]])) {
                         unset($this->keys[$i][$i2]);
                         continue;
                     }
                 }
-            } elseif (! isset($this->fields[$this->keys[$i]])) {
+            } elseif (!isset($this->fields[$this->keys[$i]])) {
                 unset($this->keys[$i]);
                 continue;
             }
 
-            is_array($this->keys[$i]) or $this->keys[$i] = array($this->keys[$i]);
+            is_array($this->keys[$i]) or $this->keys[$i] = [$this->keys[$i]];
 
             $sql .= ",\n\tKEY ".$this->db->escape_identifiers(implode('_', $this->keys[$i]))
                 .' ('.implode(', ', $this->db->escape_identifiers($this->keys[$i])).')';
         }
 
-        $this->keys = array();
+        $this->keys = [];
 
         return $sql;
     }

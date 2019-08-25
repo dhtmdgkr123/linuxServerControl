@@ -1,12 +1,12 @@
 <?php
 
 /**
- * Mock library to add testing features to Session driver library
+ * Mock library to add testing features to Session driver library.
  */
 class Mock_Libraries_Session extends CI_Session
 {
     /**
-     * Simulate new page load
+     * Simulate new page load.
      */
     public function reload()
     {
@@ -17,12 +17,12 @@ class Mock_Libraries_Session extends CI_Session
 }
 
 /**
- * Mock cookie driver to overload cookie setting
+ * Mock cookie driver to overload cookie setting.
  */
 class Mock_Libraries_Session_cookie extends CI_Session_cookie
 {
     /**
-     * Overload _setcookie to manage $_COOKIE values, since actual cookies can't be set in unit testing
+     * Overload _setcookie to manage $_COOKIE values, since actual cookies can't be set in unit testing.
      */
     protected function _setcookie($name, $value = '', $expire = 0, $path = '', $domain = '', $secure = false, $httponly = false)
     {

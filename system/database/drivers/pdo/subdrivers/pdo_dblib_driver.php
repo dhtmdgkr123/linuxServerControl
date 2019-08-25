@@ -1,6 +1,6 @@
 <?php
 /**
- * CodeIgniter
+ * CodeIgniter.
  *
  * An open source application development framework for PHP
  *
@@ -26,11 +26,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
- * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
  * @copyright	Copyright (c) 2014 - 2018, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
+ *
  * @link	https://codeigniter.com
  * @since	Version 3.0.0
  * @filesource
@@ -38,56 +38,56 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
- * PDO DBLIB Database Adapter Class
+ * PDO DBLIB Database Adapter Class.
  *
  * Note: _DB is an extender class that the app controller
  * creates dynamically based on whether the query builder
  * class is being used or not.
  *
- * @package		CodeIgniter
- * @subpackage	Drivers
  * @category	Database
+ *
  * @author		EllisLab Dev Team
+ *
  * @link		https://codeigniter.com/user_guide/database/
  */
 class CI_DB_pdo_dblib_driver extends CI_DB_pdo_driver
 {
-
     /**
-     * Sub-driver
+     * Sub-driver.
      *
-     * @var	string
+     * @var string
      */
     public $subdriver = 'dblib';
 
     // --------------------------------------------------------------------
 
     /**
-     * ORDER BY random keyword
+     * ORDER BY random keyword.
      *
-     * @var	array
+     * @var array
      */
-    protected $_random_keyword = array('NEWID()', 'RAND(%d)');
+    protected $_random_keyword = ['NEWID()', 'RAND(%d)'];
 
     /**
-     * Quoted identifier flag
+     * Quoted identifier flag.
      *
      * Whether to use SQL-92 standard quoted identifier
      * (double quotes) or brackets for identifier escaping.
      *
-     * @var	bool
+     * @var bool
      */
     protected $_quoted_identifier;
 
     // --------------------------------------------------------------------
 
     /**
-     * Class constructor
+     * Class constructor.
      *
      * Builds the DSN if not already set.
      *
-     * @param	array	$params
-     * @return	void
+     * @param array $params
+     *
+     * @return void
      */
     public function __construct($params)
     {
@@ -96,7 +96,7 @@ class CI_DB_pdo_dblib_driver extends CI_DB_pdo_driver
         if (empty($this->dsn)) {
             $this->dsn = $params['subdriver'].':host='.(empty($this->hostname) ? '127.0.0.1' : $this->hostname);
 
-            if (! empty($this->port)) {
+            if (!empty($this->port)) {
                 $this->dsn .= (DIRECTORY_SEPARATOR === '\\' ? ',' : ':').$this->port;
             }
 
@@ -104,7 +104,7 @@ class CI_DB_pdo_dblib_driver extends CI_DB_pdo_driver
             empty($this->char_set) or $this->dsn .= ';charset='.$this->char_set;
             empty($this->appname) or $this->dsn .= ';appname='.$this->appname;
         } else {
-            if (! empty($this->char_set) && strpos($this->dsn, 'charset=', 6) === false) {
+            if (!empty($this->char_set) && strpos($this->dsn, 'charset=', 6) === false) {
                 $this->dsn .= ';charset='.$this->char_set;
             }
 
@@ -115,10 +115,11 @@ class CI_DB_pdo_dblib_driver extends CI_DB_pdo_driver
     // --------------------------------------------------------------------
 
     /**
-     * Database connection
+     * Database connection.
      *
-     * @param	bool	$persistent
-     * @return	object
+     * @param bool $persistent
+     *
+     * @return object
      */
     public function db_connect($persistent = false)
     {
@@ -128,7 +129,7 @@ class CI_DB_pdo_dblib_driver extends CI_DB_pdo_driver
 
         $this->conn_id = parent::db_connect(false);
 
-        if (! is_object($this->conn_id)) {
+        if (!is_object($this->conn_id)) {
             return $this->conn_id;
         }
 
@@ -136,7 +137,7 @@ class CI_DB_pdo_dblib_driver extends CI_DB_pdo_driver
         $query = $this->query('SELECT CASE WHEN (@@OPTIONS | 256) = @@OPTIONS THEN 1 ELSE 0 END AS qi');
         $query = $query->row_array();
         $this->_quoted_identifier = empty($query) ? false : (bool) $query['qi'];
-        $this->_escape_char = ($this->_quoted_identifier) ? '"' : array('[', ']');
+        $this->_escape_char = ($this->_quoted_identifier) ? '"' : ['[', ']'];
 
         return $this->conn_id;
     }
@@ -144,12 +145,13 @@ class CI_DB_pdo_dblib_driver extends CI_DB_pdo_driver
     // --------------------------------------------------------------------
 
     /**
-     * Show table query
+     * Show table query.
      *
      * Generates a platform-specific query string so that the table names can be fetched
      *
-     * @param	bool	$prefix_limit
-     * @return	string
+     * @param bool $prefix_limit
+     *
+     * @return string
      */
     protected function _list_tables($prefix_limit = false)
     {
@@ -168,12 +170,13 @@ class CI_DB_pdo_dblib_driver extends CI_DB_pdo_driver
     // --------------------------------------------------------------------
 
     /**
-     * Show column query
+     * Show column query.
      *
      * Generates a platform-specific query string so that the column names can be fetched
      *
-     * @param	string	$table
-     * @return	string
+     * @param string $table
+     *
+     * @return string
      */
     protected function _list_columns($table = '')
     {
@@ -185,10 +188,11 @@ class CI_DB_pdo_dblib_driver extends CI_DB_pdo_driver
     // --------------------------------------------------------------------
 
     /**
-     * Returns an object with field data
+     * Returns an object with field data.
      *
-     * @param	string	$table
-     * @return	array
+     * @param string $table
+     *
+     * @return array
      */
     public function field_data($table)
     {
@@ -201,13 +205,13 @@ class CI_DB_pdo_dblib_driver extends CI_DB_pdo_driver
         }
         $query = $query->result_object();
 
-        $retval = array();
+        $retval = [];
         for ($i = 0, $c = count($query); $i < $c; $i++) {
-            $retval[$i]			= new stdClass();
-            $retval[$i]->name		= $query[$i]->COLUMN_NAME;
-            $retval[$i]->type		= $query[$i]->DATA_TYPE;
-            $retval[$i]->max_length		= ($query[$i]->CHARACTER_MAXIMUM_LENGTH > 0) ? $query[$i]->CHARACTER_MAXIMUM_LENGTH : $query[$i]->NUMERIC_PRECISION;
-            $retval[$i]->default		= $query[$i]->COLUMN_DEFAULT;
+            $retval[$i] = new stdClass();
+            $retval[$i]->name = $query[$i]->COLUMN_NAME;
+            $retval[$i]->type = $query[$i]->DATA_TYPE;
+            $retval[$i]->max_length = ($query[$i]->CHARACTER_MAXIMUM_LENGTH > 0) ? $query[$i]->CHARACTER_MAXIMUM_LENGTH : $query[$i]->NUMERIC_PRECISION;
+            $retval[$i]->default = $query[$i]->COLUMN_DEFAULT;
         }
 
         return $retval;
@@ -216,30 +220,33 @@ class CI_DB_pdo_dblib_driver extends CI_DB_pdo_driver
     // --------------------------------------------------------------------
 
     /**
-     * Update statement
+     * Update statement.
      *
      * Generates a platform-specific update string from the supplied data
      *
-     * @param	string	$table
-     * @param	array	$values
-     * @return	string
+     * @param string $table
+     * @param array  $values
+     *
+     * @return string
      */
     protected function _update($table, $values)
     {
         $this->qb_limit = false;
-        $this->qb_orderby = array();
+        $this->qb_orderby = [];
+
         return parent::_update($table, $values);
     }
 
     // --------------------------------------------------------------------
 
     /**
-     * Delete statement
+     * Delete statement.
      *
      * Generates a platform-specific delete string from the supplied data
      *
-     * @param	string	$table
-     * @return	string
+     * @param string $table
+     *
+     * @return string
      */
     protected function _delete($table)
     {
@@ -253,12 +260,13 @@ class CI_DB_pdo_dblib_driver extends CI_DB_pdo_driver
     // --------------------------------------------------------------------
 
     /**
-     * LIMIT
+     * LIMIT.
      *
      * Generates a platform-specific LIMIT clause
      *
-     * @param	string	$sql	SQL Query
-     * @return	string
+     * @param string $sql SQL Query
+     *
+     * @return string
      */
     protected function _limit($sql)
     {
@@ -266,7 +274,7 @@ class CI_DB_pdo_dblib_driver extends CI_DB_pdo_driver
 
         // As of SQL Server 2005 (9.0.*) ROW_NUMBER() is supported,
         // however an ORDER BY clause is required for it to work
-        if (version_compare($this->version(), '9', '>=') && $this->qb_offset && ! empty($this->qb_orderby)) {
+        if (version_compare($this->version(), '9', '>=') && $this->qb_offset && !empty($this->qb_orderby)) {
             $orderby = $this->_compile_order_by();
 
             // We have to strip the ORDER BY clause
@@ -277,7 +285,7 @@ class CI_DB_pdo_dblib_driver extends CI_DB_pdo_driver
                 $select = '*'; // Inevitable
             } else {
                 // Use only field names and their aliases, everything else is out of our scope.
-                $select = array();
+                $select = [];
                 $field_regexp = ($this->_quoted_identifier)
                     ? '("[^\"]+")' : '(\[[^\]]+\])';
                 for ($i = 0, $c = count($this->qb_select); $i < $c; $i++) {
@@ -299,14 +307,15 @@ class CI_DB_pdo_dblib_driver extends CI_DB_pdo_driver
     // --------------------------------------------------------------------
 
     /**
-     * Insert batch statement
+     * Insert batch statement.
      *
      * Generates a platform-specific insert string from the supplied data.
      *
-     * @param	string	$table	Table name
-     * @param	array	$keys	INSERT keys
-     * @param	array	$values	INSERT values
-     * @return	string|bool
+     * @param string $table  Table name
+     * @param array  $keys   INSERT keys
+     * @param array  $values INSERT values
+     *
+     * @return string|bool
      */
     protected function _insert_batch($table, $keys, $values)
     {
@@ -321,9 +330,9 @@ class CI_DB_pdo_dblib_driver extends CI_DB_pdo_driver
     // --------------------------------------------------------------------
 
     /**
-     * Database version number
+     * Database version number.
      *
-     * @return      string
+     * @return string
      */
     public function version()
     {

@@ -1,6 +1,6 @@
 <?php
 /**
- * CodeIgniter
+ * CodeIgniter.
  *
  * An open source application development framework for PHP
  *
@@ -26,18 +26,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
- * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
  * @copyright	Copyright (c) 2014 - 2018, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
+ *
  * @link	https://codeigniter.com
  * @since	Version 1.0.0
  * @filesource
  */
 defined('BASEPATH') or exit('No direct script access allowed');
 
-/**
+/*
  * CodeIgniter XML Helpers
  *
  * @package		CodeIgniter
@@ -49,13 +49,14 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 // ------------------------------------------------------------------------
 
-if (! function_exists('xml_convert')) {
+if (!function_exists('xml_convert')) {
     /**
-     * Convert Reserved XML characters to Entities
+     * Convert Reserved XML characters to Entities.
      *
      * @param	string
      * @param	bool
-     * @return	string
+     *
+     * @return string
      */
     function xml_convert($str, $protect_all = false)
     {
@@ -70,8 +71,8 @@ if (! function_exists('xml_convert')) {
         }
 
         $str = str_replace(
-            array('&', '<', '>', '"', "'", '-'),
-            array('&amp;', '&lt;', '&gt;', '&quot;', '&apos;', '&#45;'),
+            ['&', '<', '>', '"', "'", '-'],
+            ['&amp;', '&lt;', '&gt;', '&quot;', '&apos;', '&#45;'],
             $str
         );
 

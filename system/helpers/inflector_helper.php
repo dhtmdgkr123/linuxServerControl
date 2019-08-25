@@ -1,6 +1,6 @@
 <?php
 /**
- * CodeIgniter
+ * CodeIgniter.
  *
  * An open source application development framework for PHP
  *
@@ -26,18 +26,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
- * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
  * @copyright	Copyright (c) 2014 - 2018, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
+ *
  * @link	https://codeigniter.com
  * @since	Version 1.0.0
  * @filesource
  */
 defined('BASEPATH') or exit('No direct script access allowed');
 
-/**
+/*
  * CodeIgniter Inflector Helpers
  *
  * @package		CodeIgniter
@@ -49,53 +49,54 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 // --------------------------------------------------------------------
 
-if (! function_exists('singular')) {
+if (!function_exists('singular')) {
     /**
-     * Singular
+     * Singular.
      *
      * Takes a plural word and makes it singular
      *
-     * @param	string	$str	Input string
-     * @return	string
+     * @param string $str Input string
+     *
+     * @return string
      */
     function singular($str)
     {
         $result = strval($str);
 
-        if (! is_countable($result)) {
+        if (!is_countable($result)) {
             return $result;
         }
 
-        $singular_rules = array(
-            '/(matr)ices$/'		=> '\1ix',
-            '/(vert|ind)ices$/'	=> '\1ex',
-            '/^(ox)en/'		=> '\1',
-            '/(alias)es$/'		=> '\1',
-            '/([octop|vir])i$/'	=> '\1us',
-            '/(cris|ax|test)es$/'	=> '\1is',
-            '/(shoe)s$/'		=> '\1',
-            '/(o)es$/'		=> '\1',
-            '/(bus|campus)es$/'	=> '\1',
-            '/([m|l])ice$/'		=> '\1ouse',
-            '/(x|ch|ss|sh)es$/'	=> '\1',
-            '/(m)ovies$/'		=> '\1\2ovie',
-            '/(s)eries$/'		=> '\1\2eries',
-            '/([^aeiouy]|qu)ies$/'	=> '\1y',
-            '/([lr])ves$/'		=> '\1f',
-            '/(tive)s$/'		=> '\1',
-            '/(hive)s$/'		=> '\1',
-            '/([^f])ves$/'		=> '\1fe',
-            '/(^analy)ses$/'	=> '\1sis',
+        $singular_rules = [
+            '/(matr)ices$/'		                                                 => '\1ix',
+            '/(vert|ind)ices$/'	                                              => '\1ex',
+            '/^(ox)en/'		                                                     => '\1',
+            '/(alias)es$/'		                                                  => '\1',
+            '/([octop|vir])i$/'	                                              => '\1us',
+            '/(cris|ax|test)es$/'	                                            => '\1is',
+            '/(shoe)s$/'		                                                    => '\1',
+            '/(o)es$/'		                                                      => '\1',
+            '/(bus|campus)es$/'	                                              => '\1',
+            '/([m|l])ice$/'		                                                 => '\1ouse',
+            '/(x|ch|ss|sh)es$/'	                                              => '\1',
+            '/(m)ovies$/'		                                                   => '\1\2ovie',
+            '/(s)eries$/'		                                                   => '\1\2eries',
+            '/([^aeiouy]|qu)ies$/'	                                           => '\1y',
+            '/([lr])ves$/'		                                                  => '\1f',
+            '/(tive)s$/'		                                                    => '\1',
+            '/(hive)s$/'		                                                    => '\1',
+            '/([^f])ves$/'		                                                  => '\1fe',
+            '/(^analy)ses$/'	                                                 => '\1sis',
             '/((a)naly|(b)a|(d)iagno|(p)arenthe|(p)rogno|(s)ynop|(t)he)ses$/' => '\1\2sis',
-            '/([ti])a$/'		=> '\1um',
-            '/(p)eople$/'		=> '\1\2erson',
-            '/(m)en$/'		=> '\1an',
-            '/(s)tatuses$/'		=> '\1\2tatus',
-            '/(c)hildren$/'		=> '\1\2hild',
-            '/(n)ews$/'		=> '\1\2ews',
-            '/(quiz)zes$/'		=> '\1',
-            '/([^us])s$/'		=> '\1'
-        );
+            '/([ti])a$/'		                                                    => '\1um',
+            '/(p)eople$/'		                                                   => '\1\2erson',
+            '/(m)en$/'		                                                      => '\1an',
+            '/(s)tatuses$/'		                                                 => '\1\2tatus',
+            '/(c)hildren$/'		                                                 => '\1\2hild',
+            '/(n)ews$/'		                                                     => '\1\2ews',
+            '/(quiz)zes$/'		                                                  => '\1',
+            '/([^us])s$/'		                                                   => '\1',
+        ];
 
         foreach ($singular_rules as $rule => $replacement) {
             if (preg_match($rule, $result)) {
@@ -110,24 +111,25 @@ if (! function_exists('singular')) {
 
 // --------------------------------------------------------------------
 
-if (! function_exists('plural')) {
+if (!function_exists('plural')) {
     /**
-     * Plural
+     * Plural.
      *
      * Takes a singular word and makes it plural
      *
-     * @param	string	$str	Input string
-     * @return	string
+     * @param string $str Input string
+     *
+     * @return string
      */
     function plural($str)
     {
         $result = strval($str);
 
-        if (! is_countable($result)) {
+        if (!is_countable($result)) {
             return $result;
         }
 
-        $plural_rules = array(
+        $plural_rules = [
             '/(quiz)$/'                => '\1zes',      // quizzes
             '/^(ox)$/'                 => '\1\2en',     // ox
             '/([m|l])ouse$/'           => '\1ice',      // mouse, louse
@@ -148,7 +150,7 @@ if (! function_exists('plural')) {
             '/(ax|cris|test)is$/'      => '\1es',       // axis, crisis
             '/s$/'                     => 's',          // no change (compatibility)
             '/$/'                      => 's',
-        );
+        ];
 
         foreach ($plural_rules as $rule => $replacement) {
             if (preg_match($rule, $result)) {
@@ -163,14 +165,15 @@ if (! function_exists('plural')) {
 
 // --------------------------------------------------------------------
 
-if (! function_exists('camelize')) {
+if (!function_exists('camelize')) {
     /**
-     * Camelize
+     * Camelize.
      *
      * Takes multiple words separated by spaces or underscores and camelizes them
      *
-     * @param	string	$str	Input string
-     * @return	string
+     * @param string $str Input string
+     *
+     * @return string
      */
     function camelize($str)
     {
@@ -180,14 +183,15 @@ if (! function_exists('camelize')) {
 
 // --------------------------------------------------------------------
 
-if (! function_exists('underscore')) {
+if (!function_exists('underscore')) {
     /**
-     * Underscore
+     * Underscore.
      *
      * Takes multiple words separated by spaces and underscores them
      *
-     * @param	string	$str	Input string
-     * @return	string
+     * @param string $str Input string
+     *
+     * @return string
      */
     function underscore($str)
     {
@@ -197,15 +201,16 @@ if (! function_exists('underscore')) {
 
 // --------------------------------------------------------------------
 
-if (! function_exists('humanize')) {
+if (!function_exists('humanize')) {
     /**
-     * Humanize
+     * Humanize.
      *
      * Takes multiple words separated by the separator and changes them to spaces
      *
-     * @param	string	$str		Input string
-     * @param 	string	$separator	Input separator
-     * @return	string
+     * @param string $str       Input string
+     * @param string $separator Input separator
+     *
+     * @return string
      */
     function humanize($str, $separator = '_')
     {
@@ -215,18 +220,19 @@ if (! function_exists('humanize')) {
 
 // --------------------------------------------------------------------
 
-if (! function_exists('is_countable')) {
+if (!function_exists('is_countable')) {
     /**
      * Checks if the given word has a plural version.
      *
-     * @param	string	$word	Word to check
-     * @return	bool
+     * @param string $word Word to check
+     *
+     * @return bool
      */
     function is_countable($word)
     {
-        return ! in_array(
+        return !in_array(
             strtolower($word),
-            array(
+            [
                 'audio',
                 'bison',
                 'chassis',
@@ -257,8 +263,8 @@ if (! function_exists('is_countable')) {
                 'species',
                 'swine',
                 'traffic',
-                'wheat'
-            )
+                'wheat',
+            ]
         );
     }
 }

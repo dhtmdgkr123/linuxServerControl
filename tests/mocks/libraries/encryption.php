@@ -2,9 +2,8 @@
 
 class Mock_Libraries_Encryption extends CI_Encryption
 {
-
     /**
-     * __get_params()
+     * __get_params().
      *
      * Allows public calls to the otherwise protected _get_params().
      */
@@ -16,7 +15,7 @@ class Mock_Libraries_Encryption extends CI_Encryption
     // --------------------------------------------------------------------
 
     /**
-     * get_key()
+     * get_key().
      *
      * Allows checking for key changes.
      */
@@ -28,7 +27,7 @@ class Mock_Libraries_Encryption extends CI_Encryption
     // --------------------------------------------------------------------
 
     /**
-     * __driver_get_handle()
+     * __driver_get_handle().
      *
      * Allows checking for _mcrypt_get_handle(), _openssl_get_handle()
      */

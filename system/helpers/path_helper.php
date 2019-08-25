@@ -1,6 +1,6 @@
 <?php
 /**
- * CodeIgniter
+ * CodeIgniter.
  *
  * An open source application development framework for PHP
  *
@@ -26,18 +26,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
- * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
  * @copyright	Copyright (c) 2014 - 2018, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
+ *
  * @link	https://codeigniter.com
  * @since	Version 1.0.0
  * @filesource
  */
 defined('BASEPATH') or exit('No direct script access allowed');
 
-/**
+/*
  * CodeIgniter Path Helpers
  *
  * @package		CodeIgniter
@@ -49,13 +49,14 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 // ------------------------------------------------------------------------
 
-if (! function_exists('set_realpath')) {
+if (!function_exists('set_realpath')) {
     /**
-     * Set Realpath
+     * Set Realpath.
      *
      * @param	string
      * @param	bool	checks to see if the path exists
-     * @return	string
+     *
+     * @return string
      */
     function set_realpath($path, $check_existance = false)
     {
@@ -67,7 +68,7 @@ if (! function_exists('set_realpath')) {
         // Resolve the path
         if (realpath($path) !== false) {
             $path = realpath($path);
-        } elseif ($check_existance && ! is_dir($path) && ! is_file($path)) {
+        } elseif ($check_existance && !is_dir($path) && !is_file($path)) {
             show_error('Not a valid path: '.$path);
         }
 

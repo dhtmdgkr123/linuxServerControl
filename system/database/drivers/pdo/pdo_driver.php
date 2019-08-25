@@ -1,6 +1,6 @@
 <?php
 /**
- * CodeIgniter
+ * CodeIgniter.
  *
  * An open source application development framework for PHP
  *
@@ -26,11 +26,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
- * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
  * @copyright	Copyright (c) 2014 - 2018, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
+ *
  * @link	https://codeigniter.com
  * @since	Version 2.1.0
  * @filesource
@@ -38,44 +38,44 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
- * PDO Database Adapter Class
+ * PDO Database Adapter Class.
  *
  * Note: _DB is an extender class that the app controller
  * creates dynamically based on whether the query builder
  * class is being used or not.
  *
- * @package		CodeIgniter
- * @subpackage	Drivers
  * @category	Database
+ *
  * @author		EllisLab Dev Team
+ *
  * @link		https://codeigniter.com/user_guide/database/
  */
 class CI_DB_pdo_driver extends CI_DB
 {
-
     /**
-     * Database driver
+     * Database driver.
      *
-     * @var	string
+     * @var string
      */
     public $dbdriver = 'pdo';
 
     /**
-     * PDO Options
+     * PDO Options.
      *
-     * @var	array
+     * @var array
      */
-    public $options = array();
+    public $options = [];
 
     // --------------------------------------------------------------------
 
     /**
-     * Class constructor
+     * Class constructor.
      *
      * Validates the DSN string and/or detects the subdriver.
      *
-     * @param	array	$params
-     * @return	void
+     * @param array $params
+     *
+     * @return void
      */
     public function __construct($params)
     {
@@ -85,6 +85,7 @@ class CI_DB_pdo_driver extends CI_DB
             // If there is a minimum valid dsn string pattern found, we're done
             // This is for general PDO users, who tend to have a full DSN string.
             $this->subdriver = $match[1];
+
             return;
         }
         // Legacy support for DSN specified in the hostname field
@@ -92,12 +93,13 @@ class CI_DB_pdo_driver extends CI_DB
             $this->dsn = $this->hostname;
             $this->hostname = null;
             $this->subdriver = $match[1];
+
             return;
-        } elseif (in_array($this->subdriver, array('mssql', 'sybase'), true)) {
+        } elseif (in_array($this->subdriver, ['mssql', 'sybase'], true)) {
             $this->subdriver = 'dblib';
         } elseif ($this->subdriver === '4D') {
             $this->subdriver = '4d';
-        } elseif (! in_array($this->subdriver, array('4d', 'cubrid', 'dblib', 'firebird', 'ibm', 'informix', 'mysql', 'oci', 'odbc', 'pgsql', 'sqlite', 'sqlsrv'), true)) {
+        } elseif (!in_array($this->subdriver, ['4d', 'cubrid', 'dblib', 'firebird', 'ibm', 'informix', 'mysql', 'oci', 'odbc', 'pgsql', 'sqlite', 'sqlsrv'], true)) {
             log_message('error', 'PDO: Invalid or non-existent subdriver');
 
             if ($this->db_debug) {
@@ -111,10 +113,11 @@ class CI_DB_pdo_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Database connection
+     * Database connection.
      *
-     * @param	bool	$persistent
-     * @return	object
+     * @param bool $persistent
+     *
+     * @return object
      */
     public function db_connect($persistent = false)
     {
@@ -136,9 +139,9 @@ class CI_DB_pdo_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Database version number
+     * Database version number.
      *
-     * @return	string
+     * @return string
      */
     public function version()
     {
@@ -157,10 +160,11 @@ class CI_DB_pdo_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Execute the query
+     * Execute the query.
      *
-     * @param	string	$sql	SQL query
-     * @return	mixed
+     * @param string $sql SQL query
+     *
+     * @return mixed
      */
     protected function _execute($sql)
     {
@@ -170,9 +174,9 @@ class CI_DB_pdo_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Begin Transaction
+     * Begin Transaction.
      *
-     * @return	bool
+     * @return bool
      */
     protected function _trans_begin()
     {
@@ -182,9 +186,9 @@ class CI_DB_pdo_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Commit Transaction
+     * Commit Transaction.
      *
-     * @return	bool
+     * @return bool
      */
     protected function _trans_commit()
     {
@@ -194,9 +198,9 @@ class CI_DB_pdo_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Rollback Transaction
+     * Rollback Transaction.
      *
-     * @return	bool
+     * @return bool
      */
     protected function _trans_rollback()
     {
@@ -206,10 +210,11 @@ class CI_DB_pdo_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Platform-dependent string escape
+     * Platform-dependent string escape.
      *
      * @param	string
-     * @return	string
+     *
+     * @return string
      */
     protected function _escape_str($str)
     {
@@ -225,9 +230,9 @@ class CI_DB_pdo_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Affected Rows
+     * Affected Rows.
      *
-     * @return	int
+     * @return int
      */
     public function affected_rows()
     {
@@ -237,10 +242,11 @@ class CI_DB_pdo_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Insert ID
+     * Insert ID.
      *
-     * @param	string	$name
-     * @return	int
+     * @param string $name
+     *
+     * @return int
      */
     public function insert_id($name = null)
     {
@@ -250,12 +256,13 @@ class CI_DB_pdo_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Field data query
+     * Field data query.
      *
      * Generates a platform-specific query so that the column data can be retrieved
      *
-     * @param	string	$table
-     * @return	string
+     * @param string $table
+     *
+     * @return string
      */
     protected function _field_data($table)
     {
@@ -265,16 +272,16 @@ class CI_DB_pdo_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Error
+     * Error.
      *
      * Returns an array containing code and message of the last
      * database error that has occurred.
      *
-     * @return	array
+     * @return array
      */
     public function error()
     {
-        $error = array('code' => '00000', 'message' => '');
+        $error = ['code' => '00000', 'message' => ''];
         $pdo_error = $this->conn_id->errorInfo();
 
         if (empty($pdo_error[0])) {
@@ -292,15 +299,16 @@ class CI_DB_pdo_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Truncate statement
+     * Truncate statement.
      *
      * Generates a platform-specific truncate string from the supplied data
      *
      * If the database does not support the TRUNCATE statement,
      * then this method maps to 'DELETE FROM table'
      *
-     * @param	string	$table
-     * @return	string
+     * @param string $table
+     *
+     * @return string
      */
     protected function _truncate($table)
     {

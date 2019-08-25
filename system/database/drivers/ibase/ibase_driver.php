@@ -1,6 +1,6 @@
 <?php
 /**
- * CodeIgniter
+ * CodeIgniter.
  *
  * An open source application development framework for PHP
  *
@@ -26,11 +26,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
- * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
  * @copyright	Copyright (c) 2014 - 2018, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
+ *
  * @link	https://codeigniter.com
  * @since	Version 3.0.0
  * @filesource
@@ -38,51 +38,51 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
- * Firebird/Interbase Database Adapter Class
+ * Firebird/Interbase Database Adapter Class.
  *
  * Note: _DB is an extender class that the app controller
  * creates dynamically based on whether the query builder
  * class is being used or not.
  *
- * @package		CodeIgniter
- * @subpackage	Drivers
  * @category	Database
+ *
  * @author		EllisLab Dev Team
+ *
  * @link		https://codeigniter.com/user_guide/database/
  */
 class CI_DB_ibase_driver extends CI_DB
 {
-
     /**
-     * Database driver
+     * Database driver.
      *
-     * @var	string
+     * @var string
      */
     public $dbdriver = 'ibase';
 
     // --------------------------------------------------------------------
 
     /**
-     * ORDER BY random keyword
+     * ORDER BY random keyword.
      *
-     * @var	array
+     * @var array
      */
-    protected $_random_keyword = array('RAND()', 'RAND()');
+    protected $_random_keyword = ['RAND()', 'RAND()'];
 
     /**
-     * IBase Transaction status flag
+     * IBase Transaction status flag.
      *
-     * @var	resource
+     * @var resource
      */
     protected $_ibase_trans;
 
     // --------------------------------------------------------------------
 
     /**
-     * Non-persistent database connection
+     * Non-persistent database connection.
      *
-     * @param	bool	$persistent
-     * @return	resource
+     * @param bool $persistent
+     *
+     * @return resource
      */
     public function db_connect($persistent = false)
     {
@@ -94,9 +94,9 @@ class CI_DB_ibase_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Database version number
+     * Database version number.
      *
-     * @return	string
+     * @return string
      */
     public function version()
     {
@@ -109,6 +109,7 @@ class CI_DB_ibase_driver extends CI_DB
 
             // Don't keep the service open
             ibase_service_detach($service);
+
             return $this->data_cache['version'];
         }
 
@@ -118,10 +119,11 @@ class CI_DB_ibase_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Execute the query
+     * Execute the query.
      *
-     * @param	string	$sql	an SQL query
-     * @return	resource
+     * @param string $sql an SQL query
+     *
+     * @return resource
      */
     protected function _execute($sql)
     {
@@ -131,9 +133,9 @@ class CI_DB_ibase_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Begin Transaction
+     * Begin Transaction.
      *
-     * @return	bool
+     * @return bool
      */
     protected function _trans_begin()
     {
@@ -142,20 +144,22 @@ class CI_DB_ibase_driver extends CI_DB
         }
 
         $this->_ibase_trans = $trans_handle;
+
         return true;
     }
 
     // --------------------------------------------------------------------
 
     /**
-     * Commit Transaction
+     * Commit Transaction.
      *
-     * @return	bool
+     * @return bool
      */
     protected function _trans_commit()
     {
         if (ibase_commit($this->_ibase_trans)) {
             $this->_ibase_trans = null;
+
             return true;
         }
 
@@ -165,14 +169,15 @@ class CI_DB_ibase_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Rollback Transaction
+     * Rollback Transaction.
      *
-     * @return	bool
+     * @return bool
      */
     protected function _trans_rollback()
     {
         if (ibase_rollback($this->_ibase_trans)) {
             $this->_ibase_trans = null;
+
             return true;
         }
 
@@ -182,9 +187,9 @@ class CI_DB_ibase_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Affected Rows
+     * Affected Rows.
      *
-     * @return	int
+     * @return int
      */
     public function affected_rows()
     {
@@ -194,11 +199,12 @@ class CI_DB_ibase_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Insert ID
+     * Insert ID.
      *
-     * @param	string	$generator_name
-     * @param	int	$inc_by
-     * @return	int
+     * @param string $generator_name
+     * @param int    $inc_by
+     *
+     * @return int
      */
     public function insert_id($generator_name, $inc_by = 0)
     {
@@ -209,12 +215,13 @@ class CI_DB_ibase_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * List table query
+     * List table query.
      *
      * Generates a platform-specific query string so that the table names can be fetched
      *
-     * @param	bool	$prefix_limit
-     * @return	string
+     * @param bool $prefix_limit
+     *
+     * @return string
      */
     protected function _list_tables($prefix_limit = false)
     {
@@ -231,12 +238,13 @@ class CI_DB_ibase_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Show column query
+     * Show column query.
      *
      * Generates a platform-specific query string so that the column names can be fetched
      *
-     * @param	string	$table
-     * @return	string
+     * @param string $table
+     *
+     * @return string
      */
     protected function _list_columns($table = '')
     {
@@ -246,10 +254,11 @@ class CI_DB_ibase_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Returns an object with field data
+     * Returns an object with field data.
      *
-     * @param	string	$table
-     * @return	array
+     * @param string $table
+     *
+     * @return array
      */
     public function field_data($table)
     {
@@ -286,47 +295,50 @@ class CI_DB_ibase_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Error
+     * Error.
      *
      * Returns an array containing code and message of the last
      * database error that has occurred.
      *
-     * @return	array
+     * @return array
      */
     public function error()
     {
-        return array('code' => ibase_errcode(), 'message' => ibase_errmsg());
+        return ['code' => ibase_errcode(), 'message' => ibase_errmsg()];
     }
 
     // --------------------------------------------------------------------
 
     /**
-     * Update statement
+     * Update statement.
      *
      * Generates a platform-specific update string from the supplied data
      *
-     * @param	string	$table
-     * @param	array	$values
-     * @return	string
+     * @param string $table
+     * @param array  $values
+     *
+     * @return string
      */
     protected function _update($table, $values)
     {
         $this->qb_limit = false;
+
         return parent::_update($table, $values);
     }
 
     // --------------------------------------------------------------------
 
     /**
-     * Truncate statement
+     * Truncate statement.
      *
      * Generates a platform-specific truncate string from the supplied data
      *
      * If the database does not support the TRUNCATE statement,
      * then this method maps to 'DELETE FROM table'
      *
-     * @param	string	$table
-     * @return	string
+     * @param string $table
+     *
+     * @return string
      */
     protected function _truncate($table)
     {
@@ -336,28 +348,31 @@ class CI_DB_ibase_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Delete statement
+     * Delete statement.
      *
      * Generates a platform-specific delete string from the supplied data
      *
-     * @param	string	$table
-     * @return	string
+     * @param string $table
+     *
+     * @return string
      */
     protected function _delete($table)
     {
         $this->qb_limit = false;
+
         return parent::_delete($table);
     }
 
     // --------------------------------------------------------------------
 
     /**
-     * LIMIT
+     * LIMIT.
      *
      * Generates a platform-specific LIMIT clause
      *
-     * @param	string	$sql	SQL Query
-     * @return	string
+     * @param string $sql SQL Query
+     *
+     * @return string
      */
     protected function _limit($sql)
     {
@@ -376,14 +391,15 @@ class CI_DB_ibase_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Insert batch statement
+     * Insert batch statement.
      *
      * Generates a platform-specific insert string from the supplied data.
      *
-     * @param	string	$table	Table name
-     * @param	array	$keys	INSERT keys
-     * @param	array	$values	INSERT values
-     * @return	string|bool
+     * @param string $table  Table name
+     * @param array  $keys   INSERT keys
+     * @param array  $values INSERT values
+     *
+     * @return string|bool
      */
     protected function _insert_batch($table, $keys, $values)
     {
@@ -393,9 +409,9 @@ class CI_DB_ibase_driver extends CI_DB
     // --------------------------------------------------------------------
 
     /**
-     * Close DB Connection
+     * Close DB Connection.
      *
-     * @return	void
+     * @return void
      */
     protected function _close()
     {
