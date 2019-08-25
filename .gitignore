@@ -6,3 +6,6 @@ license.txt
 composer.json
 package.json
 pma
+docker-composer.yml
+Dockerfile
+conf/
