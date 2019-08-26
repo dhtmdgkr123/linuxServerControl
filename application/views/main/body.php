@@ -11,7 +11,7 @@
 
                 <form id="myForm" action="<?=$data['actionUrl']?>" method="post">
                     <input placeholder="Server Addresses" type="text" id="serverAddress" name="serverAddress"
-                        autoncomplete="off" value="49.247.192.180">
+                        autoncomplete="off" value="">
                     <!--Port  -->
                     <input placeholder="Port" type="text" id="serverPort" name="serverPort" autoncomplete="off" value="22">
                     <div class="border-title">

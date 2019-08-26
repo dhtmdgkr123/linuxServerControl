@@ -9,3 +9,4 @@ pma
 docker-composer.yml
 Dockerfile
 conf/
+.php_cs_cache

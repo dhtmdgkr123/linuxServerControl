@@ -58,7 +58,6 @@ if (!class_exists('GetStatus')) {
                 'Mounted on'  => 'MountedOn',
                 '%'           => '',
             ];
-            // $diskInfo = ;
             foreach (preg_split('/\s+/', replaceAll($patternArray, trim($dfResult))) as $k => $v) {
                 if ($k <= 6) {
                     array_push($titleArray, $v);

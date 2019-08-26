@@ -13,7 +13,6 @@ if (!class_exists('ServerStatus')) {
         private function checkFileExists(string $head, string $body, string $foot) : bool
         {
             $ext = '.php';
-
             return file_exists(VIEWPATH.$head.$ext) && file_exists(VIEWPATH.$body.$ext) && file_exists(VIEWPATH.$foot.$ext);
         }
 
@@ -31,7 +30,7 @@ if (!class_exists('ServerStatus')) {
                     'Start', 'Restart', 'Off', 'Status',
                 ];
                 $flag = true;
-                for ($i = 0, $passStatus = null, $serviceKey = array_keys($serviceList) , $actionLen = count($action) , $serviceLen = count($serviceList); $i < $serviceLen; $i++) {
+                for ($i = 0, $passStatus = null, $passStart = null, $serviceKey = array_keys($serviceList) , $actionLen = count($action) , $serviceLen = count($serviceList); $i < $serviceLen; $i++) {
                     for ($j = 0; $j < $actionLen; $j++) {
                         $passStatus = $serviceKey[$i] === $serviceKey[0] && $action[$j] === $action[$actionLen - 1];
                         $passStart = $serviceKey[$i] === $serviceKey[0] && $action[$j] === $action[0];
