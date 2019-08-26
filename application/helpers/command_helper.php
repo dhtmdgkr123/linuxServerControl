@@ -114,7 +114,7 @@ if (!class_exists('serviceFilter')) {
             return sprintf(
                 '%s://%s%s',
                 isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ? 'https' : 'http',
-                $_SERVER['SERVER_ADDR'],
+                strpos($_SERVER['SERVER_ADDR'], '172') !== false ? 'localhost' : $_SERVER['SERVER_ADDR'],
                 $_SERVER['SCRIPT_NAME'].$controllerName ? '/'.$controllerName : ''
             );
         }

@@ -1,3 +1,4 @@
+
 class checkUserData {
     constructor(tag) {
         this.userLang = navigator.language || navigator.userLanguage;
@@ -45,7 +46,6 @@ class checkUserData {
             'stat' : false,
             'data' : ''
         };
-
         const formDataEntire = formData.entries();
         for (const formPare of formDataEntire) {
             if ( ! formPare[1] ) {
@@ -61,7 +61,7 @@ class checkUserData {
     processData() {
         const statusObject = this.isEmptyData(this.generateData(this.formTag));
         if ( statusObject.stat ) {
-
+            
             const jsonData = this.sendUserData({
                 'action' : this.formTag.getAttribute('action'),
                 'data' : statusObject.data
@@ -69,6 +69,7 @@ class checkUserData {
 
             if ( jsonData ) {
                 jsonData.then((resp) => {
+                    this.flag = true;
                     if (resp.status && resp.code) {
                         location.href = resp.page;
                     } else {
@@ -78,17 +79,17 @@ class checkUserData {
             }
 
         } else {
+            this.flag = true;
             if (this.userLang === 'ko-KR') {
                 res[this.userLang][this.ErrorTag.idxError][this.ErrorTag.code][this.ErrorTag.tag][0] = statusObject.data;
-
             } else {
                 res[this.userLang][this.ErrorTag.idxError][this.ErrorTag.code][this.ErrorTag.tag][1] = statusObject.data;
             
             }
             alert(res[this.userLang][this.ErrorTag.idxError][this.ErrorTag.code][this.ErrorTag.tag].join(''));
             return false;
-
         }
+        
     }
 
     sendUserData(dataSet) {

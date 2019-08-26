@@ -33,12 +33,8 @@ if (!class_exists('ServicePipe')) {
 
         public function getServiceName()
         {
-            // setJsonHeader();
             $this->json->header();
-
-            $service = trimPost('pipeCommand');
-
-            $filterObject = new serviceFilter($service);
+            $filterObject = new serviceFilter($service = trimPost('pipeCommand'));
 
             $returnMessage = [
                 'status'  => false,

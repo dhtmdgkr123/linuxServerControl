@@ -156,9 +156,7 @@ if (!class_exists('Main')) {
                     'code'   => -3,
                     'page'   => 'indexError',
                 ];
-
                 $dataArr = $this->getUserData();
-
                 if ($this->allArrayKeyExists(array_keys($dataArr))) {
                     $cryptPassword = $this->cryptPassword($dataArr['userPassword']);
                     if ($cryptPassword) {

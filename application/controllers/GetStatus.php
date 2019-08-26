@@ -122,10 +122,7 @@ if (!class_exists('GetStatus')) {
 
             $this->load->model('ExecCommand');
             $this->load->library('GenerateCommand', $setting);
-            if (!$this->session->firstInfoCommand) {
-                $this->session->set_userdata('firstInfoCommand', $this->generatecommand->main());
-            }
-
+            
             $getCommandResult = $this->ExecCommand->execUserCommand($this->generatecommand->main());
 
             if ($getCommandResult['status']) {
