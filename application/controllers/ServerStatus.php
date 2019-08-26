@@ -79,7 +79,7 @@ if (!class_exists('ServerStatus')) {
                         ],
                         'footer' => [
                             'js' => [
-                                'res' => $cfg->site_url('static/base/res.js').'?ver=1.0.0&'.getModifyTime($staticPath.'base/', 'res.js'),
+                                'res'           => $cfg->site_url('static/base/res.js').'?ver=1.0.0&'.getModifyTime($staticPath.'base/', 'res.js'),
                                 'const'         => $cfg->site_url('static/command/js/const.js').'?ver=1.0.0&'.getModifyTime($staticPath.'command/js/', 'const.js'),
                                 'commandHelper' => $cfg->site_url('static/command/js/commandHelper.js').'?ver=1.0.0&'.getModifyTime($staticPath.'command/js/', 'servicePipe.js'),
                                 'servicePipe'   => $cfg->site_url('static/command/js/servicePipe.js').'?ver=1.0.0&'.getModifyTime($staticPath.'command/js/', 'servicePipe.js'),

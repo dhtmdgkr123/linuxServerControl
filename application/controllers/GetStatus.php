@@ -122,7 +122,7 @@ if (!class_exists('GetStatus')) {
 
             $this->load->model('ExecCommand');
             $this->load->library('GenerateCommand', $setting);
-            
+
             $getCommandResult = $this->ExecCommand->execUserCommand($this->generatecommand->main());
 
             if ($getCommandResult['status']) {
