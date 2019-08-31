@@ -10,8 +10,7 @@
                 </div>
 
                 <form id="myForm" action="<?=$data['actionUrl']?>" method="post">
-                    <input placeholder="Server Addresses" type="text" id="serverAddress" name="serverAddress"
-                        autoncomplete="off" value="">
+                    <input placeholder="Server Addresses" type="text" id="serverAddress" name="serverAddress" autoncomplete="off" value="">
                     <!--Port  -->
                     <input placeholder="Port" type="text" id="serverPort" name="serverPort" autoncomplete="off" value="22">
                     <div class="border-title">
