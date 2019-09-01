@@ -29,6 +29,17 @@ if (!class_exists('ExecCommand')) {
             ];
         }
 
+        private function renderPathTemplate(String $path) : String
+        {
+            $base = $this->userData->userId.'@'.$this->userData->serverAddress.' : '.$path;
+            if (isRoot($this->userData->userId)) {
+                $base .= ' #';
+            } else {
+                $base .= ' $';
+            }
+            return $base;
+        }
+
         public function printWorkingDir($cachePwd): array
         {
             $retArr = [
@@ -51,19 +62,12 @@ if (!class_exists('ExecCommand')) {
                 if ($getStreamRlt) {
                     $retArr['code'] = $this->processCode->ok;
                     $retArr['status'] = true;
-                    $userId = $this->userData->userId;
-                    $setDefaultPath = $userId.'@'.$this->userData->serverAddress.' : '.$getStreamRlt;
-                    if (isRoot($userId)) {
-                        $retArr['message'] = $setDefaultPath.' #';
-                    } else {
-                        $retArr['message'] = $setDefaultPath.' $';
-                    }
+                    $retArr['message'] = $this->renderPathTemplate($getStreamRlt);
                     $this->session->set_userdata('pwd', $retArr['message']);
                 } else {
                     $retArr['code'] = $this->processCode->failGetStream;
                 }
             }
-
             return $retArr;
         }
 
@@ -111,29 +115,67 @@ if (!class_exists('ExecCommand')) {
         {
             return !$link;
         }
-
-        public function execUserCommand($command): array
+        
+        private function updateCwd(array $splitCommand, int $len) : String
+        {
+            $retValue = '';
+            if (2 === $len) {
+                $retValue = $splitCommand[$len - 1];
+            } else {
+                $pathIdx = intval(key(array_filter($splitCommand = array_reverse($splitCommand), function ($elem) {
+                    return strtolower($elem) === 'cd';
+                }))) - 1;
+                $retValue = $splitCommand[$pathIdx];
+            }
+            return trim($retValue);
+        }
+        
+        public function execUserCommand(String $command): array
         {
             $retArr = [
                 'status' => false,
                 'code'   => $this->processCode->failConnect,
                 'page'   => 'execCommand',
             ];
+            $execFlag = true;
+            $pwd = '';
+            $execCommand = '';
+            if (strpos($command, 'cd ') !== false) {
+                if (2 === ($len = count($splitCommand = explode(' ', $command)))) {
+                    $execFlag = false;
+                }
 
-            $connInfo = $this->getConnect();
-            if ($this->isNotConnect($connInfo)) {
-                return $retArr;
+                $pwd = $this->updateCwd($splitCommand, $len);
+                $this->session->set_userdata([
+                    'setDir' => 'cd '.$pwd.'; ',
+                    'pwd'    => $this->renderPathTemplate($pwd)
+                ]);
             }
 
-            $getStreamRlt = $this->execCommand($connInfo, $command);
-            if ($getStreamRlt) {
+            if ($execFlag) {
+                $connInfo = $this->getConnect();
+                if ($this->isNotConnect($connInfo)) {
+                    return $retArr;
+                }
+                if ($this->session->setDir) {
+                    $execCommand = $this->session->setDir.$command;
+                } else {
+                    $execCommand = $command;
+                }
+                $getStreamRlt = $this->execCommand($connInfo, $execCommand);
+                if ($getStreamRlt) {
+                    $retArr['status'] = true;
+                    $retArr['code'] = $this->processCode->ok;
+                    $retArr['message'] = $getStreamRlt;
+                } else {
+                    $retArr['code'] = $this->processCode->failGetStream;
+                }
+            } else {
                 $retArr['status'] = true;
                 $retArr['code'] = $this->processCode->ok;
-                $retArr['message'] = $getStreamRlt;
-            } else {
-                $retArr['code'] = $this->processCode->failGetStream;
+                $retArr['message'] = '';
+                $retArr['pwd'] = $this->session->pwd;
             }
-
             return $retArr;
         }
     }

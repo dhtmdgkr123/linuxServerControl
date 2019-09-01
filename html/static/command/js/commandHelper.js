@@ -46,11 +46,9 @@ class commandHelper {
             self.inputTag.setAttribute('readonly', true);
             self.content.children[1].setAttribute('id', 'wait');
             txtArea.value = 'wait...';
-            return [
-                location.origin, '/Command/getPwd'
-            ].join(this.emptyString);
+            return `${location.origin}/Command/getPwd`;
         };
-        request(setWaitStatus()).then((_val) => setPwd(_val));
+        request(setWaitStatus()).then(_val => setPwd(_val));
     }
 
     checkCommand(command) {
@@ -69,15 +67,9 @@ class commandHelper {
             isReboot: command => KEY_WORD.rebootCommand.some(arrVal => arrVal === command),
             isShutdown : command => KEY_WORD.shutdownCommand.some(arrVal => arrVal === command),
             
-
-            
             isSystemCtl: command => KEY_WORD.sysCtl === command[0],
             isService: command => KEY_WORD.service === command[0],
-
-            checkAction : command => KEY_WORD.applicationAction.some(arrVal => arrVal === command),
-
-
-            
+            checkAction : command => KEY_WORD.applicationAction.some(arrVal => arrVal === command),            
             isNotStatus: command => KEY_WORD.sysStatus !== command[1]
         };
 
@@ -176,12 +168,11 @@ class commandHelper {
         const form = new FormData(formTag);
         let inputValue = form.get(this.inputTag.getAttribute('name'));
         const setTxtValue = (fetchObj) => {
-
+            if (fetchObj.pwd) {
+                savePwd = fetchObj.pwd;
+            }
             const txtArea = this.content.children[2];
-            txtArea.value = [
-                txtArea.value, ' ', inputValue, '\n',
-                fetchObj.message, '\n', savePwd
-            ].join(this.emptyString);
+            txtArea.value = `${txtArea.value} ${inputValue}\n${fetchObj.message}\n${savePwd}`;
             txtArea.scrollTop = txtArea.scrollHeight;
             
         };
@@ -201,8 +192,7 @@ class commandHelper {
                 saveCommand.push(inputValue);
                 ++arrIdx;
             } else {
-                console.log('server conn fail');
-                
+                console.error('server conn fail');
             }
         }
     }
