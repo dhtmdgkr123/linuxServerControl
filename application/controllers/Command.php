@@ -31,6 +31,7 @@ if (!class_exists('Command')) {
                 'code'   => 0,
             ];
         }
+
         private function chkStatus(): bool
         {
             return $this->session->isLogin && chkPostMtd($this->input->server('REQUEST_METHOD'));
@@ -122,12 +123,13 @@ if (!class_exists('Command')) {
                         'servicePipe'   => $commandPath.'js/servicePipe.js?ver=1.0.0&'.getModifyTime($this->jsFilePath, 'servicePipe.js'),
                         'main'          => $commandPath.'js/main.js?ver=1.0.0&'.getModifyTime($this->jsFilePath, 'main.js'),
                     ],
-                ]
+                ],
             ];
 
             if (file_exists($headPath) && file_exists($bodyPath) && file_exists($footPath)) {
                 if ($this->isNotLogin()) {
                     gotoPage('/');
+
                     return;
                 }
                 $this->load->view('commandMain/head', $staticFile['head']);
@@ -156,7 +158,7 @@ if (!class_exists('Command')) {
                     $retArr = $this->returnArray;
                 } else {
                     $this->load->model('ExecCommand');
-                    
+
                     $retArr = $this->ExecCommand->execUserCommand($data);
                 }
                 $this->json->echo($retArr);
@@ -164,6 +166,7 @@ if (!class_exists('Command')) {
                 show_404();
             }
         }
+
         private function filterCommand(string $data): bool
         {
             $this->load->helper('command');

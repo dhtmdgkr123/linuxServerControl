@@ -29,7 +29,7 @@ if (!class_exists('ExecCommand')) {
             ];
         }
 
-        private function renderPathTemplate(String $path) : String
+        private function renderPathTemplate(string $path) : string
         {
             $base = $this->userData->userId.'@'.$this->userData->serverAddress.' : '.$path;
             if (isRoot($this->userData->userId)) {
@@ -37,6 +37,7 @@ if (!class_exists('ExecCommand')) {
             } else {
                 $base .= ' $';
             }
+
             return $base;
         }
 
@@ -68,6 +69,7 @@ if (!class_exists('ExecCommand')) {
                     $retArr['code'] = $this->processCode->failGetStream;
                 }
             }
+
             return $retArr;
         }
 
@@ -115,8 +117,8 @@ if (!class_exists('ExecCommand')) {
         {
             return !$link;
         }
-        
-        private function updateCwd(array $splitCommand, int $len) : String
+
+        private function updateCwd(array $splitCommand, int $len) : string
         {
             $retValue = '';
             if (2 === $len) {
@@ -127,10 +129,11 @@ if (!class_exists('ExecCommand')) {
                 }))) - 1;
                 $retValue = $splitCommand[$pathIdx];
             }
+
             return trim($retValue);
         }
-        
-        public function execUserCommand(String $command): array
+
+        public function execUserCommand(string $command): array
         {
             $retArr = [
                 'status' => false,
@@ -148,7 +151,7 @@ if (!class_exists('ExecCommand')) {
                 $pwd = $this->updateCwd($splitCommand, $len);
                 $this->session->set_userdata([
                     'setDir' => 'cd '.$pwd.'; ',
-                    'pwd'    => $this->renderPathTemplate($pwd)
+                    'pwd'    => $this->renderPathTemplate($pwd),
                 ]);
             }
 
@@ -176,6 +179,7 @@ if (!class_exists('ExecCommand')) {
                 $retArr['message'] = '';
                 $retArr['pwd'] = $this->session->pwd;
             }
+
             return $retArr;
         }
     }
