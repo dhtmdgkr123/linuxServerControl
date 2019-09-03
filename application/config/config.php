@@ -1,7 +1,6 @@
 <?php
 
 defined('BASEPATH') or exit('No direct script access allowed');
-define('IS_REDIS_USE', getenv('isRedisUse') ?? false);
 /*
 |--------------------------------------------------------------------------
 | Base Site URL
@@ -382,25 +381,13 @@ $config['encryption_key'] = '';
 /*
  * @todo fix redis issue
  */
-if (IS_REDIS_USE) {
-    $config['sess_driver'] = 'redis'; //enable redis session
-    $config['sess_save_path'] = 'tcp://redis:6379'; // redis hostname:port
-    $config['sess_cookie_name'] = 'ci_session';
-    $config['sess_expiration'] = 7200;
-    $config['sess_match_ip'] = false;
-    $config['sess_time_to_update'] = 300;
-    $config['sess_regenerate_destroy'] = false;
-} else {
-    $config['sess_driver'] = 'files';
-    $config['sess_cookie_name'] = 'ci_session';
-    $config['sess_expiration'] = 7200;
-    $config['sess_save_path'] = sys_get_temp_dir();
-    $config['sess_match_ip'] = false;
-    $config['sess_time_to_update'] = 300;
-    $config['sess_regenerate_destroy'] = false;
-}
-
-
+$config['sess_driver'] = 'redis'; //enable redis session
+$config['sess_save_path'] = 'tcp://redis:6379'; // redis hostname:port
+$config['sess_cookie_name'] = 'ci_session';
+$config['sess_expiration'] = 7200;
+$config['sess_match_ip'] = false;
+$config['sess_time_to_update'] = 300;
+$config['sess_regenerate_destroy'] = false;
 /*
 |--------------------------------------------------------------------------
 | Cookie Related Variables
