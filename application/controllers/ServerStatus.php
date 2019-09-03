@@ -13,6 +13,7 @@ if (!class_exists('ServerStatus')) {
         private function checkFileExists(string $head, string $body, string $foot) : bool
         {
             $ext = '.php';
+
             return file_exists(VIEWPATH.$head.$ext) && file_exists(VIEWPATH.$body.$ext) && file_exists(VIEWPATH.$foot.$ext);
         }
 
