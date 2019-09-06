@@ -36,35 +36,127 @@
     },
     {
         "name": "mikey179/vfsstream",
-        "version": "v1.1.0",
-        "version_normalized": "1.1.0.0",
+        "version": "v1.6.7",
+        "version_normalized": "1.6.7.0",
         "source": {
             "type": "git",
             "url": "https://github.com/bovigo/vfsStream.git",
-            "reference": "fc0fe8f4d0b527254a2dc45f0c265567c881d07e"
+            "reference": "2b544ac3a21bcc4dde5d90c4ae8d06f4319055fb"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/bovigo/vfsStream/zipball/fc0fe8f4d0b527254a2dc45f0c265567c881d07e",
-            "reference": "fc0fe8f4d0b527254a2dc45f0c265567c881d07e",
+            "url": "https://api.github.com/repos/bovigo/vfsStream/zipball/2b544ac3a21bcc4dde5d90c4ae8d06f4319055fb",
+            "reference": "2b544ac3a21bcc4dde5d90c4ae8d06f4319055fb",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.0"
         },
-        "time": "2012-08-25T12:49:29+00:00",
+        "require-dev": {
+            "phpunit/phpunit": "^4.5|^5.0"
+        },
+        "time": "2019-08-01T01:38:37+00:00",
         "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.6.x-dev"
+            }
+        },
         "installation-source": "dist",
         "autoload": {
             "psr-0": {
-                "org\\bovigo\\vfs": "src/main/php"
+                "org\\bovigo\\vfs\\": "src/main/php"
             }
         },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
-            "BSD"
+            "BSD-3-Clause"
         ],
+        "authors": [
+            {
+                "name": "Frank Kleine",
+                "role": "Developer",
+                "homepage": "http://frankkleine.de/"
+            }
+        ],
+        "description": "Virtual file system to mock the real file system in unit tests.",
         "homepage": "http://vfs.bovigo.org/"
+    },
+    {
+        "name": "php-amqplib/php-amqplib",
+        "version": "v2.10.0",
+        "version_normalized": "2.10.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/php-amqplib/php-amqplib.git",
+            "reference": "04e5366f032906d5f716890427e425e71307d3a8"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/php-amqplib/php-amqplib/zipball/04e5366f032906d5f716890427e425e71307d3a8",
+            "reference": "04e5366f032906d5f716890427e425e71307d3a8",
+            "shasum": ""
+        },
+        "require": {
+            "ext-bcmath": "*",
+            "ext-sockets": "*",
+            "php": ">=5.6"
+        },
+        "replace": {
+            "videlalvaro/php-amqplib": "self.version"
+        },
+        "require-dev": {
+            "ext-curl": "*",
+            "nategood/httpful": "^0.2.20",
+            "phpdocumentor/phpdocumentor": "dev-master",
+            "phpunit/phpunit": "^5.7|^6.5|^7.0",
+            "squizlabs/php_codesniffer": "^2.5"
+        },
+        "time": "2019-08-08T18:28:18+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.10-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "PhpAmqpLib\\": "PhpAmqpLib/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "LGPL-2.1-or-later"
+        ],
+        "authors": [
+            {
+                "name": "Alvaro Videla",
+                "role": "Original Maintainer"
+            },
+            {
+                "name": "John Kelly",
+                "role": "Maintainer",
+                "email": "johnmkelly86@gmail.com"
+            },
+            {
+                "name": "Raúl Araya",
+                "role": "Maintainer",
+                "email": "nubeiro@gmail.com"
+            },
+            {
+                "name": "Luke Bakken",
+                "role": "Maintainer",
+                "email": "luke@bakken.io"
+            }
+        ],
+        "description": "Formerly videlalvaro/php-amqplib.  This library is a pure PHP implementation of the AMQP protocol. It's been tested against RabbitMQ.",
+        "homepage": "https://github.com/php-amqplib/php-amqplib/",
+        "keywords": [
+            "message",
+            "queue",
+            "rabbitmq"
+        ]
     },
     {
         "name": "phpoption/phpoption",
@@ -120,17 +212,17 @@
     },
     {
         "name": "symfony/polyfill-ctype",
-        "version": "v1.11.0",
-        "version_normalized": "1.11.0.0",
+        "version": "v1.12.0",
+        "version_normalized": "1.12.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/polyfill-ctype.git",
-            "reference": "82ebae02209c21113908c229e9883c419720738a"
+            "reference": "550ebaac289296ce228a706d0867afc34687e3f4"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/82ebae02209c21113908c229e9883c419720738a",
-            "reference": "82ebae02209c21113908c229e9883c419720738a",
+            "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/550ebaac289296ce228a706d0867afc34687e3f4",
+            "reference": "550ebaac289296ce228a706d0867afc34687e3f4",
             "shasum": ""
         },
         "require": {
@@ -139,11 +231,11 @@
         "suggest": {
             "ext-ctype": "For best performance"
         },
-        "time": "2019-02-06T07:57:58+00:00",
+        "time": "2019-08-06T08:03:45+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "1.11-dev"
+                "dev-master": "1.12-dev"
             }
         },
         "installation-source": "dist",
@@ -161,12 +253,12 @@
         ],
         "authors": [
             {
-                "name": "Symfony Community",
-                "homepage": "https://symfony.com/contributors"
-            },
-            {
                 "name": "Gert de Pagter",
                 "email": "BackEndTea@gmail.com"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "https://symfony.com/contributors"
             }
         ],
         "description": "Symfony polyfill for ctype functions",
@@ -180,17 +272,17 @@
     },
     {
         "name": "vlucas/phpdotenv",
-        "version": "v3.4.0",
-        "version_normalized": "3.4.0.0",
+        "version": "v3.5.0",
+        "version_normalized": "3.5.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/vlucas/phpdotenv.git",
-            "reference": "5084b23845c24dbff8ac6c204290c341e4776c92"
+            "reference": "95cb0fa6c025f7f0db7fc60f81e9fb231eb2d222"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/vlucas/phpdotenv/zipball/5084b23845c24dbff8ac6c204290c341e4776c92",
-            "reference": "5084b23845c24dbff8ac6c204290c341e4776c92",
+            "url": "https://api.github.com/repos/vlucas/phpdotenv/zipball/95cb0fa6c025f7f0db7fc60f81e9fb231eb2d222",
+            "reference": "95cb0fa6c025f7f0db7fc60f81e9fb231eb2d222",
             "shasum": ""
         },
         "require": {
@@ -201,11 +293,11 @@
         "require-dev": {
             "phpunit/phpunit": "^4.8.35 || ^5.0 || ^6.0"
         },
-        "time": "2019-06-15T22:40:20+00:00",
+        "time": "2019-08-27T17:00:38+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "3.4-dev"
+                "dev-master": "3.5-dev"
             }
         },
         "installation-source": "dist",
@@ -220,9 +312,14 @@
         ],
         "authors": [
             {
+                "name": "Graham Campbell",
+                "email": "graham@alt-three.com",
+                "homepage": "https://gjcampbell.co.uk/"
+            },
+            {
                 "name": "Vance Lucas",
                 "email": "vance@vancelucas.com",
-                "homepage": "http://www.vancelucas.com"
+                "homepage": "https://vancelucas.com/"
             }
         ],
         "description": "Loads environment variables from `.env` to `getenv()`, `$_ENV` and `$_SERVER` automagically.",
