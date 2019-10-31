@@ -27,7 +27,6 @@ if (!class_exists('Main')) {
             $this->jsFilePath = $this->staticPath.'main/js/';
             $this->cssFilePath = $this->staticPath.'main/css/';
         }
-
         private function allArrayKeyExists(array $dataArr): bool
         {
             $arrKeys = [
@@ -45,6 +44,7 @@ if (!class_exists('Main')) {
             $this->session->set_userdata(array_merge([
                 'isLogin' => true,
                 'pwd'     => false,
+                'queueHash' => substr(bin2hex(random_bytes(10)), 0, 10),
             ], $reqData));
         }
 

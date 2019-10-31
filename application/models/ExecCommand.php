@@ -9,13 +9,18 @@ if (!class_exists('ExecCommand')) {
         private $userData = null;
         private $connInfo = null;
         private $processCode = null;
+        private $queueHash = null;
+
 
         public function __construct()
         {
             parent::__construct();
-            $this->load->library('session');
-            $this->load->helper('idFilter');
+            $load = $this->load;
+            $load->library('session');
+            $load->helper('idFilter');
+            $load->library('Queue');
 
+            $this->queueHash = $this->session->queueHash;
             $this->processCode = (object) [
                 'failConnect'   => -1,
                 'ok'            => 1,
@@ -37,7 +42,6 @@ if (!class_exists('ExecCommand')) {
             } else {
                 $base .= ' $';
             }
-
             return $base;
         }
 
@@ -58,8 +62,8 @@ if (!class_exists('ExecCommand')) {
                 if ($this->isNotConnect($connInfo)) {
                     return $retArr;
                 }
-
-                $getStreamRlt = $this->execCommand($connInfo, 'pwd');
+                $this->queue->push('pwd', $this->queueHash);
+                $getStreamRlt = $this->execCommand($connInfo);
                 if ($getStreamRlt) {
                     $retArr['code'] = $this->processCode->ok;
                     $retArr['status'] = true;
@@ -94,9 +98,9 @@ if (!class_exists('ExecCommand')) {
             }
         }
 
-        private function execCommand($link, $cmd): string
+        private function execCommand($link): string
         {
-            $getStream = ssh2_exec($link, $cmd);
+            $getStream = ssh2_exec($link, $this->queue->pop($this->queueHash));
 
             $getStdout = ssh2_fetch_stream($getStream, SSH2_STREAM_STDIO);
             $getErrout = ssh2_fetch_stream($getStream, SSH2_STREAM_STDERR);
@@ -165,7 +169,8 @@ if (!class_exists('ExecCommand')) {
                 } else {
                     $execCommand = $command;
                 }
-                $getStreamRlt = $this->execCommand($connInfo, $execCommand);
+                $this->queue->push($execCommand, $this->queueHash);
+                $getStreamRlt = $this->execCommand($connInfo);
                 if ($getStreamRlt) {
                     $retArr['status'] = true;
                     $retArr['code'] = $this->processCode->ok;
