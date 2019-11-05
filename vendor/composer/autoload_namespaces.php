@@ -8,4 +8,6 @@ $baseDir = dirname($vendorDir);
 return array(
     'org\\bovigo\\vfs\\' => array($vendorDir . '/mikey179/vfsstream/src/main/php'),
     'PhpOption\\' => array($vendorDir . '/phpoption/phpoption/src'),
+    'Guzzle\\Tests' => array($vendorDir . '/guzzle/guzzle/tests'),
+    'Guzzle' => array($vendorDir . '/guzzle/guzzle/src'),
 );
