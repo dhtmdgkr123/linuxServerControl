@@ -69,6 +69,9 @@ Usage
 >>1. Add nginx Control pannel<br />
 >>1. Add Secure Sturcture Folder<br />
 
+DEMO
+=
+[![Video Label](https://img.youtube.com/vi/uINxfSVLfVQ/0.jpg)](https://youtu.be/uINxfSVLfVQ)
 
 TODO
 =
